@@ -7,7 +7,7 @@ module.exports = withModuleFederationPlugin({
   name: "mfBase",
 
   exposes: {
-    "./module": "./src/app/app.module.ts",
+    "./module": "./src/app/features/feature.module.ts",
   },
 
   shared: {
