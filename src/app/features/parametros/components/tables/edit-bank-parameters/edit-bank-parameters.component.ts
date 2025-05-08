@@ -12,4 +12,13 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
 })
 export class EditBankParametersComponent {
 
+  displayedColumns: string[] = ['label', 'value', 'action'];
+  dataSource = [
+    { label: 'CUENTA BANCARIA', value: 'cuenta septima pichincha quito' },
+    { label: 'BANCO', value: 'Banco Guayaquil' },
+    { label: 'RUC NOTARÍA', value: '1707514251001' },
+    { label: 'TIPO DE CUENTA', value: 'Cuenta Corriente' }
+  ];
+
+
 }

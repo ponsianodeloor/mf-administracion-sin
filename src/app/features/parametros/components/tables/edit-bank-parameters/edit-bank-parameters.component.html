@@ -2,3 +2,29 @@
   <mat-icon class="large-icon">credit_card</mat-icon>
   <span class="section-title">Datos Bancarios</span>
 </div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z2 zebra-table">
+
+  <!-- Columna: Etiqueta -->
+  <ng-container matColumnDef="label">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element"> {{ element.label }} </td>
+  </ng-container>
+
+  <!-- Columna: Valor -->
+  <ng-container matColumnDef="value">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element"> {{ element.value }} </td>
+  </ng-container>
+
+  <!-- Columna: Acción -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
