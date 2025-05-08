@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mf-ciudadano": {
+    "mf-adminstracion-sin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist/mf-ciudadano",
+            "outputPath": "dist/mf-adminstracion-sin",
             "index": "src/index.html",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
@@ -184,30 +184,30 @@
           "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mf-ciudadano:build:production",
+              "buildTarget": "mf-adminstracion-sin:build:production",
               "extraWebpackConfig": "webpack.prod.config.js"
             },
             "development": {
-              "buildTarget": "mf-ciudadano:build:development"
+              "buildTarget": "mf-adminstracion-sin:build:development"
             },
             "sqm": {
-              "buildTarget": "mf-ciudadano:build:sqm"
+              "buildTarget": "mf-adminstracion-sin:build:sqm"
             },
             "dev": {
-              "buildTarget": "mf-ciudadano:build:dev"
+              "buildTarget": "mf-adminstracion-sin:build:dev"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4207,
-            "publicHost": "http://localhost:4207",
+            "port": 4223,
+            "publicHost": "http://localhost:4223",
             "extraWebpackConfig": "webpack.config.js"
           }
         },
         "extract-i18n": {
           "builder": "ngx-build-plus:extract-i18n",
           "options": {
-            "buildTarget": "mf-ciudadano:build",
+            "buildTarget": "mf-adminstracion-sin:build",
             "extraWebpackConfig": "webpack.config.js"
           }
         },
