@@ -1,0 +1,12 @@
+<div>
+    @for(breadcrumbItem of breadcrumbItems; track $index; let last = $last){
+    @if(!last){
+    <a *ngIf="breadcrumbItem.active" [routerLink]="breadcrumbItem.url">{{breadcrumbItem.name}}</a>
+    <span *ngIf="!breadcrumbItem.active"> {{breadcrumbItem.name}}</span>
+    <span>/</span>
+    }@else{
+    <a *ngIf="breadcrumbItem.active" [routerLink]="breadcrumbItem.url">{{breadcrumbItem.name}}</a>
+    <span *ngIf="!breadcrumbItem.active">{{breadcrumbItem.name }}</span>
+    }
+    }
+</div>

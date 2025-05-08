@@ -1,0 +1,43 @@
+.tabla-contenedor {
+  overflow-x: auto;
+  /* Permite el desplazamiento horizontal si es necesario */
+}
+th,  .fc-timegrid-axis{
+  background: #ffffff!important;
+}
+
+@media (min-width: 769px) {
+  .wizard-container {
+    flex-direction: row;
+  }
+
+  .wizard-steps {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .wizard-content {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-body {
+    padding: 10px;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+}
+
+:host ::ng-deep .content.div-contenido {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+
+.btn-azul-estandar{
+  background-color: #3788d8;
+}
