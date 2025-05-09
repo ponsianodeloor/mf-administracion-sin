@@ -2,3 +2,31 @@
   <mat-icon class="large-icon">desktop_windows</mat-icon>
   <span class="section-title">Parámetros Zoom</span>
 </div>
+<div class="row">
+  <div class="col-4" *ngFor="let param of zoomParameters">
+    <div class="card-grid mb-4">
+      <mat-card class="param-card">
+        <div class="param-header">
+          <div class="param-title">{{ param.label }}</div>
+          <div class="param-actions">
+            <button mat-icon-button (click)="copyToClipboard(param)">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+            <button
+              *ngIf="param.canToggle"
+              mat-icon-button
+              (click)="param.hidden = !param.hidden"
+            >
+              <mat-icon>{{ param.hidden ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="param-value">
+          {{ param.hidden ? '************************' : param.value }}
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+</div>
+

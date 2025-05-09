@@ -16,3 +16,21 @@
   font-size: 20px;
   font-weight: 500;
 }
+
+.param-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .param-actions button {
+    margin-left: 4px;
+  }
+}
+
+.param-value {
+  margin-top: 8px;
+  font-family: monospace;
+  color: #333;
+  word-break: break-word;
+}
+

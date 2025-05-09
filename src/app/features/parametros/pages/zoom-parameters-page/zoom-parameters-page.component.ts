@@ -15,7 +15,6 @@ import {EditZoomParametersComponent} from "../../components/cards/edit-zoom-para
     MatDividerModule,
     LoaderComponent,
     NgIf,
-    EditBankParametersComponent,
     EditZoomParametersComponent
   ],
   templateUrl: './zoom-parameters-page.component.html',
