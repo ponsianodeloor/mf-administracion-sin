@@ -1,1 +1,15 @@
-<p>zoom-parameters-page works!</p>
+<div class="breadcrumb-container mb-2">
+  <app-breadcrums [breadcrumbItems]="breadcrumbItems"></app-breadcrums>
+</div>
+<mat-divider></mat-divider>
+<div class="row">
+  <div class="col-md-6">
+    <app-edit-zoom-parameters></app-edit-zoom-parameters>
+  </div>
+
+  <div class="col-md-6">
+    &nbsp;
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>
