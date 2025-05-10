@@ -1,0 +1,20 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminCatalogoService {
+
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  getPesnotCatCatalogoByNemonicoPadre(nemonicoPadre: string) {
+    return this.http.get(`${environment.url}/pesnot-cat-catalogo/${nemonicoPadre}`);
+  }
+
+  getPesnotCatCatalogoByNemonicoPadreTree(nemonicoPadre: string) {
+    return this.http.get(`${environment.url}/pesnot-cat-catalogo/tree/${nemonicoPadre}`);
+  }
+}

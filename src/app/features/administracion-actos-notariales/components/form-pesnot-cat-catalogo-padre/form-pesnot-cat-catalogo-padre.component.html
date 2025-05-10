@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Categorias de Actos Notariales</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="form" class="form-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" placeholder="Ingrese el nombre">
+          <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+            El nombre es requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>http://pesnot.funcionjudicial.gob.ec/icons#dfiusahfksdjcbksjdnfk</mat-label>
+          <input matInput formControlName="urlNotarias" placeholder="Ingrese la URL del icono">
+          <mat-error *ngIf="form.get('urlNotarias')?.hasError('required')">
+            La URL del icono es requerida
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="guardar()">
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

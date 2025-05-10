@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'actos-notariales',
+    loadChildren: () => import('./administracion-actos-notariales/administracion-actos-notariales.module').then(m => m.AdministracionActosNotarialesModule)
+  },
+  {
     path: 'parametros',
     loadChildren: () => import('./parametros/parametros.module').then(m => m.ParametrosModule)
   },
