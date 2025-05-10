@@ -11,6 +11,7 @@ import { MatOptionModule } from '@angular/material/core';
 
 import { AdministracionActosNotarialesRoutingModule } from './administracion-actos-notariales-routing.module';
 import { AdministracionCatalogoComponent } from './pages/administracion-catalogo/administracion-catalogo.component';
+import { TreeViewComponent } from '../../shared/components/tree-view/tree-view.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AdministracionCatalogoComponent } from './pages/administracion-catalogo
     MatCardModule,
     MatIconModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    TreeViewComponent
   ],
 })
 export class AdministracionActosNotarialesModule { }

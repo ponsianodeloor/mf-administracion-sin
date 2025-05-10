@@ -1,0 +1,15 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <button mat-icon-button disabled></button>
+    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.name}}</span>
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button mat-icon-button matTreeNodeToggle (click)="$event.stopPropagation()">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.name}}</span>
+  </mat-tree-node>
+</mat-tree>

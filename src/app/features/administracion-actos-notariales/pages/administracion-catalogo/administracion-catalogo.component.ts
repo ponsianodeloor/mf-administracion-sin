@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from '../../../../../environments/environment';
+import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-administracion-catalogo',
@@ -8,29 +7,48 @@ import { environment } from '../../../../../environments/environment';
   styleUrl: './administracion-catalogo.component.scss'
 })
 export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
-  form: FormGroup;
-  nemonicoPadre = environment.AdministracionCatalogonemonicoPadre;
+  
+  treeData: any[] = [];
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      category: ['', Validators.required],
-      subCategory: ['', Validators.required],
-      document: ['', Validators.required],
-    });
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.form.get('category')?.setValue(this.nemonicoPadre);
+    this.dataDemoTree();
   }
 
-  ngOnDestroy(): void {
-    this.form.reset();
+  ngOnDestroy(): void {}
+
+  onSelectedNode(node: any) {
+    console.log(node);
+    this.router.navigate([node.form]);
   }
 
-  clearForm() {
-    this.form.reset();
+  dataDemoTree() {
+    this.treeData = [
+      {
+        data: { name: 'Categoría 1', form: 'administracion-sin/actos-notariales/administracion/categoria' },
+        children: [
+          {
+            data: { name: 'Subcategoría 1.1', form: 'administracion-sin/actos-notariales/administracion/subcategoria' },
+            children: [
+              { data: { name: 'Subsubcategoría 1.1.1', form: 'administracion-sin/actos-notariales/administracion/documento' } },
+              { data: { name: 'Subsubcategoría 1.1.2', form: 'administracion-sin/actos-notariales/administracion/documento' } },
+            ]
+          },
+          {
+            data: { name: 'Subcategoría 1.2', form: 'administracion-sin/actos-notariales/administracion/subcategoria' },
+            children: [
+              { data: { name: 'Subsubcategoría 1.2.1', form: 'administracion-sin/actos-notariales/administracion/documento' } },
+            ]
+          }
+        ]
+      },
+      {
+        data: { name: 'Categoría 2', form: 'administracion-sin/actos-notariales/administracion/categoria' },
+        children: [
+          { data: { name: 'Subcategoría 2.1', form: 'administracion-sin/actos-notariales/administracion/subcategoria' } },
+        ]
+      }
+    ]
   }
-
-  onSubmit() {}
-
 }

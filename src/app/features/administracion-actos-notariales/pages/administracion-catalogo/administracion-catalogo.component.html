@@ -1,15 +1,20 @@
 <div class="container-fluid">
-    <div class="row panel-container">
-        <div class="col-md-3 panel-left">
-            <mat-form-field>
-                <mat-label>Categoría</mat-label>
-                <mat-select formControlName="category" placeholder="Seleccione una categoría">
-                    <mat-option value="PESNOT">PESNOT</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-9 panel-right">
-            <router-outlet></router-outlet>
-        </div>
+  <div class="row">
+    <div class="col-md-3 panel-left">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Categoría</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+          <app-tree-view
+            [data]="treeData"
+            (selectedNode)="onSelectedNode($event)"
+          ></app-tree-view>
+        </mat-card-content>
+      </mat-card>
     </div>
+    <div class="col-md-9 panel-right">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

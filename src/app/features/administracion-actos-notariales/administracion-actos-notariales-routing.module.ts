@@ -7,7 +7,7 @@ import { FormPesnotCatDocumentosObligatoriosComponent } from './components/form-
 
 const routes: Routes = [
   {
-    path: 'catalogo',
+    path: 'administracion',
     component: AdministracionCatalogoComponent,
     children: [
       {
