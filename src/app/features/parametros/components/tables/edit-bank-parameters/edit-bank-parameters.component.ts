@@ -41,12 +41,7 @@ export class EditBankParametersComponent implements OnInit {
   bankDetails: string;
 
   displayedColumns: string[] = ['label', 'value', 'action'];
-  dataSource = [
-    { label: 'CUENTA BANCARIA', value: 'cuenta septima pichincha quito' },
-    { label: 'BANCO', value: 'Banco Guayaquil' },
-    { label: 'RUC NOTARÍA', value: '1707514251001' },
-    { label: 'TIPO DE CUENTA', value: 'Cuenta Corriente' }
-  ];
+  dataSource: { id:number, label: string, value: string }[] = [];
 
   constructor(
     private readonly environmentService: EnvironmentService,
@@ -78,7 +73,11 @@ export class EditBankParametersComponent implements OnInit {
   getParametersNotaries(codigo: string, idNotaria: number) {
     this.notariasPesnotService.getParametersNotaries(codigo, idNotaria).subscribe({
       next: (response) => {
-        this.parametersNotaries = response;
+        this.dataSource = response.map(item => ({
+          id: item.id,
+          label: item.descripcion,
+          value: item.valor
+        }));
       },
       error: (error) => {
         this.toastrService.error('Error al obtener los parámetros de la notaría', 'Error', {
