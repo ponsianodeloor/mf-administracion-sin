@@ -3,6 +3,13 @@ export const environment = {
   text: "This is development environment",
   name: "development environment",
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
-  ADMINISTRACION_CATALOGO_API_SERVICES: "http://localhost:3000"
+  ADMINISTRACION_CATALOGO_API_SERVICES: "http://localhost:3000",
+
+  SERVER_PESNOT: "https://desa-api-pesnot.funcionjudicial.gob.ec",
+  MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
+
+  ENDPOINT_GET_PARAMETERS_NOTARIES: "/query/parametros-notarias/codigo/",
+
+  BANK_DETAILS: "DATOS-BANCARIOS",
+  ZOOM_PARAMETERS: "PARAMETROS-ZOOM",
 };
-  
