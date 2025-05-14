@@ -73,6 +73,7 @@ export class EditBankParametersComponent implements OnInit {
   getParametersNotaries(codigo: string, idNotaria: number) {
     this.notariasPesnotService.getParametersNotaries(codigo, idNotaria).subscribe({
       next: (response) => {
+        this.parametersNotaries = response;
         this.dataSource = response.map(item => ({
           id: item.id,
           label: item.descripcion,

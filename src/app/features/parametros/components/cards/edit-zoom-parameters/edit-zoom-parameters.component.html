@@ -7,7 +7,10 @@
     <div class="card-grid mb-4">
       <mat-card class="param-card">
         <div class="param-header">
-          <div class="param-title">{{ param.label }}</div>
+          <div class="param-title">
+            {{ param.label }}
+            <mat-icon matTooltip="{{ param.helper }}" class="question-icon">help_outline</mat-icon>
+          </div>
           <div class="param-actions">
             <button mat-icon-button (click)="copyToClipboard(param)">
               <mat-icon>content_copy</mat-icon>
