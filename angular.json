@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mf-adminstracion-sin": {
+    "mf-administracion-sin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist/mf-adminstracion-sin",
+            "outputPath": "dist/mf-administracion-sin",
             "index": "src/index.html",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
@@ -184,17 +184,17 @@
           "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mf-adminstracion-sin:build:production",
+              "buildTarget": "mf-administracion-sin:build:production",
               "extraWebpackConfig": "webpack.prod.config.js"
             },
             "development": {
-              "buildTarget": "mf-adminstracion-sin:build:development"
+              "buildTarget": "mf-administracion-sin:build:development"
             },
             "sqm": {
-              "buildTarget": "mf-adminstracion-sin:build:sqm"
+              "buildTarget": "mf-administracion-sin:build:sqm"
             },
             "dev": {
-              "buildTarget": "mf-adminstracion-sin:build:dev"
+              "buildTarget": "mf-administracion-sin:build:dev"
             }
           },
           "defaultConfiguration": "development",
@@ -207,7 +207,7 @@
         "extract-i18n": {
           "builder": "ngx-build-plus:extract-i18n",
           "options": {
-            "buildTarget": "mf-adminstracion-sin:build",
+            "buildTarget": "mf-administracion-sin:build",
             "extraWebpackConfig": "webpack.config.js"
           }
         },
