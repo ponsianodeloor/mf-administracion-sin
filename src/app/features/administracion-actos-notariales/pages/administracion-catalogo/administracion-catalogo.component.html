@@ -1,19 +1,20 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-3 panel-left">
+    <div class="col-md-5 panel-left">
       <mat-card>
         <mat-card-header>
           <mat-card-title>Categoría</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
           <app-tree-view
-            [data]="treeData"
+            *ngIf="treeData"
+            [data]="[treeData]"
             (selectedNode)="onSelectedNode($event)"
           ></app-tree-view>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-9 panel-right">
+    <div class="col-md-7 panel-right">
       <router-outlet></router-outlet>
     </div>
   </div>

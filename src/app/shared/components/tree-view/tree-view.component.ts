@@ -31,6 +31,9 @@ interface FlatNode {
 })
 export class TreeViewComponent {
   @Input() set data(value: TreeNode[]) {
+    if (!Array.isArray(value)) {
+      value = [];
+    }
     this._data = value;
     this.dataSource.data = value;
   }
@@ -45,7 +48,7 @@ export class TreeViewComponent {
   private _transformer = (node: TreeNode, level: number): FlatNode => {
     return {
       expandable: !!node.children && node.children.length > 0,
-      name: node.data.name,
+      name: node.data.nombre || '',
       level: level,
       data: node.data
     };
@@ -67,9 +70,11 @@ export class TreeViewComponent {
 
   hasChild = (_: number, node: FlatNode) => node.expandable;
 
-  onNodeClick(node: TreeNode) {
-    this.selectedNodeData = node;
-    this.selectedNode.emit(node);
+  onNodeClick(node: any) {
+    if (node) {
+      this.selectedNodeData = node;
+      this.selectedNode.emit(node);
+    }
   }
 
   isNodeSelected(node: any): boolean {
