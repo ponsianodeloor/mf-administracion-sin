@@ -20,21 +20,11 @@ export interface Catalogo {
 }
 
 export interface DocumentosObligatorios {
-  id: number;
+  id?: number;
   idCatalogo: number;
   nombreArchivo: string;
   extensionArchivo: string;
-  estado: string;
   tipoArchivo: string;
-  fechaCrea: Date;
-  fechaModifica: Date;
-  idPersonaCrea: number;
-  idPersonaModifica: number;
-  ipCrea: string;
-  equipoCrea: string;
-  ipModifica: string;
-  equipoModifica: string;
-  motivoModifica: string;
   requiereFirmaNotario: string;
   isCedula: string;
   requiereFirma: string;
