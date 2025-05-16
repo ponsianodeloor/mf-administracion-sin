@@ -1,10 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-5 panel-left">
+    <div class="col-md-4 panel-left">
       <mat-card>
-        <mat-card-header>
-          <mat-card-title>Categoría</mat-card-title>
-        </mat-card-header>
         <mat-card-content class="card-content">
           <app-tree-view
             *ngIf="treeData"
@@ -14,7 +11,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-7 panel-right">
+    <div class="col-md-8 panel-right background-image-portada">
       <router-outlet></router-outlet>
     </div>
   </div>

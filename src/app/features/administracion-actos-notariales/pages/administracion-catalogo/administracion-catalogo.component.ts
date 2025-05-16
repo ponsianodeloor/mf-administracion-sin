@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminCatalogoService } from '../../../../shared/services/admin-catalogo.service';
+import { NodeSelectionService } from '../../services/node-selection.service';
 import { environment } from '../../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 interface TreeNode {
   data: {
@@ -21,14 +23,22 @@ interface TreeNode {
 })
 export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
   private nemonico = environment.AdministracionCatalogonemonicoPadre;
+  private saveSubscription: Subscription;
 
   treeData!: TreeNode;
   nodeSelected: any;
 
   constructor(
     private router: Router,
-    private adminCatalogoService: AdminCatalogoService
-  ) {}
+    private adminCatalogoService: AdminCatalogoService,
+    private nodeSelectionService: NodeSelectionService
+  ) {
+    this.saveSubscription = this.nodeSelectionService.saveEvent$.subscribe(data => {
+      if (data) {
+        console.log(data);
+      }
+    });
+  }
 
   ngOnInit(): void {
     if (!this.nodeSelected) {
@@ -36,26 +46,31 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
         '/administracion-sin/actos-notariales/administracion',
       ]);
     }
-    this.dataDemoTree();
+    this.dataTree();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.saveSubscription) {
+      this.saveSubscription.unsubscribe();
+    }
+  }
 
   onSelectedNode(node: any) {
+    this.nodeSelectionService.setSelectedNode(node);
     switch (node.treeLevel) {
-      case 0:
+      case 1:
         this.router.navigate([
           '/administracion-sin/actos-notariales/administracion/categoria',
         ]);
         this.nodeSelected = node;
         break;
-      case 1:
+      case 2:
         this.router.navigate([
           '/administracion-sin/actos-notariales/administracion/subcategoria',
         ]);
         this.nodeSelected = node;
         break;
-      case 2:
+      case 3:
         this.router.navigate([
           '/administracion-sin/actos-notariales/administracion/documento',
         ]);
@@ -87,7 +102,7 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
     }
   }
 
-  dataDemoTree() {
+  dataTree() {
     this.adminCatalogoService
       .getPesnotCatCatalogoByNemonicoTree(this.nemonico)
       .subscribe({
@@ -96,7 +111,6 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
           this.initialFormLevel();
         },
         error: (err: any) => {
-          console.log(err);
           this.treeData = {} as TreeNode;
         },
       });

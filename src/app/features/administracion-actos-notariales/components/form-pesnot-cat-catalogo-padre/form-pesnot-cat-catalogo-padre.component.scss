@@ -14,3 +14,25 @@ mat-card {
 mat-card-actions {
   padding: 16px;
 }
+
+mat-card-title.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-card-title.d-flex button {
+  margin-left: 24px;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.color-red {
+  background-color: #ff0019 !important;
+  color: #fff !important;
+}

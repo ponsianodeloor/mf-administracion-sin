@@ -1,7 +1,7 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.data.nombre}}</span>
+    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.data.nombre || node.data.nombreArchivo}}</span>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
@@ -10,6 +10,6 @@
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </mat-icon>
     </button>
-    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.data.nombre}}</span>
+    <span class="node-name" [class.selected]="isNodeSelected(node.data)" (click)="onNodeClick(node.data)">{{node.data.nombre || node.data.nombreArchivo}}</span>
   </mat-tree-node>
 </mat-tree>
