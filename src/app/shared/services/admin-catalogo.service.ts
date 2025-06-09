@@ -6,18 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AdminCatalogoService {
 
-  private nemonicoPadre = environment.AdministracionCatalogonemonicoPadre;
-  private url = environment.ADMINISTRACION_CATALOGO_API_SERVICES;
+  private url = environment.HOST_API_TELEMATICO + environment.ADMINISTRACION_CATALOGO_API_SERVICES;
 
   constructor(
     private http: HttpClient
   ) { }
 
-  getPesnotCatCatalogoByNemonicoPadre(nemonicoPadre: string) {
-    return this.http.get(`${this.url}/pesnot-cat-catalogo/${nemonicoPadre}`);
-  }
-
-  getPesnotCatCatalogoByNemonicoPadreTree(nemonicoPadre: string) {
-    return this.http.get(`${this.url}/pesnot-cat-catalogo/tree/${nemonicoPadre}`);
+  getPesnotCatCatalogoByNemonicoTree(nemonicoPadre: string) {
+    return this.http.get(`${this.url}/${nemonicoPadre}`);
   }
 }

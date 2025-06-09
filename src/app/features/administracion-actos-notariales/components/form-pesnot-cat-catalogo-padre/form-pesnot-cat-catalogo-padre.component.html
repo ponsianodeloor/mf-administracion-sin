@@ -1,9 +1,15 @@
 <div class="container-fluid">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Categorias de Actos Notariales</mat-card-title>
+      <div class="header-flex">
+        <span class="mat-card-title">Categorias de Actos Notariales</span>
+        <button mat-raised-button color="primary" (click)="onNew()" *ngIf="!editSave">
+          <mat-icon>add</mat-icon>
+          Nuevo
+        </button>
+      </div>
     </mat-card-header>
-    
+
     <mat-card-content>
       <form [formGroup]="form" class="form-container">
         <mat-form-field appearance="outline" class="full-width">
@@ -25,10 +31,20 @@
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-raised-button color="primary" (click)="guardar()">
-        <mat-icon>save</mat-icon>
-        Guardar
-      </button>
+      <div class="d-flex gap-2 justify-content-end">
+        <button mat-raised-button class="color-red" (click)="onCancel()" *ngIf="editSave">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" (click)="onEdit()" *ngIf="!editSave">
+          <mat-icon>edit</mat-icon>
+          Editar
+        </button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" *ngIf="editSave">
+          <mat-icon>save</mat-icon>
+          Guardar
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>

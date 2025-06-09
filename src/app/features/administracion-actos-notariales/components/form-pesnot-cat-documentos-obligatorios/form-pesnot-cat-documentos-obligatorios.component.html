@@ -1,1 +1,66 @@
-<p>form-pesnot-cat-documentos-obligatorios works!</p>
+<div class="container-fluid">
+  <mat-card>
+    <mat-card-header>
+      <div class="header-flex">
+        <span class="mat-card-title">Documento de Actos Notariales</span>
+        <button mat-raised-button color="primary" (click)="onNew()" *ngIf="!editSave">
+          <mat-icon>add</mat-icon>
+          Nuevo
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" class="form-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre del Archivo</mat-label>
+          <input matInput formControlName="nombreArchivo" placeholder="Ingrese el nombre del archivo">
+          <mat-error *ngIf="form.get('nombreArchivo')?.hasError('required')">
+            El nombre del archivo es requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Archivo</mat-label>
+          <mat-select formControlName="tipoArchivo">
+            <mat-option value="O">Documento Obligatorio</mat-option>
+            <mat-option value="E">Extracto</mat-option>
+            <mat-option value="M">Matriz</mat-option>
+            <mat-option value="T">Otros Documentos</mat-option>
+            <mat-option value="R">Razon</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('tipoArchivo')?.hasError('required')">
+            El tipo de archivo es requerido
+          </mat-error>
+        </mat-form-field>
+
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="requiereFirmaNotario" class="full-width">
+            Requiere Firma Notario
+          </mat-checkbox>
+
+          <mat-checkbox formControlName="requiereFirma" class="full-width">
+            Requiere Firma
+          </mat-checkbox>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <div class="d-flex gap-2 justify-content-end">
+        <button mat-raised-button class="color-red" (click)="onCancel()" *ngIf="editSave">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" (click)="onEdit()" *ngIf="!editSave">
+          <mat-icon>edit</mat-icon>
+          Editar
+        </button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" *ngIf="editSave">
+          <mat-icon>save</mat-icon>
+          Guardar
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
