@@ -26,7 +26,7 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
   private saveSubscription: Subscription;
 
   treeData!: TreeNode;
-  nodeSelected: any;
+  nodeSelected!: any;
 
   constructor(
     private router: Router,
@@ -77,7 +77,10 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
         this.nodeSelected = node;
         break;
       default:
-        console.warn('Node or form property is missing:', node);
+        this.router.navigate([
+          '/administracion-sin/actos-notariales/administracion',
+        ]);
+        this.nodeSelected = null;
     }
   }
 
