@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'reportes',
     loadChildren: () => import('./reportes/reportes.module').then(m => m.ReportesModule)
+  },
+  {
+    path: 'facturacion-notarias',
+    loadChildren: () => import('./parametros-facturacion-notarias/parametros-facturacion-notarias.module').then(m => m.ParametrosFacturacionNotariasModule)
   }
 ];
 
