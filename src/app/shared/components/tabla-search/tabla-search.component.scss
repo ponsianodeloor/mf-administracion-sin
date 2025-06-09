@@ -1,0 +1,127 @@
+.tabla-contenedor {
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    .mat-mdc-header-cell {
+      padding: 6px;
+
+      .header-flex {
+        gap: 4px;
+
+        .header-content {
+          font-size: 14px;
+        }
+
+        .filter-button {
+          min-width: 28px;
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .mat-mdc-header-cell {
+      padding: 4px;
+
+      .header-flex {
+        gap: 2px;
+
+        .header-content {
+          font-size: 12px;
+        }
+
+        .filter-button {
+          min-width: 24px;
+          width: 24px;
+          height: 24px;
+          line-height: 24px;
+
+          mat-icon {
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  th {
+    color: #000;
+    font-weight: 600;
+    background-color: white !important;
+    border: 1px solid #e0e0e0;
+    z-index: 1000;
+  }
+
+  .mat-mdc-header-cell {
+    padding: 8px;
+    box-sizing: border-box;
+
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+
+      .header-content {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .filter-button {
+        flex-shrink: 0;
+        margin-left: 4px;
+        padding: 0;
+        min-width: 32px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+}
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Estilos responsivos para el contenido de las celdas
+@media screen and (max-width: 768px) {
+  .mat-mdc-cell {
+    padding: 6px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mat-mdc-cell {
+    padding: 4px;
+    font-size: 12px;
+  }
+}

@@ -1,1 +1,103 @@
-<p>form-parametros-facturacion works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Notaría</mat-label>
+      <mat-select formControlName="idNotaria" required>
+        <mat-option *ngFor="let notaria of notarias" [value]="notaria.id">
+          {{notaria.nombre}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('idNotaria')?.hasError('required')">
+        La notaría es requerida
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Clave de Acceso</mat-label>
+      <input matInput formControlName="claveAcceso" maxlength="300" required>
+      <mat-error *ngIf="form.get('claveAcceso')?.hasError('required')">
+        La clave de acceso es requerida
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Número RUC</mat-label>
+      <input matInput formControlName="numeroRuc" maxlength="15" required>
+      <mat-error *ngIf="form.get('numeroRuc')?.hasError('required')">
+        El número RUC es requerido
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Ambiente</mat-label>
+      <mat-select formControlName="tipoAmbiente">
+        <mat-option *ngFor="let tipo of tiposAmbiente" [value]="tipo.value">
+          {{tipo.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Establecimiento</mat-label>
+      <input matInput formControlName="establecimiento" maxlength="4" required>
+      <mat-error *ngIf="form.get('establecimiento')?.hasError('required')">
+        El establecimiento es requerido
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Punto de Emisión</mat-label>
+      <input matInput formControlName="puntoEmision" maxlength="4" required>
+      <mat-error *ngIf="form.get('puntoEmision')?.hasError('required')">
+        El punto de emisión es requerido
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Razón Social</mat-label>
+      <input matInput formControlName="razonSocial" maxlength="300" required>
+      <mat-error *ngIf="form.get('razonSocial')?.hasError('required')">
+        La razón social es requerida
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Código Contribuyente Especial</mat-label>
+      <input matInput formControlName="codigoContribuyenteEspecial" maxlength="20">
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-checkbox formControlName="obligadoContabilidad">
+      Obligado a llevar contabilidad
+    </mat-checkbox>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Logo de Emisión</mat-label>
+      <input matInput formControlName="logoEmision" maxlength="200">
+    </mat-form-field>
+  </div>
+
+  <div class="form-actions">
+    <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid || isLoading">
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form>
