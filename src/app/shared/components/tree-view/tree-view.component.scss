@@ -11,7 +11,7 @@
   flex: 1;
   border-radius: 4px;
   transition: background-color 0.2s ease;
-  
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
@@ -31,7 +31,7 @@ button[mat-icon-button] {
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
-  
+
   &.mat-expanded {
     .mat-icon {
       transform: rotate(90deg);
@@ -41,6 +41,6 @@ button[mat-icon-button] {
 
 // Estilo para el nodo seleccionado
 .node-name.selected {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(39, 0, 139, 0.08);
   font-weight: 500;
 }

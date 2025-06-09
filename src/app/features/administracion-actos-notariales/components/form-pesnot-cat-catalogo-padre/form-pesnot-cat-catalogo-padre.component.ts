@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { NodeSelectionService } from '../../services/node-selection.service';
 
 @Component({
   selector: 'app-form-pesnot-cat-catalogo-padre',
@@ -29,21 +30,21 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class FormPesnotCatCatalogoPadreComponent implements OnInit, OnDestroy {
 
-  @Input() nemonicoPadre: string = '';
   @Output() save = new EventEmitter<Catalogo>();
   form: FormGroup = new FormGroup({});
   catalogo!: Catalogo;
+  editSave = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    private nodeSelectionService: NodeSelectionService
   ) {
     this.catalogo = {
-      idCatalogoPadre: 0,
+      idCatalogoPadre: 1,
       nemonicoPadre: '',
       nemonico: '',
       nombre: '',
-      orden: 0,
+      orden: null,
       visible: '',
       descripcion: '',
       descripcionPie: '',
@@ -59,36 +60,46 @@ export class FormPesnotCatCatalogoPadreComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if(!this.data) {
-      this.InicializarFormulario();
-    } else {
+    this.nodeSelectionService.selectedNode$.subscribe((node) => {
       this.catalogo = {
-        ...this.data.catalogo,
+        ...node,
       }
-      this.form.patchValue(
-        {
-          nombre: this.catalogo.nombre,
-          urlNotarias: this.catalogo.urlNotarias,
-        }
-      );
-    }
+      this.InicializarFormulario();
+    });
   }
 
   ngOnDestroy(): void {}
 
   InicializarFormulario() {
     this.form = this.formBuilder.group({
-      nombre: [null, Validators.required],
-      urlNotarias: [null, Validators.required],
+      nombre: [this.catalogo.nombre, Validators.required],
+      urlNotarias: [this.catalogo.urlNotarias, Validators.required],
     });
+    this.form.disable();
   }
 
-  guardar() {
+  onSubmit() {
     if(this.form.valid) {
       this.catalogo.nombre = this.form.value.nombre;
       this.catalogo.urlNotarias = this.form.value.urlNotarias;
-      this.save.emit(this.catalogo);
+      this.nodeSelectionService.emitSaveEvent(this.catalogo);
     }
-    console.log(this.catalogo);
+  }
+
+  onEdit() {
+    this.form.enable();
+    this.editSave = true;
+  }
+
+  onCancel() {
+    this.form.disable();
+    this.InicializarFormulario();
+    this.editSave = false;
+  }
+
+  onNew() {
+    this.form.reset();
+    this.form.enable();
+    this.editSave = true;
   }
 }
