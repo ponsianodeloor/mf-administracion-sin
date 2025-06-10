@@ -1,7 +1,6 @@
 import { Component, Input, EventEmitter, OnInit, Output } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RepositorioService } from '../../../shared/services/repositorio.service';
+import { RepositorioService } from '../../services/repositorio.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
@@ -32,35 +31,40 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class FileUploadComponent implements OnInit {
   currentFile?: File;
   progress = 0;
-  message = '';
+  @Output() message = new EventEmitter<string>();
   @Input() fileName = '';
   @Input() uuidSolicitud = '';
   @Input() isOnlyView = false;
   fileInfos?: Observable<any>;
-  @Output() newItemEvent = new EventEmitter<{fileName: string, uuidSolicitud: string}>();
+  @Output() newItemEvent = new EventEmitter<{ fileName: string, uuidSolicitud: string, mimeType: string }>();
   isDisabled = false;
-  maxFileSize = 15;
+  @Input() maxFileSize!: number;
+  mimeType: string = '';
+
+  // Tipos MIME permitidos para imágenes
+  private readonly allowedMimeTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/bmp',
+    'image/tiff'
+  ];
 
   constructor(private repositorioService: RepositorioService) { }
 
   ngOnInit(): void {
-    if(this.isOnlyView){
+    if (this.isOnlyView) {
       this.disableComponent();
     }
-
-    this.repositorioService.paramsFileStore().subscribe((response: any) => {
-      this.maxFileSize = response.valor;
-    });
-
   }
 
   private disableComponent(): void {
     this.isDisabled = true;
-    // Deshabilitar eventos de drag and drop
     const dropZone = document.querySelector('.drop-zone');
     if (dropZone) {
-      dropZone.removeEventListener('dragover', this.onDragOver);
-      dropZone.removeEventListener('drop', this.onDrop);
+      dropZone.removeEventListener('dragover', this.onDragOver as EventListener);
+      dropZone.removeEventListener('drop', this.onDrop as EventListener);
     }
   }
 
@@ -87,22 +91,32 @@ export class FileUploadComponent implements OnInit {
 
   private handleFile(file: File): void {
     this.progress = 0;
-    this.message = "";
-    const fileSize = file.size / (1024 * 1024); // Convert to MB
-    if (fileSize >= this.maxFileSize) { // Assuming 10MB limit
-      this.message = 'El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)';
+    this.message.emit("");
+
+    // Validación del tipo MIME
+    if (!this.allowedMimeTypes.includes(file.type)) {
+      this.message.emit('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WEBP, BMP, TIFF)');
       this.fileName = '';
       this.uuidSolicitud = '';
       return;
     }
 
+    if (this.maxFileSize) {
+      const fileSize = file.size / (1024 * 1024); // Convert to MB
+      if (fileSize >= this.maxFileSize) {
+        this.message.emit('El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)');
+        this.fileName = '';
+        this.uuidSolicitud = '';
+        return;
+      }
+    }
+
     if (file.name && !file.name.includes('fakepath')) {
       this.currentFile = file;
       this.fileName = this.currentFile.name;
-
       this.upload();
     } else {
-      this.message = 'Ruta de archivo no válida';
+      this.message.emit('Ruta de archivo no válida');
       this.fileName = '';
       this.uuidSolicitud = '';
     }
@@ -111,20 +125,22 @@ export class FileUploadComponent implements OnInit {
   upload(): void {
     if (this.currentFile) {
       this.progress = 0;
-      this.message = 'Subiendo archivo...';
+      this.message.emit('Subiendo imagen...');
 
-      this.repositorioService.storeFileSolicitud(this.currentFile, 'pdf', 'notarial').subscribe({
+      this.repositorioService.storeFileSolicitud(this.currentFile, this.currentFile.type, 'notarial').subscribe({
         next: (event: string) => {
           this.uuidSolicitud = event;
+          this.mimeType = this.currentFile.type;
           this.newItemEvent.emit({
             fileName: this.fileName,
-            uuidSolicitud: this.uuidSolicitud
+            uuidSolicitud: this.uuidSolicitud,
+            mimeType: this.mimeType
           });
-          this.message = 'Archivo subido exitosamente';
+          this.message.emit('Imagen subida exitosamente');
         },
         error: (err: any) => {
           this.progress = 0;
-          this.message = 'No se pudo subir el archivo';
+          this.message.emit('No se pudo subir la imagen');
           this.fileName = '';
           this.uuidSolicitud = '';
         },

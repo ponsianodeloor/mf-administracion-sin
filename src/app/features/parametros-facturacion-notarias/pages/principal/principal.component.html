@@ -2,11 +2,11 @@
   <div class="breadcrumb-container">
     <app-breadcrums [breadcrumbItems]="breadcrumbItems"></app-breadcrums>
     <button mat-raised-button color="primary" (click)="openDialog(null)">
-      <mat-icon>{{dataFacturacion ? 'edit' : 'add'}}</mat-icon>
-      <span>{{dataFacturacion ? 'Editar' : 'Agregar'}}</span>
+      <mat-icon>{{data ? 'edit' : 'add'}}</mat-icon>
+      <span>{{data ? 'Editar' : 'Agregar'}}</span>
     </button>
   </div>
   <div class="table-container">
-    <app-tabla [displayedColumns]="displayedColumns" [data]="data" [tableParams]="tableParams" [noPaginated]="true"></app-tabla>
+    <app-tabla [displayedColumns]="displayedColumns" [data]="dataSource" [noPaginated]="true"></app-tabla>
   </div>
 </div>

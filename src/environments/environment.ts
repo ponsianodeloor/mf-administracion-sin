@@ -7,6 +7,7 @@ export const environment = {
   HOST_API_TELEMATICO: 'https://desa-api-telematico.funcionjudicial.gob.ec',
 
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
+  ParametrosSistemaPesnotTipoAmbiente: 'Tipo de Ambiente',
   ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo/tree-more-doc-obligatorios-admin-acto-notariales',
   ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
   MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',

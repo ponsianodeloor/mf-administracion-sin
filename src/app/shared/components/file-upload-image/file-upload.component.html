@@ -6,14 +6,14 @@
     </mat-toolbar>
   }
 
-  <div 
-    class="drop-zone" 
+  <div
+    class="drop-zone"
     [class.disabled]="isDisabled"
-    (click)="!isDisabled && fileInput.click()" 
-    (dragover)="!isDisabled && onDragOver($event)" 
+    (click)="!isDisabled && fileInput.click()"
+    (dragover)="!isDisabled && onDragOver($event)"
     (drop)="!isDisabled && onDrop($event)">
-    <mat-icon class="upload-icon">cloud_upload</mat-icon>
-    <span class="upload-text">{{ fileName || 'Seleccione o arrastre un archivo aquí' }}</span>
+    <mat-icon class="upload-icon">image</mat-icon>
+    <span class="upload-text">{{ fileName || 'Seleccione o arrastre una imagen aquí' }}</span>
     <input
       #fileInput
       type="file"
