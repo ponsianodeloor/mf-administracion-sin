@@ -8,7 +8,7 @@ export const environment = {
 
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
   ParametrosSistemaPesnotTipoAmbiente: 'Tipo de Ambiente',
-  ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo/tree-more-doc-obligatorios-admin-acto-notariales',
+  ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo',
   ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
   MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',
   MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
@@ -19,4 +19,5 @@ export const environment = {
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",
+  IMAGE_BACKGROUND: 'https://pesnot.funcionjudicial.gob.ec/iconos/fondos/fondo-de-pantalla-pesnot.png',
 };
