@@ -9,7 +9,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload.component';
+import { FileUploadComponent } from '../../../../shared/components/file-upload-image/file-upload.component';
+import { ParametrosSistemaPesnotService } from '../../../../shared/services/parametros-sistema-pesnot.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-form-parametros-facturacion',
@@ -31,10 +33,7 @@ import { FileUploadComponent } from '../../../../shared/components/file-upload/f
 })
 export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  tiposAmbiente = [
-    { value: 1, label: 'Pruebas' },
-    { value: 2, label: 'Producción' }
-  ];
+  tiposAmbiente: any[] = [];
   notarias = [
     { id: 1, nombre: 'Notaria 1' },
     { id: 2, nombre: 'Notaria 2' },
@@ -48,12 +47,14 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   uuidSolicitud: string = '';
   isOnlyView: boolean = false;
   maxFileSize: number = 3;
-  typeFile = 'image/png';
+  mimeType: string = '';
+  dataSource: ParametrosFacturacionNotarias;
 
   constructor(
     private readonly dialogRef: MatDialogRef<FormParametrosFacturacionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ParametrosFacturacionNotarias,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService
   ) {
     this.form = this.fb.group({
       numeroRuc: ['', [Validators.required, Validators.maxLength(15)]],
@@ -63,14 +64,12 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
       razonSocial: ['', [Validators.required, Validators.maxLength(300)]],
       codigoContribuyenteEspecial: ['', [Validators.maxLength(20)]],
       obligadoContabilidad: [false],
-      logoEmision: ['', [Validators.maxLength(200)]],
     });
   }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.isEdit = this.data ? true : false;
-    this.isNew = this.data ? false : true;
     this.idNotaria = JSON.parse(localStorage.getItem('userSelected')).idNotaria;
     if (this.data) {
       this.form.patchValue({
@@ -79,12 +78,17 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
       });
     }
     this.isLoading = false;
+    this.parametrosSistemaPesnotService.getAllWithFilters({
+      descripcion: environment.ParametrosSistemaPesnotTipoAmbiente
+    }).subscribe((res: any) => {
+      this.tiposAmbiente = res;
+    });
   }
 
   onFileSelected(event: any): void {
     this.fileName = event.fileName;
     this.uuidSolicitud = event.uuidSolicitud;
-    this.form.get('logoEmision')?.setValue(this.fileName);
+    this.mimeType = event.mimeType;
   }
 
   onSubmit(): void {
@@ -95,9 +99,20 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
         idNotaria: this.idNotaria,
         logoEmision: this.uuidSolicitud,
         nombreLogo: this.fileName,
-        mimeLogo: this.typeFile,
+        mimeLogo: this.mimeType,
       };
-      this.dialogRef.close(formData);
+
+      if (!this.data) {
+        this.data = formData;
+      } else {
+        Object.keys(formData).forEach(key => {
+          if (formData[key] !== this.data[key]) {
+            this.data[key] = formData[key];
+          }
+        });
+      }
+
+      this.dialogRef.close(this.data);
     }
   }
 

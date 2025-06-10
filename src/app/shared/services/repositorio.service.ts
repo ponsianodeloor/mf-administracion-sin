@@ -34,6 +34,7 @@ export class RepositorioService {
     formData.append('tipoArchivo', tipoArchivo);
     formData.append('nombreSistema', nombreSistema);
     const headers = new HttpHeaders({ Accept: 'text/plain' });
+    console.log(file);
     return this.http
       .post(url, formData, { headers, responseType: 'text' })
       .pipe(map((response) => response));

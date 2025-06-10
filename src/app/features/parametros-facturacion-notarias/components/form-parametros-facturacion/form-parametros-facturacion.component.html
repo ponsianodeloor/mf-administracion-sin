@@ -48,14 +48,14 @@
       </mat-error>
     </mat-form-field>
     <app-file-upload [fileName]="fileName" [uuidSolicitud]="uuidSolicitud" [isOnlyView]="isOnlyView"
-      [maxFileSize]="maxFileSize" [typeFile]="typeFile" (message)="onMessage($event)" (newItemEvent)="onFileSelected($event)"></app-file-upload>
+      [maxFileSize]="maxFileSize" (message)="onMessage($event)" (newItemEvent)="onFileSelected($event)"></app-file-upload>
     <div class="logo-section">
       <div class="tipo-ambiente-select">
         <mat-form-field appearance="outline">
           <mat-label>Tipo Ambiente</mat-label>
           <mat-select formControlName="tipoAmbiente">
-            <mat-option *ngFor="let tipo of tiposAmbiente" [value]="tipo.value">
-              {{tipo.label}}
+            <mat-option *ngFor="let tipo of tiposAmbiente" [value]="tipo.id">
+              {{tipo.codigo}}
             </mat-option>
           </mat-select>
         </mat-form-field>

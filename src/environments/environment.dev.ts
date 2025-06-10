@@ -2,11 +2,21 @@ export const environment = {
   production: false,
   text: "This is development environment",
   name: "development environment",
-  AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
-  ADMINISTRACION_CATALOGO_API_SERVICES: "http://localhost:3000",
 
   SERVER_PESNOT: "https://desa-api-pesnot.funcionjudicial.gob.ec",
-  MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
+  HOST_API_TELEMATICO: 'https://desa-api-telematico.funcionjudicial.gob.ec',
 
-  ENDPOINT_GET_PARAMETERS_NOTARIES: "/query/parametros-notarias/codigo/"
+  AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
+  ParametrosSistemaPesnotTipoAmbiente: 'Tipo de Ambiente',
+  ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo/tree-more-doc-obligatorios-admin-acto-notariales',
+  ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
+  MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',
+  MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
+  NOTARIAS_SERVICE_PESNOT: '/NOTARIAS-PESNOT-SERVICE/api',
+  REPOSITORIO_SERVICE: '/REPOSITORIO-SERVICE/api',
+
+  ENDPOINT_GET_PARAMETERS_NOTARIES: "/query/parametros-notarias/codigo/",
+
+  BANK_DETAILS: "DATOS-BANCARIOS",
+  ZOOM_PARAMETERS: "PARAMETROS-ZOOM",
 };

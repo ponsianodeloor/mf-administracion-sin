@@ -5,6 +5,9 @@ import { FormParametrosFacturacionComponent } from '../../components/form-parame
 import { MatDialog } from '@angular/material/dialog';
 import { AdminParametrosFacturacionNotariaService } from '../../../../shared/services/admin-parametros-facturacion-notaria.service';
 import { ParametrosFacturacionNotarias } from '../../api/ParametrosFacturacionNotarias';
+import { forkJoin } from 'rxjs';
+import { ParametrosSistemaPesnotService } from '../../../../shared/services/parametros-sistema-pesnot.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-principal',
@@ -26,8 +29,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   ];
   idNotaria: number = 0;
   tableParams!: TableSearchPaginated;
-  data: ParametrosFacturacionNotarias[] = [];
-  dataFacturacion!: ParametrosFacturacionNotarias;
+  data!: ParametrosFacturacionNotarias;
+  dataSource: any[]=[];
 
   displayedColumns: ColumnDefinition[] = [
     { name: 'numeroRuc', header: 'RUC', type: 'string' },
@@ -42,7 +45,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly adminParametrosFacturacionNotariaService: AdminParametrosFacturacionNotariaService
+    private readonly adminParametrosFacturacionNotariaService: AdminParametrosFacturacionNotariaService,
+    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService
   ) { }
 
   ngOnInit(): void {
@@ -68,29 +72,20 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    this.adminParametrosFacturacionNotariaService.getParametrosFacturacion(this.tableParams).subscribe((res) => {
+    forkJoin([
+      this.adminParametrosFacturacionNotariaService.getParametrosFacturacion(this.tableParams),
+      this.parametrosSistemaPesnotService.getAllWithFilters({
+        descripcion: environment.ParametrosSistemaPesnotTipoAmbiente
+      })
+    ]).subscribe(([res, tiposAmbiente]) => {
       if(res){
-        this.data = res.data;
-        if(this.data.length > 0){
-          this.dataFacturacion = this.data[0];
+        this.dataSource = res.data;
+        if(res.data.length > 0){
+          this.data = res.data[0];
+          this.data.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.tipoAmbiente)?.id;
         }
       }
     });
-  }
-
-  onPageChange(updatedParams: TableSearchPaginated) {
-    this.tableParams = { ...updatedParams };
-    this.getData();
-  }
-
-  onSelectRow(event: any) {
-    console.log(event);
-    this.openDialog(event);
-  }
-
-  onSearchEvent(updatedParams: TableSearchPaginated) {
-    this.tableParams = { ...updatedParams };
-    this.getData();
   }
 
   openDialog(event: any) {
@@ -101,7 +96,19 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result){
-
+        this.data = result;
+        this.dataSource = [this.data];
+        this.parametrosSistemaPesnotService.store(this.data).subscribe(
+          {
+            next: (res) => {
+              console.log(res);
+              this.getData();
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          }
+        );
       }
     });
   }
