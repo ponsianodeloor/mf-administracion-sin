@@ -51,6 +51,7 @@ import { TableSearchPaginated, FilterOption, ColumnDefinition } from './table';
 export class TablaSearchComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() eventUpdated = new EventEmitter<void>();
   @Input() data: any[] = [];
+  @Input() noPaginated: boolean = false;
   public activeColumn: string | null = null;
   @Input() acciones: string[] = ['editar', 'eliminar'];
   @Input() displayedColumns: ColumnDefinition[] = [];

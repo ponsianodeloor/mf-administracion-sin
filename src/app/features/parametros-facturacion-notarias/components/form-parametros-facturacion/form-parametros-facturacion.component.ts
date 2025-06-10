@@ -5,8 +5,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-form-parametros-facturacion',
@@ -18,7 +21,10 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatIconModule,
+    FileUploadComponent
   ],
   templateUrl: './form-parametros-facturacion.component.html',
   styleUrl: './form-parametros-facturacion.component.scss'
@@ -29,10 +35,20 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     { value: 1, label: 'Pruebas' },
     { value: 2, label: 'Producción' }
   ];
-  notarias!: any[];
+  notarias = [
+    { id: 1, nombre: 'Notaria 1' },
+    { id: 2, nombre: 'Notaria 2' },
+    { id: 3, nombre: 'Notaria 3' }
+  ];
   isLoading: boolean = false;
   isEdit: boolean = false;
   isNew: boolean = false;
+  idNotaria: number = 0;
+  fileName: string = '';
+  uuidSolicitud: string = '';
+  isOnlyView: boolean = false;
+  maxFileSize: number = 3;
+  typeFile = 'image/png';
 
   constructor(
     private readonly dialogRef: MatDialogRef<FormParametrosFacturacionComponent>,
@@ -40,8 +56,6 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      idNotaria: ['', Validators.required],
-      claveAcceso: ['', [Validators.required, Validators.maxLength(300)]],
       numeroRuc: ['', [Validators.required, Validators.maxLength(15)]],
       tipoAmbiente: [''],
       establecimiento: ['', [Validators.required, Validators.maxLength(4)]],
@@ -49,7 +63,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
       razonSocial: ['', [Validators.required, Validators.maxLength(300)]],
       codigoContribuyenteEspecial: ['', [Validators.maxLength(20)]],
       obligadoContabilidad: [false],
-      logoEmision: ['', [Validators.maxLength(200)]]
+      logoEmision: ['', [Validators.maxLength(200)]],
     });
   }
 
@@ -57,6 +71,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.isEdit = this.data ? true : false;
     this.isNew = this.data ? false : true;
+    this.idNotaria = JSON.parse(localStorage.getItem('userSelected')).idNotaria;
     if (this.data) {
       this.form.patchValue({
         ...this.data,
@@ -66,14 +81,61 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
+  onFileSelected(event: any): void {
+    this.fileName = event.fileName;
+    this.uuidSolicitud = event.uuidSolicitud;
+    this.form.get('logoEmision')?.setValue(this.fileName);
+  }
+
   onSubmit(): void {
     if (this.form.valid) {
       const formData = {
         ...this.form.value,
-        obligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO'
+        obligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
+        idNotaria: this.idNotaria,
+        logoEmision: this.uuidSolicitud,
+        nombreLogo: this.fileName,
+        mimeLogo: this.typeFile,
       };
       this.dialogRef.close(formData);
     }
+  }
+
+  onMessage(event: any): void {
+    if(event.type === 'error'){
+      this.isLoading = false;
+
+    }
+  }
+
+  onInputRuc(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value.replace(/[^0-9]/g, '');
+
+    let finalValue = cleanValue;
+    if (finalValue.length > 15) {
+      finalValue = finalValue.slice(0, 15);
+    }
+
+    this.form.get('numeroRuc')?.setValue(finalValue);
+  }
+
+  onInputEstablecimiento(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value.replace(/[^0-9]/g, '');
+    this.form.get('establecimiento')?.setValue(cleanValue);
+  }
+
+  onInputRazonSocial(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+    this.form.get('razonSocial')?.setValue(cleanValue);
+  }
+
+  onInputClaveAcceso(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+    this.form.get('claveAcceso')?.setValue(cleanValue);
   }
 
   ngOnDestroy(): void {}

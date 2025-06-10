@@ -62,7 +62,7 @@
   </mat-menu>
 </div>
 
-<mat-paginator
+<mat-paginator *ngIf="!noPaginated"
   #paginator
   [length]="tableParams.totalElements"
   [pageSize]="tableParams.pageSize"

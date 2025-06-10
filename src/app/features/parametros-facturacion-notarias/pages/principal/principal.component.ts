@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreadcrumbItem } from '../../../../shared/components/breadcrums/breadcrumbItem.model';
 import { ColumnDefinition, TableSearchPaginated } from '../../../../shared/components/tabla-search/table';
+import { FormParametrosFacturacionComponent } from '../../components/form-parametros-facturacion/form-parametros-facturacion.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminParametrosFacturacionNotariaService } from '../../../../shared/services/admin-parametros-facturacion-notaria.service';
+import { ParametrosFacturacionNotarias } from '../../api/ParametrosFacturacionNotarias';
 
 @Component({
   selector: 'app-principal',
@@ -15,18 +19,17 @@ export class PrincipalComponent implements OnInit, OnDestroy {
       active: false
     },
     {
-      name: 'Facturación Notarias',
+      name: 'Parámetros Facturación',
       url: '/facturacion-notarias',
       active: true
     }
   ];
-
+  idNotaria: number = 0;
   tableParams!: TableSearchPaginated;
+  data: ParametrosFacturacionNotarias[] = [];
+  dataFacturacion!: ParametrosFacturacionNotarias;
 
   displayedColumns: ColumnDefinition[] = [
-    { name: 'acciones', header: '', type: 'action' },
-    { name: 'idNotaria', header: 'Notaría', type: 'string' },
-    { name: 'claveAcceso', header: 'Clave de Acceso', type: 'string' },
     { name: 'numeroRuc', header: 'RUC', type: 'string' },
     { name: 'tipoAmbiente', header: 'Tipo Ambiente', type: 'string' },
     { name: 'establecimiento', header: 'Establecimiento', type: 'string' },
@@ -37,13 +40,17 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     { name: 'logoEmision', header: 'Logo Emisión', type: 'string' }
   ];
 
-  constructor() { }
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly adminParametrosFacturacionNotariaService: AdminParametrosFacturacionNotariaService
+  ) { }
 
   ngOnInit(): void {
+    this.idNotaria = JSON.parse(localStorage.getItem('userSelected')).idNotaria;
     this.tableParams = {
       page: 1,
       pageSize: 5,
-      searchQuery: {},
+      searchQuery: { idNotaria: this.idNotaria.toString() },
       sortBy: 'id',
       sortDirection: 'DESC',
       filterOptions: [],
@@ -53,12 +60,22 @@ export class PrincipalComponent implements OnInit, OnDestroy {
       from: 0,
       to: 0,
     };
+    this.getData();
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.dialog.closeAll();
+  }
 
   getData() {
-    console.log(this.tableParams);
+    this.adminParametrosFacturacionNotariaService.getParametrosFacturacion(this.tableParams).subscribe((res) => {
+      if(res){
+        this.data = res.data;
+        if(this.data.length > 0){
+          this.dataFacturacion = this.data[0];
+        }
+      }
+    });
   }
 
   onPageChange(updatedParams: TableSearchPaginated) {
@@ -68,6 +85,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
   onSelectRow(event: any) {
     console.log(event);
+    this.openDialog(event);
   }
 
   onSearchEvent(updatedParams: TableSearchPaginated) {
@@ -75,4 +93,16 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     this.getData();
   }
 
+  openDialog(event: any) {
+    const dialogRef = this.dialog.open(FormParametrosFacturacionComponent, {
+      data: event,
+      width: '50dvw',
+      height: '85%'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result){
+
+      }
+    });
+  }
 }
