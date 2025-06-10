@@ -82,7 +82,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
         this.dataSource = res.data;
         if(res.data.length > 0){
           this.data = res.data[0];
-          this.data.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.tipoAmbiente)?.id;
+          this.data.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.tipoAmbiente)?.codigo;
         }
       }
     });
