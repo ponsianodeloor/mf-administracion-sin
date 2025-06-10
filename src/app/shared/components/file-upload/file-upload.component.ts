@@ -119,7 +119,7 @@ export class FileUploadComponent implements OnInit {
       this.progress = 0;
       this.message.emit('Subiendo archivo...');
 
-      this.repositorioService.storeFileSolicitud(this.currentFile, this.typeFile, 'notarial').subscribe({
+      this.repositorioService.storeFileSolicitud(this.currentFile).subscribe({
         next: (event: string) => {
           this.uuidSolicitud = event;
           this.newItemEvent.emit({

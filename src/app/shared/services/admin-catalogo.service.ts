@@ -15,4 +15,20 @@ export class AdminCatalogoService {
   getPesnotCatCatalogoByNemonicoTree(nemonicoPadre: string) {
     return this.http.get(`${this.url}/${nemonicoPadre}`);
   }
+
+  getCatalogoIndexPaginated() {
+    return this.http.get(`${this.url}/index-paginated`);
+  }
+
+  getCatalogoById(id: string) {
+    return this.http.get(`${this.url}/${id}`);
+  }
+
+  getCatalogoTree(nemonico: string) {
+    return this.http.get(`${this.url}/tree/${nemonico}`);
+  }
+
+  getCatalogoTreeMoreDocObligatoriosAdminActoNotariales(nemonico: string) {
+    return this.http.get(`${this.url}/tree-more-doc-obligatorios-admin-acto-notariales/${nemonico}`);
+  }
 }

@@ -24,6 +24,7 @@ interface TreeNode {
 export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
   private nemonico = environment.AdministracionCatalogonemonicoPadre;
   private saveSubscription: Subscription;
+  imageBackground = environment.IMAGE_BACKGROUND;
 
   treeData!: TreeNode;
   nodeSelected!: any;
@@ -35,7 +36,7 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
   ) {
     this.saveSubscription = this.nodeSelectionService.saveEvent$.subscribe(data => {
       if (data) {
-        console.log(data);
+        this.nodeSelected = data;
       }
     });
   }
@@ -107,7 +108,7 @@ export class AdministracionCatalogoComponent implements OnInit, OnDestroy {
 
   dataTree() {
     this.adminCatalogoService
-      .getPesnotCatCatalogoByNemonicoTree(this.nemonico)
+      .getCatalogoTreeMoreDocObligatoriosAdminActoNotariales(this.nemonico)
       .subscribe({
         next: (res: any) => {
           this.treeData = Array.isArray(res) ? res[0] : res;

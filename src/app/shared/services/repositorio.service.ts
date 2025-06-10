@@ -16,23 +16,21 @@ export class RepositorioService {
 
   getFileSolicitud(
     idArchivo: string,
-    tipoArchivo: string,
-    nombreSistema: string
   ): Observable<any> {
     const url = `${this.apiUrl}/repositorio-service/repositorio-service-query/buscarArchivoServidor`;
     const params = new HttpParams()
       .set('idArchivo', idArchivo)
-      .set('tipoArchivo', tipoArchivo)
-      .set('nombreSistema', nombreSistema);
+      .set('tipoArchivo', 'pdf')
+      .set('nombreSistema', 'notarial');
     return this.http.get(url, { params, responseType: 'blob' });
   }
 
-  storeFileSolicitud(file: File, tipoArchivo: string, nombreSistema: string): Observable<string> {
-    const url = `${this.apiUrl}/repositorio-service/repositorio-service-command/guardarArchivoServidor?file=${tipoArchivo}`;
+  storeFileSolicitud(file: File): Observable<string> {
+    const url = `${this.apiUrl}/repositorio-service/repositorio-service-command/guardarArchivoServidor`;
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    formData.append('tipoArchivo', tipoArchivo);
-    formData.append('nombreSistema', nombreSistema);
+    formData.append('tipoArchivo', 'pdf');
+    formData.append('nombreSistema', 'notarial');
     const headers = new HttpHeaders({ Accept: 'text/plain' });
     console.log(file);
     return this.http
