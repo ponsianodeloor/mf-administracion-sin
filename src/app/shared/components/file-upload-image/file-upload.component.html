@@ -1,0 +1,27 @@
+<div class="upload-container" [class.disabled]="isDisabled">
+  @if (progress) {
+    <mat-toolbar class="progress-bar">
+      <mat-progress-bar color="accent" [value]="progress"></mat-progress-bar>
+      <span class="progress">{{ progress }}%</span>
+    </mat-toolbar>
+  }
+
+  <div 
+    class="drop-zone" 
+    [class.disabled]="isDisabled"
+    (click)="!isDisabled && fileInput.click()" 
+    (dragover)="!isDisabled && onDragOver($event)" 
+    (drop)="!isDisabled && onDrop($event)">
+    <mat-icon class="upload-icon">cloud_upload</mat-icon>
+    <span class="upload-text">{{ fileName || 'Seleccione o arrastre un archivo aquí' }}</span>
+    <input
+      #fileInput
+      type="file"
+      id="fileInput"
+      (change)="!isDisabled && selectFile($event)"
+      name="fileInput"
+      [disabled]="isDisabled"
+      hidden
+    />
+  </div>
+</div>

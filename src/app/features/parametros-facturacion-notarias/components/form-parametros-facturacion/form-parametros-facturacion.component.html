@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="form-title">
+    <span>Parámetros Facturación</span>
+    <button mat-icon-button class="close-btn" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="row-align">
+      <mat-form-field appearance="outline" class="ruc-field">
+        <mat-label>RUC</mat-label>
+        <input matInput formControlName="numeroRuc" maxlength="15" (input)="onInputRuc($event)">
+        <mat-error *ngIf="form.get('numeroRuc')?.hasError('required')">
+          El número RUC es requerido
+        </mat-error>
+      </mat-form-field>
+      <div class="switch-label">
+        <mat-slide-toggle formControlName="obligadoContabilidad">
+          Obligado Contabilidad <span class="required">*</span>
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row-align">
+      <mat-form-field appearance="outline">
+        <mat-label>Establecimiento</mat-label>
+        <input matInput formControlName="establecimiento" maxlength="4" (input)="onInputEstablecimiento($event)">
+        <mat-error *ngIf="form.get('establecimiento')?.hasError('required')">
+          El establecimiento es requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Punto Emisión</mat-label>
+        <input matInput formControlName="puntoEmision" maxlength="4">
+        <mat-error *ngIf="form.get('puntoEmision')?.hasError('required')">
+          El punto de emisión es requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contribuyente Especial</mat-label>
+        <input matInput formControlName="codigoContribuyenteEspecial" maxlength="20">
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="razon-social-field">
+      <mat-label>Razon Social</mat-label>
+      <textarea matInput formControlName="razonSocial" maxlength="300" rows="2"></textarea>
+      <mat-error *ngIf="form.get('razonSocial')?.hasError('required')">
+        La razón social es requerida
+      </mat-error>
+    </mat-form-field>
+    <app-file-upload [fileName]="fileName" [uuidSolicitud]="uuidSolicitud" [isOnlyView]="isOnlyView"
+      [maxFileSize]="maxFileSize" [typeFile]="typeFile" (message)="onMessage($event)" (newItemEvent)="onFileSelected($event)"></app-file-upload>
+    <div class="logo-section">
+      <div class="tipo-ambiente-select">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo Ambiente</mat-label>
+          <mat-select formControlName="tipoAmbiente">
+            <mat-option *ngFor="let tipo of tiposAmbiente" [value]="tipo.value">
+              {{tipo.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid"
+        (click)="onSubmit()">
+        {{ isEdit ? 'Actualizar' : 'Crear Parámetros' }}
+      </button>
+    </div>
+  </form>
+</div>
