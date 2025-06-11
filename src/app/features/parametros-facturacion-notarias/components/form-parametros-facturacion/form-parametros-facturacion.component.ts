@@ -74,16 +74,16 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
 
       if (this.data) {
         this.form.patchValue({
-          numeroRuc: this.data.NumeroRuc,
-          tipoAmbiente: this.tiposAmbiente.find(tipo => tipo.codigo === this.data.TipoAmbiente)?.id,
-          establecimiento: this.data.Establecimiento,
-          puntoEmision: this.data.PuntoEmision,
-          razonSocial: this.data.Razonsocial,
-          codigoContribuyenteEspecial: this.data.CodigoContribuyenteEspecial,
-          obligadoContabilidad: this.data.ObligadoContabilidad === 'SI'
+          numeroRuc: this.data.numeroRuc,
+          tipoAmbiente: this.tiposAmbiente.find(tipo => tipo.codigo === this.data.tipoAmbiente)?.id,
+          establecimiento: this.data.establecimiento,
+          puntoEmision: this.data.puntoEmision,
+          razonSocial: this.data.razonSocial,
+          codigoContribuyenteEspecial: this.data.codigoContribuyenteEspecial,
+          obligadoContabilidad: this.data.obligadoContabilidad === 'SI'
         });
         this.fileName = this.data.nombreLogo;
-        this.uuidSolicitud = this.data.LogoEmision;
+        this.uuidSolicitud = this.data.logoEmision;
         this.mimeType = this.data.mimeLogo;
       }
       this.isLoading = false;
@@ -100,17 +100,17 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const formData: ParametrosFacturacionNotarias = {
         claveAcceso: this.form.value.claveAcceso,
-        ObligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
+        obligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
         idNotaria: this.idNotaria,
-        LogoEmision: this.uuidSolicitud,
+        logoEmision: this.uuidSolicitud,
         nombreLogo: this.fileName,
         mimeLogo: this.mimeType,
-        TipoAmbiente: this.form.value.tipoAmbiente,
-        NumeroRuc: this.form.value.numeroRuc,
-        Establecimiento: this.form.value.establecimiento,
-        PuntoEmision: this.form.value.puntoEmision,
-        Razonsocial: this.form.value.razonSocial,
-        CodigoContribuyenteEspecial: this.form.value.codigoContribuyenteEspecial,
+        tipoAmbiente: this.form.value.tipoAmbiente,
+        numeroRuc: this.form.value.numeroRuc,
+        establecimiento: this.form.value.establecimiento,
+        puntoEmision: this.form.value.puntoEmision,
+        razonSocial: this.form.value.razonSocial,
+        codigoContribuyenteEspecial: this.form.value.codigoContribuyenteEspecial,
       };
 
       if (!this.data) {
