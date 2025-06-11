@@ -9,6 +9,8 @@ import {ParametrosNotarias} from "../../../interfaces/parametros-notarias";
 import {EnvironmentService} from "../../../../../shared/services/environment.service";
 import {NotariasPesnotService} from "../../../services/notarias-pesnot.service";
 import {ToastrService} from "ngx-toastr";
+import {EditDescriptionModalComponent} from "../../modals/edit-description-modal/edit-description-modal.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-edit-zoom-parameters',
@@ -67,6 +69,7 @@ export class EditZoomParametersComponent implements OnInit {
     private readonly environmentService: EnvironmentService,
     private readonly notariasPesnotService: NotariasPesnotService,
     private readonly toastrService: ToastrService,
+    private readonly dialog: MatDialog
   ) {
     this.envZoomParameters = this.environmentService.zoomParameters;
   }
@@ -135,6 +138,14 @@ export class EditZoomParametersComponent implements OnInit {
           timeOut: 3000,
         });
       }
+    });
+  }
+
+  openEditDescriptionModal(param: any): void {
+    this.dialog.open(EditDescriptionModalComponent, {
+      width: '50%',
+      height: '32%',
+      data: { param }
     });
   }
 
