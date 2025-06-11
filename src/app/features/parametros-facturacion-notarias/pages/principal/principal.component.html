@@ -1,7 +1,7 @@
 <div class="container">
   <div class="breadcrumb-container">
     <app-breadcrums [breadcrumbItems]="breadcrumbItems"></app-breadcrums>
-    <button mat-raised-button color="primary" (click)="openDialog(null)">
+    <button mat-raised-button color="primary" (click)="openDialog()">
       <mat-icon>{{data ? 'edit' : 'add'}}</mat-icon>
       <span>{{data ? 'Editar' : 'Agregar'}}</span>
     </button>

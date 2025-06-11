@@ -74,7 +74,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     if (this.data) {
       this.form.patchValue({
         ...this.data,
-        obligadoContabilidad: this.data.obligadoContabilidad === 'SI'
+        obligadoContabilidad: this.data.ObligadoContabilidad === 'SI'
       });
     }
     this.isLoading = false;
@@ -93,13 +93,19 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.form.valid) {
-      const formData = {
-        ...this.form.value,
-        obligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
+      const formData: ParametrosFacturacionNotarias = {
+        claveAcceso: this.form.value.claveAcceso,
+        ObligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
         idNotaria: this.idNotaria,
-        logoEmision: this.uuidSolicitud,
+        LogoEmision: this.uuidSolicitud,
         nombreLogo: this.fileName,
         mimeLogo: this.mimeType,
+        TipoAmbiente: this.form.value.tipoAmbiente,
+        NumeroRuc: this.form.value.numeroRuc,
+        Establecimiento: this.form.value.establecimiento,
+        PuntoEmision: this.form.value.puntoEmision,
+        Razonsocial: this.form.value.razonSocial,
+        CodigoContribuyenteEspecial: this.form.value.codigoContribuyenteEspecial,
       };
 
       if (!this.data) {
@@ -119,7 +125,6 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   onMessage(event: any): void {
     if(event.type === 'error'){
       this.isLoading = false;
-
     }
   }
 

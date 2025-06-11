@@ -82,26 +82,23 @@ export class PrincipalComponent implements OnInit, OnDestroy {
         this.dataSource = res.data;
         if(res.data.length > 0){
           this.data = res.data[0];
-          this.data.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.tipoAmbiente)?.codigo;
+          this.data.TipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.TipoAmbiente)?.codigo;
         }
       }
     });
   }
 
-  openDialog(event: any) {
+  openDialog() {
     const dialogRef = this.dialog.open(FormParametrosFacturacionComponent, {
-      data: event,
+      data: !this.data ? null : this.data,
       width: '50dvw',
       height: '85%'
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result){
-        this.data = result;
-        this.dataSource = [this.data];
-        this.parametrosSistemaPesnotService.store(this.data).subscribe(
+        this.adminParametrosFacturacionNotariaService.createParametroFacturacion(result).subscribe(
           {
             next: (res) => {
-              console.log(res);
               this.getData();
             },
             error: (err) => {
