@@ -1,0 +1,30 @@
+<form [formGroup]="zoomForm" (ngSubmit)="onSubmit()" class="zoom-modal-card">
+  <mat-card>
+    <div class="card-header-flex mx-2">
+      <mat-card-title>Editar Parámetros Zoom</mat-card-title>
+      <button mat-icon-button class="close-btn" type="button" (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-content>
+      <div class="row mt-5">
+        <div class="col">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="descripcion" readonly>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Valor</mat-label>
+            <input matInput formControlName="valor">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end" class="action-buttons">
+      <button mat-stroked-button color="basic" type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="zoomForm.invalid">Grabar Cambios</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
