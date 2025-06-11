@@ -34,11 +34,6 @@ import { environment } from '../../../../../environments/environment';
 export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   form: FormGroup;
   tiposAmbiente: any[] = [];
-  notarias = [
-    { id: 1, nombre: 'Notaria 1' },
-    { id: 2, nombre: 'Notaria 2' },
-    { id: 3, nombre: 'Notaria 3' }
-  ];
   isLoading: boolean = false;
   isEdit: boolean = false;
   isNew: boolean = false;
@@ -71,17 +66,27 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.isEdit = this.data ? true : false;
     this.idNotaria = JSON.parse(localStorage.getItem('userSelected')).idNotaria;
-    if (this.data) {
-      this.form.patchValue({
-        ...this.data,
-        obligadoContabilidad: this.data.ObligadoContabilidad === 'SI'
-      });
-    }
-    this.isLoading = false;
+
     this.parametrosSistemaPesnotService.getAllWithFilters({
       descripcion: environment.ParametrosSistemaPesnotTipoAmbiente
     }).subscribe((res: any) => {
       this.tiposAmbiente = res;
+
+      if (this.data) {
+        this.form.patchValue({
+          numeroRuc: this.data.NumeroRuc,
+          tipoAmbiente: this.tiposAmbiente.find(tipo => tipo.codigo === this.data.TipoAmbiente)?.id,
+          establecimiento: this.data.Establecimiento,
+          puntoEmision: this.data.PuntoEmision,
+          razonSocial: this.data.Razonsocial,
+          codigoContribuyenteEspecial: this.data.CodigoContribuyenteEspecial,
+          obligadoContabilidad: this.data.ObligadoContabilidad === 'SI'
+        });
+        this.fileName = this.data.nombreLogo;
+        this.uuidSolicitud = this.data.LogoEmision;
+        this.mimeType = this.data.mimeLogo;
+      }
+      this.isLoading = false;
     });
   }
 

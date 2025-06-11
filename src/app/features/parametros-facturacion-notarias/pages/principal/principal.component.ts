@@ -33,14 +33,14 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   dataSource: any[]=[];
 
   displayedColumns: ColumnDefinition[] = [
-    { name: 'numeroRuc', header: 'RUC', type: 'string' },
-    { name: 'tipoAmbiente', header: 'Tipo Ambiente', type: 'string' },
-    { name: 'establecimiento', header: 'Establecimiento', type: 'string' },
-    { name: 'puntoEmision', header: 'Punto Emisión', type: 'string' },
-    { name: 'razonSocial', header: 'Razón Social', type: 'string' },
-    { name: 'codigoContribuyenteEspecial', header: 'Código Contribuyente Especial', type: 'string' },
-    { name: 'obligadoContabilidad', header: 'Obligado Contabilidad', type: 'string' },
-    { name: 'logoEmision', header: 'Logo Emisión', type: 'string' }
+    { name: 'NumeroRuc', header: 'RUC', type: 'string' },
+    { name: 'TipoAmbiente', header: 'Tipo Ambiente', type: 'string' },
+    { name: 'Establecimiento', header: 'Establecimiento', type: 'string' },
+    { name: 'PuntoEmision', header: 'Punto Emisión', type: 'string' },
+    { name: 'Razonsocial', header: 'Razón Social', type: 'string' },
+    { name: 'CodigoContribuyenteEspecial', header: 'Código Contribuyente Especial', type: 'string' },
+    { name: 'ObligadoContabilidad', header: 'Obligado Contabilidad', type: 'string' },
+    { name: 'LogoEmision', header: 'Logo Emisión', type: 'string' }
   ];
 
   constructor(
@@ -78,11 +78,14 @@ export class PrincipalComponent implements OnInit, OnDestroy {
         descripcion: environment.ParametrosSistemaPesnotTipoAmbiente
       })
     ]).subscribe(([res, tiposAmbiente]) => {
+      console.log(res);
+      console.log(tiposAmbiente);
       if(res){
         this.dataSource = res.data;
         if(res.data.length > 0){
           this.data = res.data[0];
-          this.data.TipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id === this.data.TipoAmbiente)?.codigo;
+          this.data.TipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id == this.data.TipoAmbiente)?.codigo;
+          console.log(this.data);
         }
       }
     });
