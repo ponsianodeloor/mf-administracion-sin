@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ParametrosFacturacionNotarias } from '../../api/ParametrosFacturacionNotarias';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -52,7 +52,12 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService
   ) {
     this.form = this.fb.group({
-      numeroRuc: ['', [Validators.required, Validators.maxLength(15)]],
+      numeroRuc: ['', [
+        Validators.required,
+        Validators.maxLength(13),
+        Validators.minLength(13),
+        this.rucValidator()
+      ]],
       tipoAmbiente: [''],
       establecimiento: ['', [Validators.required, Validators.maxLength(4)]],
       puntoEmision: ['', [Validators.required, Validators.maxLength(4)]],
@@ -60,6 +65,22 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
       codigoContribuyenteEspecial: ['', [Validators.maxLength(20)]],
       obligadoContabilidad: [false],
     });
+  }
+
+  private rucValidator(): (control: AbstractControl) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+
+      const lastThreeDigits = value.slice(-3);
+      const validEndings = ['001', '002', '003'];
+
+      if (!validEndings.includes(lastThreeDigits)) {
+        return { invalidEnding: true };
+      }
+
+      return null;
+    };
   }
 
   ngOnInit(): void {
@@ -138,8 +159,8 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     const cleanValue = value.replace(/[^0-9]/g, '');
 
     let finalValue = cleanValue;
-    if (finalValue.length > 15) {
-      finalValue = finalValue.slice(0, 15);
+    if (finalValue.length > 13) {
+      finalValue = finalValue.slice(0, 13);
     }
 
     this.form.get('numeroRuc')?.setValue(finalValue);
@@ -161,6 +182,12 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     const value = event.target.value;
     const cleanValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
     this.form.get('claveAcceso')?.setValue(cleanValue);
+  }
+
+  onInputPuntoEmision(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value.replace(/[^0-9]/g, '');
+    this.form.get('puntoEmision')?.setValue(cleanValue);
   }
 
   ngOnDestroy(): void {}
