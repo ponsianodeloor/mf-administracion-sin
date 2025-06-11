@@ -40,7 +40,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     { name: 'Razonsocial', header: 'Razón Social', type: 'string' },
     { name: 'CodigoContribuyenteEspecial', header: 'Código Contribuyente Especial', type: 'string' },
     { name: 'ObligadoContabilidad', header: 'Obligado Contabilidad', type: 'string' },
-    { name: 'LogoEmision', header: 'Logo Emisión', type: 'string' }
+    { name: 'nombreLogo', header: 'Logo Emisor', type: 'string' }
   ];
 
   constructor(
