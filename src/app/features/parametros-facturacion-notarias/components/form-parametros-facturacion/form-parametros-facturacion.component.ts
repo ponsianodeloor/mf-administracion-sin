@@ -213,7 +213,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   onInputRazonSocial(event: any): void {
     const value = event.target.value;
     const cleanValue = value
-      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .replace(/[^a-zA-Z0-9\s\-\.\,\&\ñ\ÑáéíóúÁÉÍÓÚ]/g, '')
       .replace(/['";]/g, '')
       .replace(/\s+/g, ' ')
       .trim();
