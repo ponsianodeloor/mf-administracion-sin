@@ -188,12 +188,6 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.form.get('establecimiento')?.setValue(cleanValue);
   }
 
-  onInputRazonSocial(event: any): void {
-    const value = event.target.value;
-    const cleanValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
-    this.form.get('razonSocial')?.setValue(cleanValue);
-  }
-
   onInputClaveAcceso(event: any): void {
     const value = event.target.value;
     const cleanValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
@@ -206,7 +200,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.form.get('puntoEmision')?.setValue(cleanValue);
   }
 
-  onInputContribuyenteEspecialAndRazonSocial(event: any): void {
+  onInputContribuyenteEspecial(event: any): void {
     const value = event.target.value;
     const cleanValue = value
       .replace(/[^a-zA-Z0-9\s]/g, '')
@@ -214,6 +208,15 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
       .replace(/\s+/g, ' ')
       .trim();
     this.form.get('codigoContribuyenteEspecial')?.setValue(cleanValue);
+  }
+
+  onInputRazonSocial(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .replace(/['";]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
     this.form.get('razonSocial')?.setValue(cleanValue);
   }
 
