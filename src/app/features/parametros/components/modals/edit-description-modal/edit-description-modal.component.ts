@@ -4,6 +4,8 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {EditZoomParametersComponent} from "../../cards/edit-zoom-parameters/edit-zoom-parameters.component";
+import {PesnotResumenService} from "../../../services/pesnot-resumen.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-edit-description-modal',
@@ -20,9 +22,11 @@ export class EditDescriptionModalComponent implements OnInit {
   zoomForm: FormGroup = new FormGroup({});
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditZoomParametersComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private pesnotResumenService: PesnotResumenService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -33,9 +37,24 @@ export class EditDescriptionModalComponent implements OnInit {
     });
   }
 
+  updateDescription() {
+    this.pesnotResumenService.updateDescriptionParameterNotaries({
+      id: this.data.param.id,
+      descripcion: this.zoomForm.get('valor')?.value
+    }).subscribe({
+      next: (response) => {
+        this.toastr.success('Descripción actualizada correctamente', 'Éxito');
+        this.dialogRef.close(response);
+      },
+      error: (error) => {
+        this.toastr.error('Error al actualizar la descripción', 'Error');
+      }
+    });
+  }
+
   onSubmit() {
     if (this.zoomForm.valid) {
-      this.dialogRef.close(this.zoomForm.getRawValue());
+      this.updateDescription();
     }
   }
 
