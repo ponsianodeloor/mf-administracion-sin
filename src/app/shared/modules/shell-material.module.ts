@@ -27,7 +27,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+  MatRippleModule
+} from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -47,6 +53,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from './custom-date-adapter';
 
 @NgModule({
   exports: [
@@ -100,5 +107,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ScrollingModule,
     DialogModule,
   ],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, // Spanish locale
+  ]
 })
 export class ShellMaterialModule { }
