@@ -106,7 +106,8 @@ export class EditZoomParametersComponent implements OnInit {
         return {
           ...param,
           id: match.id,
-          value: match.descripcion
+          value: match.descripcion,
+          helper: match.ayudaCampo
         };
       }
       return param;
@@ -129,6 +130,7 @@ export class EditZoomParametersComponent implements OnInit {
   getParametersNotaries(codigo: string, idNotaria: number) {
     this.notariasPesnotService.getParametersNotaries(codigo, idNotaria).subscribe({
       next: (response) => {
+        console.log(response);
         this.parametersNotaries = response;
         this.matchZoomParametersWithResponse(this.parametersNotaries);
         this.hasEmptyValues();
@@ -142,10 +144,21 @@ export class EditZoomParametersComponent implements OnInit {
   }
 
   openEditDescriptionModal(param: any): void {
-    this.dialog.open(EditDescriptionModalComponent, {
+    const dialogRef = this.dialog.open(EditDescriptionModalComponent, {
       width: '50%',
       height: '32%',
+      disableClose: true,
       data: { param }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Actualiza el valor del parámetro en la lista
+        const index = this.zoomParameters.findIndex(p => p.id === result.id);
+        if (index !== -1) {
+          this.zoomParameters[index].value = result.descripcion;
+        }
+      }
     });
   }
 

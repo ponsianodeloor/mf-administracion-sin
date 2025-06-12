@@ -7,4 +7,5 @@ export interface ParametrosNotarias {
   descripcion:  string;
   fechaInicial: string;
   fechaFinal:   string;
+  ayudaCampo:   string | null;
 }

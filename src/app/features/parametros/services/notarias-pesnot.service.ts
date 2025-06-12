@@ -19,7 +19,7 @@ export class NotariasPesnotService {
 
   getParametersNotaries(codigo: string, idNotaria: number): Observable<ParametrosNotarias[]> {
     return this.http.get<ParametrosNotarias[]>(
-      `${this.serverPesnot}${this.msNotariasPesnotService}${this.endpointGetParametersNotaries}${codigo}?idNotaria=${idNotaria}`
+      `${this.serverPesnot}${this.msNotariasPesnotService}${this.endpointGetParametersNotaries}/${codigo}?idNotaria=${idNotaria}`
     );
   }
 }
