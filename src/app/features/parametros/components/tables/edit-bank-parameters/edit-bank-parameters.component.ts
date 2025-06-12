@@ -99,14 +99,20 @@ export class EditBankParametersComponent implements OnInit {
   openEditValueModal(param: any): void {
     const dialogRef = this.dialog.open(EditValueWithDatesModalComponent, {
       width: '50%',
-      height: '45%',
+      height: '47%',
       disableClose: true,
       data: { param }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
+        // Actualizar la tabla con los nuevos valores
+        const updatedParam = this.dataSource.find(item => item.id === result.id);
+        if (updatedParam) {
+          updatedParam.value = result.valor;
+          updatedParam.fechaInicial = new Date(result.fechaInicial);
+          updatedParam.fechaFinal = new Date(result.fechaFinal);
+        }
       }
     });
   }

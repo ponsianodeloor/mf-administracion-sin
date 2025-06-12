@@ -36,6 +36,12 @@
             <mat-datepicker #pickerFinal></mat-datepicker>
           </mat-form-field>
         </div>
+        <!-- Aquí va el mensaje de error -->
+        <small *ngIf="bankForm.errors?.['dateRangeInvalid'] &&
+        (bankForm.get('fechaInicial')?.dirty || bankForm.get('fechaFinal')?.dirty)"
+             class="text-danger">
+          La fecha inicial debe ser menor que la fecha final.
+        </small>
       </div>
     </mat-card-content>
     <mat-card-actions align="end" class="action-buttons">
