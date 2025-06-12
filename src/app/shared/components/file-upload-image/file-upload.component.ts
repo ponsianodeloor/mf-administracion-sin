@@ -31,7 +31,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class FileUploadComponent implements OnInit {
   currentFile?: File;
   progress = 0;
-  @Output() message = new EventEmitter<string>();
+  @Output() message = new EventEmitter<{ message: string, type: string }>();
   @Input() fileName = '';
   @Input() uuidSolicitud = '';
   @Input() isOnlyView = false;
@@ -91,11 +91,11 @@ export class FileUploadComponent implements OnInit {
 
   private handleFile(file: File): void {
     this.progress = 0;
-    this.message.emit("");
+    this.message.emit({ message: "", type: "" });
 
     // Validación del tipo MIME
     if (!this.allowedMimeTypes.includes(file.type)) {
-      this.message.emit('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WEBP, BMP, TIFF)');
+      this.message.emit({ message: 'Solo se permiten archivos de imagen (JPEG, PNG, GIF, WEBP, BMP, TIFF)', type: 'warning' });
       this.fileName = '';
       this.uuidSolicitud = '';
       return;
@@ -104,7 +104,7 @@ export class FileUploadComponent implements OnInit {
     if (this.maxFileSize) {
       const fileSize = file.size / (1024 * 1024); // Convert to MB
       if (fileSize >= this.maxFileSize) {
-        this.message.emit('El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)');
+        this.message.emit({ message: 'El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)', type: 'error' });
         this.fileName = '';
         this.uuidSolicitud = '';
         return;
@@ -116,7 +116,7 @@ export class FileUploadComponent implements OnInit {
       this.fileName = this.currentFile.name;
       this.upload();
     } else {
-      this.message.emit('Ruta de archivo no válida');
+      this.message.emit({ message: 'Ruta de archivo no válida', type: 'error' });
       this.fileName = '';
       this.uuidSolicitud = '';
     }
@@ -125,7 +125,7 @@ export class FileUploadComponent implements OnInit {
   upload(): void {
     if (this.currentFile) {
       this.progress = 0;
-      this.message.emit('Subiendo imagen...');
+      this.message.emit({ message: 'Subiendo imagen...', type: 'info' });
 
       this.repositorioService.storeFileSolicitud(this.currentFile).subscribe({
         next: (event: string) => {
@@ -136,11 +136,11 @@ export class FileUploadComponent implements OnInit {
             uuidSolicitud: this.uuidSolicitud,
             mimeType: this.mimeType
           });
-          this.message.emit('Imagen subida exitosamente');
+          this.message.emit({ message: 'Imagen subida exitosamente', type: 'success' });
         },
         error: (err: any) => {
           this.progress = 0;
-          this.message.emit('No se pudo subir la imagen');
+          this.message.emit({ message: 'No se pudo subir la imagen', type: 'error' });
           this.fileName = '';
           this.uuidSolicitud = '';
         },

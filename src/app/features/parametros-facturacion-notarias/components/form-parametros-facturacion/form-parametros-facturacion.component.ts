@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FileUploadComponent } from '../../../../shared/components/file-upload-image/file-upload.component';
 import { ParametrosSistemaPesnotService } from '../../../../shared/services/parametros-sistema-pesnot.service';
 import { environment } from '../../../../../environments/environment';
+import { NotificationsService } from '../../../../core/services/util/notifications.service';
 
 @Component({
   selector: 'app-form-parametros-facturacion',
@@ -49,7 +50,8 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     private readonly dialogRef: MatDialogRef<FormParametrosFacturacionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ParametrosFacturacionNotarias,
     private fb: FormBuilder,
-    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService
+    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService,
+    private readonly notificationsService: NotificationsService
   ) {
     this.form = this.fb.group({
       numeroRuc: ['', [
@@ -149,8 +151,19 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   }
 
   onMessage(event: any): void {
-    if(event.type === 'error'){
-      this.isLoading = false;
+    switch (event.type) {
+      case 'error':
+        this.notificationsService.error(event.message);
+        break;
+      case 'success':
+        this.notificationsService.success(event.message);
+        break;
+      case 'info':
+        this.notificationsService.info(event.message);
+        break;
+      case 'warning':
+        this.notificationsService.warning(event.message);
+        break;
     }
   }
 
@@ -190,7 +203,9 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.form.get('puntoEmision')?.setValue(cleanValue);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.isLoading = false;
+  }
 
   onCancel(): void {
     this.dialogRef.close();
