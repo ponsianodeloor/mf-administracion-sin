@@ -95,7 +95,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(FormParametrosFacturacionComponent, {
       data: !this.data ? null : this.data,
       width: '50dvw',
-      height: '85%'
+      height: '85%',
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result){

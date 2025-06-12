@@ -206,6 +206,17 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
     this.form.get('puntoEmision')?.setValue(cleanValue);
   }
 
+  onInputContribuyenteEspecialAndRazonSocial(event: any): void {
+    const value = event.target.value;
+    const cleanValue = value
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .replace(/['";]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    this.form.get('codigoContribuyenteEspecial')?.setValue(cleanValue);
+    this.form.get('razonSocial')?.setValue(cleanValue);
+  }
+
   ngOnDestroy(): void {
     this.isLoading = false;
   }

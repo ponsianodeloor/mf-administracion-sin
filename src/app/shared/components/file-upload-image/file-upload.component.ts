@@ -43,12 +43,12 @@ export class FileUploadComponent implements OnInit {
 
   // Tipos MIME permitidos para imágenes
   private readonly allowedMimeTypes = [
-    'image/jpeg',
     'image/png',
-    'image/gif',
-    'image/webp',
-    'image/bmp',
-    'image/tiff'
+    //'image/jpeg',
+    //'image/gif',
+    //'image/webp',
+    //'image/bmp',
+    //'image/tiff'
   ];
 
   constructor(private repositorioService: RepositorioService) { }
