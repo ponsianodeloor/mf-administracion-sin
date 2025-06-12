@@ -5,6 +5,11 @@ import {UserSelected} from "../../../interfaces/user-selected";
 import {ToastrService} from "ngx-toastr";
 import {ParametrosNotarias} from "../../../interfaces/parametros-notarias";
 import {EnvironmentService} from "../../../../../shared/services/environment.service";
+import {MatDialog} from "@angular/material/dialog";
+import {EditDescriptionModalComponent} from "../../modals/edit-description-modal/edit-description-modal.component";
+import {
+  EditValueWithDatesModalComponent
+} from "../../modals/edit-value-with-dates-modal/edit-value-with-dates-modal.component";
 
 @Component({
   selector: 'app-edit-bank-parameters',
@@ -41,12 +46,13 @@ export class EditBankParametersComponent implements OnInit {
   bankDetails: string;
 
   displayedColumns: string[] = ['label', 'value', 'action'];
-  dataSource: { id:number, label: string, value: string }[] = [];
+  dataSource: { id:number, label: string, value: string, fechaInicial:Date, fechaFinal:Date }[] = [];
 
   constructor(
     private readonly environmentService: EnvironmentService,
     private readonly notariasPesnotService: NotariasPesnotService,
     private readonly toastrService: ToastrService,
+    private readonly dialog: MatDialog
   ) {
     this.bankDetails = this.environmentService.bankDetails;
   }
@@ -77,13 +83,30 @@ export class EditBankParametersComponent implements OnInit {
         this.dataSource = response.map(item => ({
           id: item.id,
           label: item.descripcion,
-          value: item.valor
+          value: item.valor,
+          fechaInicial: new Date(item.fechaInicial),
+          fechaFinal: new Date(item.fechaFinal)
         }));
       },
       error: (error) => {
         this.toastrService.error('Error al obtener los parámetros de la notaría', 'Error', {
           timeOut: 3000,
         });
+      }
+    });
+  }
+
+  openEditValueModal(param: any): void {
+    const dialogRef = this.dialog.open(EditValueWithDatesModalComponent, {
+      width: '50%',
+      height: '45%',
+      disableClose: true,
+      data: { param }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
       }
     });
   }
