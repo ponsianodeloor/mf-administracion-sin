@@ -79,11 +79,13 @@ export class PrincipalComponent implements OnInit, OnDestroy {
       })
     ]).subscribe(([res, tiposAmbiente]) => {
       if(res){
-        this.dataSource = res.data;
         if(res.data.length > 0){
-          this.data = res.data[0];
-          this.data.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id == this.data.tipoAmbiente)?.codigo;
-          this.data.obligadoContabilidad = this.data.obligadoContabilidad === 'SI' ? 'SI' : 'NO';
+          this.dataSource = res.data;
+          this.dataSource.forEach((item: any) => {
+            item.tipoAmbiente = tiposAmbiente.find((tipo: any) => tipo.id == item.tipoAmbiente)?.codigo;
+            item.obligadoContabilidad = item.obligadoContabilidad === 'SI' ? 'SI' : 'NO';
+          });
+          this.data = this.dataSource[0];
         }
       }
     });

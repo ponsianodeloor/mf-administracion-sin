@@ -1,7 +1,7 @@
 export interface ParametrosFacturacionNotarias {
   id?: number;
   idNotaria: number | string;
-  claveAcceso: string;
+  claveAcceso?: string;
   numeroRuc: string;
   tipoAmbiente?: number | string;
   establecimiento: string;
@@ -9,7 +9,7 @@ export interface ParametrosFacturacionNotarias {
   razonSocial: string;
   codigoContribuyenteEspecial: string;
   obligadoContabilidad: 'SI' | 'NO';
-  logoEmision: string;
+  logoEmisor: string;
   nombreLogo: string;
   mimeLogo: string;
 }

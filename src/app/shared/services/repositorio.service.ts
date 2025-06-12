@@ -32,7 +32,6 @@ export class RepositorioService {
     formData.append('tipoArchivo', 'pdf');
     formData.append('nombreSistema', 'notarial');
     const headers = new HttpHeaders({ Accept: 'text/plain' });
-    console.log(file);
     return this.http
       .post(url, formData, { headers, responseType: 'text' })
       .pipe(map((response) => response));

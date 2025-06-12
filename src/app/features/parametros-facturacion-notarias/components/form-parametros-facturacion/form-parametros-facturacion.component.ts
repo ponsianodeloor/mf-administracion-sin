@@ -106,8 +106,12 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
           obligadoContabilidad: this.data.obligadoContabilidad === 'SI'
         });
         this.fileName = this.data.nombreLogo;
-        this.uuidSolicitud = this.data.logoEmision;
+        this.uuidSolicitud = this.data.logoEmisor;
         this.mimeType = this.data.mimeLogo;
+      } else {
+        this.form.patchValue({
+          tipoAmbiente: this.tiposAmbiente.find(tipo => tipo.codigo === 'Pruebas')?.id,
+        });
       }
       this.isLoading = false;
     });
@@ -122,10 +126,9 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const formData: ParametrosFacturacionNotarias = {
-        claveAcceso: this.form.value.claveAcceso,
         obligadoContabilidad: this.form.value.obligadoContabilidad ? 'SI' : 'NO',
         idNotaria: this.idNotaria,
-        logoEmision: this.uuidSolicitud,
+        logoEmisor: this.uuidSolicitud,
         nombreLogo: this.fileName,
         mimeLogo: this.mimeType,
         tipoAmbiente: this.form.value.tipoAmbiente,
