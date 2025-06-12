@@ -1,0 +1,24 @@
+.card-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 4px;
+
+  mat-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0;
+  }
+
+  .close-btn {
+    margin-left: 12px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px #0001;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
