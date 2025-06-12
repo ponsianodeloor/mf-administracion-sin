@@ -58,7 +58,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
       sortBy: 'id',
       sortDirection: 'DESC',
       filterOptions: [],
-      filterTableColumns: ['tipoSolicitud', 'estadoSolicitud'],
+      filterTableColumns: [],
       totalElements: 0,
       pageIndex: 0,
       from: 0,

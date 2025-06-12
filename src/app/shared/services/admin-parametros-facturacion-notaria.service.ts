@@ -15,7 +15,16 @@ export class AdminParametrosFacturacionNotariaService {
   constructor(private readonly http: HttpClient) { }
 
   getParametrosFacturacion(params: TableSearchPaginated): Observable<TableSearchPaginatedResponse> {
-    return this.http.get<TableSearchPaginatedResponse>(`${this.url}`, { params: new HttpParams({ fromObject: params.searchQuery }) });
+    let httpParams = new HttpParams()
+      .set('page', params.page.toString())
+      .set('per_page', params.pageSize.toString())
+      .set('sort_by', params.sortBy || '')
+      .set('sort_direction', params.sortDirection || '');
+
+    Object.entries(params.searchQuery || {}).forEach(([key, value]) => {
+      httpParams = httpParams.set(key, value as string);
+    });
+    return this.http.get<TableSearchPaginatedResponse>(`${this.url}`, { params: httpParams });
   }
 
   getParametroFacturacion(id: number): Observable<ParametrosFacturacionNotarias> {
