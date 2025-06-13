@@ -80,7 +80,7 @@ export class FileUploadComponent implements OnInit {
     }
   }
 
-  private handleFile(file: File): void {
+  private handleFile(file: File, input?: HTMLInputElement): void {
     this.progress = 0;
     this.message.emit("");
     if (this.maxFileSize) {
@@ -89,6 +89,7 @@ export class FileUploadComponent implements OnInit {
         this.message.emit('El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)');
         this.fileName = '';
         this.uuidSolicitud = '';
+        if (input) input.value = '';
         return;
       }
     }
@@ -99,6 +100,7 @@ export class FileUploadComponent implements OnInit {
         this.message.emit(`El archivo debe ser de tipo ${this.typeFile.toUpperCase()}`);
         this.fileName = '';
         this.uuidSolicitud = '';
+        if (input) input.value = '';
         return;
       }
     }
@@ -111,6 +113,7 @@ export class FileUploadComponent implements OnInit {
       this.message.emit('Ruta de archivo no válida');
       this.fileName = '';
       this.uuidSolicitud = '';
+      if (input) input.value = '';
     }
   }
 
