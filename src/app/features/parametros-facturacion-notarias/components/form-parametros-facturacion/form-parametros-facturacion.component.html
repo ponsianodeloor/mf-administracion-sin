@@ -29,14 +29,14 @@
     <div class="row-align">
       <mat-form-field appearance="outline">
         <mat-label>Establecimiento</mat-label>
-        <input matInput formControlName="establecimiento" maxlength="4" (input)="onInputEstablecimiento($event)">
+        <input matInput formControlName="establecimiento" maxlength="3" (input)="onInputEstablecimiento($event)">
         <mat-error *ngIf="form.get('establecimiento')?.hasError('required')">
           El establecimiento es requerido
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Punto Emisión</mat-label>
-        <input matInput formControlName="puntoEmision" maxlength="4" (input)="onInputPuntoEmision($event)">
+        <input matInput formControlName="puntoEmision" maxlength="3" (input)="onInputPuntoEmision($event)">
         <mat-error *ngIf="form.get('puntoEmision')?.hasError('required')">
           El punto de emisión es requerido
         </mat-error>

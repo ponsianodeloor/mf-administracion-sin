@@ -61,8 +61,8 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
         this.rucValidator()
       ]],
       tipoAmbiente: [''],
-      establecimiento: ['', [Validators.required, Validators.maxLength(4)]],
-      puntoEmision: ['', [Validators.required, Validators.maxLength(4)]],
+      establecimiento: ['', [Validators.required, Validators.maxLength(3)]],
+      puntoEmision: ['', [Validators.required, Validators.maxLength(3)]],
       razonSocial: ['', [Validators.required, Validators.maxLength(300)]],
       codigoContribuyenteEspecial: ['', [Validators.maxLength(20)]],
       obligadoContabilidad: [false],
