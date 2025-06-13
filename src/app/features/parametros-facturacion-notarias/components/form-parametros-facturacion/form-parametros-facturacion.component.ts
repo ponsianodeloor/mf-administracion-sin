@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ParametrosFacturacionNotarias } from '../../api/ParametrosFacturacionNotarias';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -212,11 +212,7 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
 
   onInputRazonSocial(event: any): void {
     const value = event.target.value;
-    const cleanValue = value
-      .replace(/[^a-zA-Z0-9\s\-\.\,\&\ñ\ÑáéíóúÁÉÍÓÚ]/g, '')
-      .replace(/['";]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+    const cleanValue = value.replace(/[^a-zA-Z0-9\s-]/g, '');
     this.form.get('razonSocial')?.setValue(cleanValue);
   }
 

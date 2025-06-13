@@ -95,7 +95,7 @@ export class FileUploadComponent implements OnInit {
 
     // Validación del tipo MIME
     if (!this.allowedMimeTypes.includes(file.type)) {
-      this.message.emit({ message: 'Solo se permiten archivos de imagen (JPEG, PNG, GIF, WEBP, BMP, TIFF)', type: 'warning' });
+      this.message.emit({ message: 'Solo se permiten archivos de imagen PNG', type: 'warning' });
       this.fileName = '';
       this.uuidSolicitud = '';
       return;
