@@ -44,11 +44,9 @@ export class FileUploadComponent implements OnInit {
   // Tipos MIME permitidos para imágenes
   private readonly allowedMimeTypes = [
     'image/png',
-    //'image/jpeg',
-    //'image/gif',
-    //'image/webp',
-    //'image/bmp',
-    //'image/tiff'
+    'image/jpeg',
+    'image/jpg',
+    'image/ico',
   ];
 
   constructor(private repositorioService: RepositorioService) { }
@@ -96,7 +94,7 @@ export class FileUploadComponent implements OnInit {
 
     // Validación del tipo MIME
     if (!this.allowedMimeTypes.includes(file.type)) {
-      this.message.emit({ message: 'Solo se permiten archivos de imagen PNG', type: 'warning' });
+      this.message.emit({ message: 'Solo se permiten archivos de imagen (.png, .jpeg, .jpg, .ico)', type: 'warning' });
       this.fileName = '';
       this.uuidSolicitud = '';
       if (input) input.value = '';
