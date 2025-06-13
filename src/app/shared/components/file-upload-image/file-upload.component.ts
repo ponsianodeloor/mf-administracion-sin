@@ -84,12 +84,13 @@ export class FileUploadComponent implements OnInit {
   }
 
   selectFile(event: any): void {
-    if (event.target.files && event.target.files[0]) {
-      this.handleFile(event.target.files[0]);
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.handleFile(input.files[0], input);
     }
   }
 
-  private handleFile(file: File): void {
+  private handleFile(file: File, input?: HTMLInputElement): void {
     this.progress = 0;
     this.message.emit({ message: "", type: "" });
 
@@ -98,6 +99,7 @@ export class FileUploadComponent implements OnInit {
       this.message.emit({ message: 'Solo se permiten archivos de imagen PNG', type: 'warning' });
       this.fileName = '';
       this.uuidSolicitud = '';
+      if (input) input.value = '';
       return;
     }
 
@@ -107,6 +109,7 @@ export class FileUploadComponent implements OnInit {
         this.message.emit({ message: 'El archivo excede el tamaño máximo permitido (' + this.maxFileSize + 'MB)', type: 'error' });
         this.fileName = '';
         this.uuidSolicitud = '';
+        if (input) input.value = '';
         return;
       }
     }
@@ -119,6 +122,7 @@ export class FileUploadComponent implements OnInit {
       this.message.emit({ message: 'Ruta de archivo no válida', type: 'error' });
       this.fileName = '';
       this.uuidSolicitud = '';
+      if (input) input.value = '';
     }
   }
 
