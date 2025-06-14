@@ -7,7 +7,9 @@ import { AdminParametrosFacturacionNotariaService } from '../../../../shared/ser
 import { ParametrosFacturacionNotarias } from '../../api/ParametrosFacturacionNotarias';
 import { forkJoin } from 'rxjs';
 import { ParametrosSistemaPesnotService } from '../../../../shared/services/parametros-sistema-pesnot.service';
+import { RepositorioService } from '../../../../shared/services/repositorio.service';
 import { environment } from '../../../../../environments/environment';
+import { NotificationsService } from '../../../../core/services/util/notifications.service';
 
 @Component({
   selector: 'app-principal',
@@ -40,13 +42,16 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     { name: 'razonSocial', header: 'Razón Social', type: 'string' },
     { name: 'codigoContribuyenteEspecial', header: 'Código Contribuyente Especial', type: 'string' },
     { name: 'obligadoContabilidad', header: 'Obligado a llevar Contabilidad', type: 'string' },
-    { name: 'nombreLogo', header: 'Logo Emisor', type: 'string' }
+    { name: 'nombreLogo', header: 'Logo Emisor', type: 'string' },
+    { name: 'logoEmisor', header: 'Descargar', type: 'download' }
   ];
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly adminParametrosFacturacionNotariaService: AdminParametrosFacturacionNotariaService,
-    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService
+    private readonly parametrosSistemaPesnotService: ParametrosSistemaPesnotService,
+    private readonly repositorioService: RepositorioService,
+    private readonly notificationsService: NotificationsService
   ) { }
 
   ngOnInit(): void {
@@ -112,5 +117,29 @@ export class PrincipalComponent implements OnInit, OnDestroy {
         );
       }
     });
+  }
+
+  onSelectRow(row: any) {
+    this.onDownloads(row.row.logoEmisor, row.row.nombreLogo);
+  }
+
+  onDownloads(uuidSolicitud: string, nombreArchivo: string) {
+    if (!uuidSolicitud) {
+      this.notificationsService.error('No hay un archivo disponible para descargar');
+      return;
+    }
+
+    this.repositorioService
+      .getFileSolicitud(uuidSolicitud)
+      .subscribe((blob) => {
+        if (blob) {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = nombreArchivo;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
+      });
   }
 }

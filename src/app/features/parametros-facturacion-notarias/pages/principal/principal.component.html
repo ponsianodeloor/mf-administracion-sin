@@ -1,12 +1,12 @@
 <div class="container">
   <div class="breadcrumb-container">
     <app-breadcrums [breadcrumbItems]="breadcrumbItems"></app-breadcrums>
-    <button mat-raised-button color="primary" (click)="openDialog()">
-      <mat-icon>{{data ? 'edit' : 'add'}}</mat-icon>
-      <span>{{data ? 'Editar' : 'Crear Registro'}}</span>
+    <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!data">
+      <mat-icon>add</mat-icon>
+      <span>Crear Registro</span>
     </button>
   </div>
   <div class="table-container">
-    <app-tabla [displayedColumns]="displayedColumns" [data]="dataSource" [noPaginated]="true"></app-tabla>
+    <app-tabla [displayedColumns]="displayedColumns" [data]="dataSource" [noPaginated]="true" (selectRow)="onSelectRow($event)"></app-tabla>
   </div>
 </div>
