@@ -1,0 +1,57 @@
+<div class="form-capacitacion-container">
+  <form [formGroup]="formCapacitacion" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <h2>Capacitaciones</h2>
+      <button mat-icon-button (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre Capacitación</mat-label>
+        <textarea matInput formControlName="nombre" rows="2"></textarea>
+        <mat-error *ngIf="formCapacitacion.get('nombre')?.invalid && formCapacitacion.get('nombre')?.touched">
+          Completa este campo
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha Capacitación</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha" placeholder="dd/mm/aaaa">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Duración (minutos)</mat-label>
+        <input matInput type="number" formControlName="duracion" min="1">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo Capacitación</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="" disabled>Selecciona un tipo</mat-option>
+          <mat-option *ngFor="let t of tipos" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo Asistencia</mat-label>
+        <mat-select formControlName="asistencia">
+          <mat-option value="" disabled>Selecciona asistencia</mat-option>
+          <mat-option *ngFor="let a of asistencias" [value]="a">{{ a }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Lugar Capacitación</mat-label>
+        <textarea matInput formControlName="lugar" rows="2"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-actions">
+      <button mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="formCapacitacion.invalid">Crear Capacitación</button>
+    </div>
+  </form>
+</div>

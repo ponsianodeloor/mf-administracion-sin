@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'facturacion-notarias',
     loadChildren: () => import('./parametros-facturacion-notarias/parametros-facturacion-notarias.module').then(m => m.ParametrosFacturacionNotariasModule)
+  },
+  {
+    path: 'capacitacion',
+    loadChildren: () => import('./capacitacion/capacitacion.module').then(m => m.CapacitacionModule)
   }
 ];
 
