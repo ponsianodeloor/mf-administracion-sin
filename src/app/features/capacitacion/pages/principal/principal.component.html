@@ -24,7 +24,7 @@
   </div>
   <div class="right-section">
     @if (capacitacionSeleccionada) {
-      <app-detalle-capacitacion [capacitacion]="capacitacionSeleccionada"></app-detalle-capacitacion>
+      <app-detalle-capacitacion [capacitacion]="capacitacionSeleccionada" (capacitacionUpdated)="onCapacitacionUpdated($event)"></app-detalle-capacitacion>
     } @else {
       <div class="empty-message">No se ha seleccionado ninguna capacitación</div>
     }

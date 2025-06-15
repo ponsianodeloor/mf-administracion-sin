@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { Capacitacion, CapacitacionDetalle } from '../../api/capacitaciones';
 import { CapacitacionService } from '../../../../shared/services/capacitacion.service';
 import { CatalogoAuxiliarService } from '../../../../shared/services/catalogo-auxiliar.service';
@@ -40,7 +40,7 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
   capacitacionDetalle!: CapacitacionDetalle[];
   isLoading: boolean = true;
   editCapacitacion!: Capacitacion;
-
+  @Output() capacitacionUpdated = new EventEmitter<Capacitacion>();
   displayedColumnsCapacitacion: ColumnDefinition[] = [
     { name: 'nombreCapacitacion', type: 'text', header: 'Nombre' },
     { name: 'fechaCapacitacion', type: 'date', header: 'Fecha' },
@@ -113,6 +113,7 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
         if (result) {
           this.getData();
         }
+          this.capacitacionUpdated.emit(result);
       });
     });
   }

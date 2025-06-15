@@ -68,4 +68,9 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   openNodeSelected(node: Capacitacion) {
     this.capacitacionSeleccionada = node;
   }
+
+  onCapacitacionUpdated(capacitacion: Capacitacion) {
+    this.capacitacionSeleccionada = capacitacion;
+    this.getData();
+  }
 }
