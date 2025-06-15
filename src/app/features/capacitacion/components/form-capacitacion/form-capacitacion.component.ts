@@ -104,7 +104,7 @@ export class FormCapacitacionComponent implements OnInit {
     if (this.formCapacitacion.valid) {
       this.formCapacitacion.markAllAsTouched();
       let formValue: Capacitacion = { ...this.formCapacitacion.value };
-      formValue.fechaCapacitacion = this.formCapacitacion.get('fechaCapacitacion')?.value ? this.formCapacitacion.get('fechaCapacitacion')?.value.toISOString().split('T')[0] : null;
+      formValue.fechaCapacitacion = this.formCapacitacion.get('fechaCapacitacion')?.value ? new Date(this.formCapacitacion.get('fechaCapacitacion')?.value.toISOString().split('T')[0] + 'T00:00:00') : null;
       formValue.id = this.data?.id;
       this.capacitacionService.store(formValue).subscribe({
         next: (res) => {
