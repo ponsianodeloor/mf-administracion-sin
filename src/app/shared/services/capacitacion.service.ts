@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Capacitacion } from '../../features/capacitacion/api/capacitaciones';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,7 +13,11 @@ export class CapacitacionService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Capacitacion[]> {
+  getAll(search?: string): Observable<Capacitacion[]> {
+    if (search != null && search != '') {
+      const httpParams = new HttpParams().set('search', search);
+      return this.http.get<Capacitacion[]>(`${this.API_URL}/all`, { params: httpParams });
+    }
     return this.http.get<Capacitacion[]>(`${this.API_URL}/all`);
   }
 

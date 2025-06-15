@@ -6,6 +6,7 @@ import { BreadcrumbItem } from '../../../../shared/components/breadcrums/breadcr
 import { Capacitacion } from '../../api/capacitaciones';
 import { CapacitacionService } from '../../../../shared/services/capacitacion.service';
 import { CatalogoAuxiliarService } from '../../../../shared/services/catalogo-auxiliar.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-principal',
@@ -21,8 +22,14 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
   capacitaciones!: Capacitacion[];
   capacitacionSeleccionada: Capacitacion | null = null;
+  form: FormGroup;
+  search: string = '';
 
-  constructor(public dialog: MatDialog, private capacitacionService: CapacitacionService, private catalogoAuxiliarService: CatalogoAuxiliarService) {}
+  constructor(public dialog: MatDialog, private capacitacionService: CapacitacionService, private catalogoAuxiliarService: CatalogoAuxiliarService, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      search: [''],
+    });
+  }
 
   ngOnInit(): void {
     this.getData();
@@ -31,9 +38,14 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   getData() {
-    this.capacitacionService.getAll().subscribe((capacitaciones: Capacitacion[]) => {
+    this.capacitacionService.getAll(this.search).subscribe((capacitaciones: Capacitacion[]) => {
       this.capacitaciones = capacitaciones;
     });
+  }
+
+  onSearch(){
+    this.search = this.form.get('search')?.value;
+    this.getData();
   }
 
   openDialogCapacitacion() {

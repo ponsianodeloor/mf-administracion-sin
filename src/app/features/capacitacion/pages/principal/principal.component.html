@@ -6,10 +6,12 @@
 <div class="container-inbox">
   <div class="left-section">
     <div class="cap-list-header">
-      <div class="search-container">
-        <mat-icon class="search-icon">search</mat-icon>
-        <input type="text" class="search-input" placeholder="Buscar..." />
-      </div>
+      <form [formGroup]="form" (ngSubmit)="onSearch()">
+        <div class="search-container">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input type="text" class="search-input" placeholder="Buscar..." formControlName="search"/>
+        </div>
+      </form>
     </div>
     <div class="cap-list">
       @for (cap of capacitaciones; track cap.id) {
