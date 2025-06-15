@@ -9,49 +9,68 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre Capacitación</mat-label>
-        <textarea matInput formControlName="nombre" rows="2"></textarea>
-        <mat-error *ngIf="formCapacitacion.get('nombre')?.invalid && formCapacitacion.get('nombre')?.touched">
-          Completa este campo
+        <input matInput formControlName="nombreCapacitacion" placeholder="Nombre de la capacitación">
+        <mat-error *ngIf="formCapacitacion.get('nombreCapacitacion')?.hasError('required') && formCapacitacion.get('nombreCapacitacion')?.touched">
+          El nombre de la capacitación es requerido
         </mat-error>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Fecha Capacitación</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="fecha" placeholder="dd/mm/aaaa">
+        <input matInput [matDatepicker]="picker" formControlName="fechaCapacitacion" [min]="MIN_DATE" placeholder="dd/mm/aaaa">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="formCapacitacion.get('fechaCapacitacion')?.hasError('required') && formCapacitacion.get('fechaCapacitacion')?.touched">
+          La fecha es requerida
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Duración (minutos)</mat-label>
-        <input matInput type="number" formControlName="duracion" min="1">
+        <input matInput type="number" formControlName="duracion" [min]="MIN_DURACION">
+        <mat-error *ngIf="formCapacitacion.get('duracion')?.hasError('required') && formCapacitacion.get('duracion')?.touched">
+          La duración es requerida
+        </mat-error>
+        <mat-error *ngIf="formCapacitacion.get('duracion')?.hasError('min') && formCapacitacion.get('duracion')?.touched">
+          La duración debe ser mayor a 30 minutos
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Tipo Capacitación</mat-label>
-        <mat-select formControlName="tipo">
-          <mat-option value="" disabled>Selecciona un tipo</mat-option>
-          <mat-option *ngFor="let t of tipos" [value]="t">{{ t }}</mat-option>
+        <mat-select formControlName="tipoCapacitacion">
+          <mat-option *ngFor="let t of tiposCapacitacion" [value]="t.id">{{ t.descripcion }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="formCapacitacion.get('tipoCapacitacion')?.hasError('required') && formCapacitacion.get('tipoCapacitacion')?.touched">
+          El tipo de capacitación es requerido
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Tipo Asistencia</mat-label>
-        <mat-select formControlName="asistencia">
-          <mat-option value="" disabled>Selecciona asistencia</mat-option>
-          <mat-option *ngFor="let a of asistencias" [value]="a">{{ a }}</mat-option>
+        <mat-select formControlName="tipoAsistencia">
+          <mat-option *ngFor="let a of tiposAsistencia" [value]="a.id">{{ a.descripcion }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="formCapacitacion.get('tipoAsistencia')?.hasError('required') && formCapacitacion.get('tipoAsistencia')?.touched">
+          El tipo de asistencia es requerido
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Lugar Capacitación</mat-label>
-        <textarea matInput formControlName="lugar" rows="2"></textarea>
+        <textarea matInput formControlName="lugarCapacitacion" rows="2"></textarea>
+        <mat-error *ngIf="formCapacitacion.get('lugarCapacitacion')?.hasError('required') && formCapacitacion.get('lugarCapacitacion')?.touched">
+          El lugar es requerido
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="form-actions">
-      <button mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancelar</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="formCapacitacion.invalid">Crear Capacitación</button>
+      <div class="left-action">
+        <button mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancelar</button>
+        <button *ngIf="data" mat-stroked-button color="warn" type="button" (click)="onDelete()">Borrar Capacitación</button>
+      </div>
+      <button mat-flat-button color="primary" type="submit" [disabled]="formCapacitacion.invalid">{{ data ? 'Aplicar Cambios' : 'Crear Capacitación' }}</button>
     </div>
   </form>
 </div>

@@ -8,8 +8,11 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Capacitación</mat-label>
     <mat-select formControlName="capacitacion">
-      <mat-option *ngFor="let cap of capacitaciones" [value]="cap">{{ cap }}</mat-option>
+      <mat-option [value]="capacitacion.id">{{ capacitacion.nombreCapacitacion }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="form.get('capacitacion')?.hasError('required')">
+      La capacitación es requerida
+    </mat-error>
   </mat-form-field>
 
   <div class="row">
@@ -18,6 +21,9 @@
       <mat-select formControlName="participante">
         <mat-option *ngFor="let part of participantes" [value]="part">{{ part }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('participante')?.hasError('required')">
+        El participante es requerido
+      </mat-error>
     </mat-form-field>
     <div class="asiste-toggle">
       <label>Asiste</label>
@@ -31,7 +37,10 @@
   </mat-form-field>
 
   <div class="actions">
-    <button mat-stroked-button type="button" (click)="onCancel()">Cancelar</button>
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Ingresar Participante</button>
+    <div class="left-action">
+      <button mat-stroked-button type="button" (click)="onCancel()">Cancelar</button>
+      <button *ngIf="data.detalleCapacitacion" mat-stroked-button color="warn" type="button" (click)="onDelete()">Eliminar Participante</button>
+    </div>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">{{ data.detalleCapacitacion ? 'Aplicar Cambios' : 'Ingresar Participante' }}</button>
   </div>
 </form>

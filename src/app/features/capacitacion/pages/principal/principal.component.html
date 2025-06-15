@@ -1,1 +1,30 @@
-<button mat-raised-button color="primary" (click)="openDialog()">Abrir Modal</button>
+<div class="container-top">
+    <app-breadcrums [breadcrumbItems]="breadcrumbs"></app-breadcrums>
+    <button mat-raised-button color="primary" (click)="openDialogCapacitacion()">Crear Capacitación</button>
+</div>
+
+<div class="container-inbox">
+  <div class="left-section">
+    <div class="cap-list-header">
+      <div class="search-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" class="search-input" placeholder="Buscar..." />
+      </div>
+    </div>
+    <div class="cap-list">
+      @for (cap of capacitaciones; track cap.id) {
+        <div class="cap-item" (click)="openNodeSelected(cap)">
+          <span class="cap-title">{{ cap.nombreCapacitacion }}</span>
+          <span class="cap-date">{{ cap.fechaCapacitacion | date:'dd/MM/yyyy' }}</span>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="right-section">
+    @if (capacitacionSeleccionada) {
+      <app-detalle-capacitacion [capacitacion]="capacitacionSeleccionada"></app-detalle-capacitacion>
+    } @else {
+      <div class="empty-message">No se ha seleccionado ninguna capacitación</div>
+    }
+  </div>
+</div>

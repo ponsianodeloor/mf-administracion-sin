@@ -38,5 +38,10 @@
     justify-content: space-between;
     gap: 12px;
     margin-top: 24px;
+
+    .left-action {
+      display: flex;
+      gap: 12px;
+    }
   }
 }

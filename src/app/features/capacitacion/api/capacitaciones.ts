@@ -4,14 +4,14 @@ export interface Capacitacion {
   fechaCapacitacion: Date;
   duracion: number;
   lugarCapacitacion: string;
-  tipoCapacitacion: number;
-  tipoAsistencia: number;
+  tipoCapacitacion: number | string;
+  tipoAsistencia: number | string;
 }
 
 export interface CapacitacionDetalle {
   id?: number;
-  idCapacitacion: number;
-  idPersonaNotario: number;
+  idCapacitacion: number | string;
+  idPersonaNotario: number | string;
   isAsiste?: string;
   observaciones?: string;
 }

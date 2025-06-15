@@ -9,12 +9,16 @@ export const environment = {
   //TODO: Todas las variables de entorno son en mayúsculas y con guiones bajos
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
   ParametrosSistemaPesnotTipoAmbiente: 'Tipo de Ambiente',
+  CAPACITACION_NEMONICOPADRE_TIPO_CAPACITACION: 'TIPO-CAPACITACION',
+  CAPACITACION_NEMONICOPADRE_TIPO_ASISTENCIA: 'TIPO-ASISTENCIA',
   MS_PESNOT_RESUMEN_SERVICE: '/pesnot-resumen-service/api',
 
   //Recursos de MS_PESNOT_RESUMEN_SERVICE
   RS_PARAMETRO_NOTARIAS_PESNOT: '/parametro-notarias-pesnot',
 
   ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo',
+  ADMINISTRACION_CATALOGO_AUXILIAR_API_SERVICES: '/gestion-notarias-service/api/catalogo-auxiliar',
+  ADMINISTRACION_CAPACITACION_API_SERVICES: '/gestion-notarias-service/api/capacitacion',
   ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
   MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',
   MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
