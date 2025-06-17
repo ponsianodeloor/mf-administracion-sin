@@ -39,6 +39,12 @@
       <button mat-stroked-button type="button" (click)="onCancel()">Cancelar</button>
       <button *ngIf="data.detalleCapacitacion" mat-stroked-button color="warn" type="button" (click)="onDelete()">Eliminar Participante</button>
     </div>
-    <button mat-flat-button color="primary" type="submit" [disabled]="formParticipant.invalid">{{ data.detalleCapacitacion ? 'Aplicar Cambios' : 'Ingresar Participante' }}</button>
+    <button
+      mat-flat-button color="primary"
+      type="submit" [disabled]="formParticipant.invalid" (click)="onSubmit()">
+      {{ data.detalleCapacitacion ? 'Aplicar Cambios' : 'Ingresar Participante' }}
+    </button>
   </div>
 </form>
+
+{{ detailTraining | json }}

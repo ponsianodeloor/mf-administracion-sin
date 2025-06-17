@@ -11,7 +11,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Capacitacion, CapacitacionDetalle } from '../../api/capacitaciones';
 import {SearchParticipantModalComponent} from "../modals/search-participant-modal/search-participant-modal.component";
-import {NgIf} from "@angular/common";
+import {JsonPipe, NgIf} from "@angular/common";
+import {PersonRol} from "../../interfaces/person-rol";
+import {DetailTraining} from "../../interfaces/detail-training";
 
 @Component({
   selector: 'app-form-capacitacion-detalle',
@@ -25,7 +27,8 @@ import {NgIf} from "@angular/common";
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    NgIf
+    NgIf,
+    JsonPipe
   ],
   templateUrl: './form-capacitacion-detalle.component.html',
   styleUrl: './form-capacitacion-detalle.component.scss'
@@ -33,7 +36,14 @@ import {NgIf} from "@angular/common";
 export class FormCapacitacionDetalleComponent implements OnInit {
   formParticipant: FormGroup;
   capacitacion: Capacitacion;
-  participantes: any[] = [];
+
+  participantSelected: PersonRol | undefined;
+  detailTraining: DetailTraining = {
+    idCapacitacion: 0,
+    idPersonaNotario: 0,
+    isAsiste: '',
+    observaciones: ''
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -75,13 +85,33 @@ export class FormCapacitacionDetalleComponent implements OnInit {
       autoFocus: true,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Modal cerrado con resultado:', result);
+    dialogRef.afterClosed().subscribe((result: PersonRol | undefined) => {
+      if (result) {
+        // Lógica cuando result es de tipo PersonRol
+        this.participantSelected = result;
+        this.formParticipant.patchValue({
+          participante: this.participantSelected.apellidosNombres
+        });
+
+        this.detailTraining.idPersonaNotario = Number(this.participantSelected.idPersonaNotario);
+
+      } else {
+        // Lógica cuando result es undefined
+        console.log('No se seleccionó ningún participante.');
+      }
     });
   }
 
   onSubmit() {
-    console.log(this.formParticipant.value);
+    if( this.formParticipant.valid) {
+      this.detailTraining.idCapacitacion = this.data.capacitacion.id;
+      this.detailTraining.isAsiste = this.formParticipant.value.asiste ? 'S' : 'N';
+      this.detailTraining.observaciones = this.formParticipant.value.observaciones;
+      this.detailTraining.idPersonaNotario = this.participantSelected ? Number(this.participantSelected.idPersonaNotario) : 0;
+
+      console.log('Detalle de capacitación:', this.detailTraining);
+      //this.dialogRef.close(this.detailTraining);
+    }
   }
 
   onSelectRow(row: any) {
