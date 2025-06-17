@@ -147,9 +147,10 @@ export class FormParametrosFacturacionComponent implements OnInit, OnDestroy {
             this.data[key] = formData[key];
           }
         });
-      }
 
-      this.dialogRef.close(this.data);
+        this.dialogRef.close(this.data);
+      }
+      this.dialogRef.close();
     }
   }
 

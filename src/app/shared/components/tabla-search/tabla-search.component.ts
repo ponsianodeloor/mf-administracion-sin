@@ -48,6 +48,7 @@ import { TableSearchPaginated, FilterOption, ColumnDefinition } from './table';
   templateUrl: './tabla-search.component.html',
   styleUrls: ['./tabla-search.component.scss'],
 })
+
 export class TablaSearchComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() eventUpdated = new EventEmitter<void>();
   @Input() data: any[] = [];
@@ -57,26 +58,21 @@ export class TablaSearchComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() displayedColumns: ColumnDefinition[] = [];
   displayedColumnNames: string[] = []; // Used for MatTable
   @Input() filterableColumns: string[] = [];
+  @Input() sorterableColumns: string[] = [];
   selectedFilters: { [key: string]: string } = {};
-  @Input() sortBy: string = 'id';
-  @Input() sortDirection: string = 'desc';
   @Output() pageChange = new EventEmitter<TableSearchPaginated>();
-  @Output() openRegistroDialog = new EventEmitter<any>();
   @Output() selectRow = new EventEmitter<{ row: any, action: 'edit' | 'download' }>();
-  @Output() delete = new EventEmitter<any>();
-  @Output() sortChanged = new EventEmitter<any>();
+  @Output() sortChanged = new EventEmitter<TableSearchPaginated>();
   @Output() searchEvent = new EventEmitter<TableSearchPaginated>();
   searchQuery: string = '';
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
   acciones_button: boolean = false;
-  userSelected!: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Output() filterChanged = new EventEmitter<{
     column: string;
     value: string;
   }>();
-  @Output() consultarEvent = new EventEmitter<any>();
   @Output() download = new EventEmitter<any>();
   activeFilterOptions: { [key: string]: string | number } = {};
 
@@ -140,7 +136,19 @@ export class TablaSearchComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    if (this.sort) {
+      this.sort.sortChange.subscribe((event) => {
+        if (this.sorterableColumns.includes(event.active)) {
+          this.tableParams.sortBy = event.active;
+          this.tableParams.sortDirection = event.direction;
+          this.tableParams.page = 1;
+          this.tableParams.pageIndex = 0;
+          this.sortChanged.emit(this.tableParams);
+        }
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
@@ -191,14 +199,6 @@ export class TablaSearchComponent implements OnInit, OnChanges, AfterViewInit {
     };
 
     this.pageChange.emit(updatedParams);
-  }
-
-  onOpenRegistroDialog(row?: any): void {
-    this.openRegistroDialog.emit(row);
-  }
-
-  onDelete(row: any): void {
-    this.delete.emit(row);
   }
 
   onSelectRow(row: any, action: 'edit' | 'download'): void {
