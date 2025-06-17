@@ -1,5 +1,5 @@
-<form [formGroup]="form" class="form-container">
-  <div class="form-header"> 
+<form [formGroup]="formParticipant" class="form-container">
+  <div class="form-header">
     <h2>Asistentes</h2>
     <button mat-icon-button (click)="onCancel()">
       <mat-icon>close</mat-icon>
@@ -10,7 +10,7 @@
     <mat-select formControlName="capacitacion">
       <mat-option [value]="capacitacion.id">{{ capacitacion.nombreCapacitacion }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="form.get('capacitacion')?.hasError('required')">
+    <mat-error *ngIf="formParticipant.get('capacitacion')?.hasError('required')">
       La capacitación es requerida
     </mat-error>
   </mat-form-field>
@@ -18,10 +18,8 @@
   <div class="row">
     <mat-form-field appearance="outline" class="participant-field">
       <mat-label>Participante</mat-label>
-      <mat-select formControlName="participante">
-        <mat-option *ngFor="let part of participantes" [value]="part">{{ part }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('participante')?.hasError('required')">
+      <input matInput formControlName="participante" placeholder="Ingrese el nombre del participante" (click)="openSearchParticipantModal()" readonly />
+      <mat-error *ngIf="formParticipant.get('participante')?.hasError('required')">
         El participante es requerido
       </mat-error>
     </mat-form-field>
@@ -41,6 +39,6 @@
       <button mat-stroked-button type="button" (click)="onCancel()">Cancelar</button>
       <button *ngIf="data.detalleCapacitacion" mat-stroked-button color="warn" type="button" (click)="onDelete()">Eliminar Participante</button>
     </div>
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">{{ data.detalleCapacitacion ? 'Aplicar Cambios' : 'Ingresar Participante' }}</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="formParticipant.invalid">{{ data.detalleCapacitacion ? 'Aplicar Cambios' : 'Ingresar Participante' }}</button>
   </div>
 </form>

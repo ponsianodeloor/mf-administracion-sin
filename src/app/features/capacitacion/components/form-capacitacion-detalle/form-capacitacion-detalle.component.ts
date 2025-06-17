@@ -5,11 +5,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Capacitacion, CapacitacionDetalle } from '../../api/capacitaciones';
+import {SearchParticipantModalComponent} from "../modals/search-participant-modal/search-participant-modal.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-form-capacitacion-detalle',
@@ -22,36 +24,38 @@ import { Capacitacion, CapacitacionDetalle } from '../../api/capacitaciones';
     MatSlideToggleModule,
     MatButtonModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    NgIf
   ],
   templateUrl: './form-capacitacion-detalle.component.html',
   styleUrl: './form-capacitacion-detalle.component.scss'
 })
 export class FormCapacitacionDetalleComponent implements OnInit {
-  form: FormGroup;
+  formParticipant: FormGroup;
   capacitacion: Capacitacion;
   participantes: any[] = [];
 
   constructor(
-    private fb: FormBuilder, 
-    private dialogRef: MatDialogRef<FormCapacitacionDetalleComponent>, 
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<FormCapacitacionDetalleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.capacitacion = this.data.capacitacion;
 
-    this.form = this.fb.group({
+    this.formParticipant = this.fb.group({
       capacitacion: [this.data.capacitacion.id, Validators.required],
       participante: [null, Validators.required],
       asiste: [false],
       observaciones: ['']
     });
 
-    this.form.get('capacitacion')?.disable();
+    this.formParticipant.get('capacitacion')?.disable();
 
     if (this.data.detalleCapacitacion) {
-      this.form.patchValue(this.data.detalleCapacitacion);
+      this.formParticipant.patchValue(this.data.detalleCapacitacion);
     }
   }
 
@@ -63,8 +67,21 @@ export class FormCapacitacionDetalleComponent implements OnInit {
     console.log(this.data);
   }
 
+  openSearchParticipantModal(): void {
+    const dialogRef = this.dialog.open(SearchParticipantModalComponent, {
+      width: '40%',
+      height: '40%',
+      disableClose: true,
+      autoFocus: true,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal cerrado con resultado:', result);
+    });
+  }
+
   onSubmit() {
-    console.log(this.form.value);
+    console.log(this.formParticipant.value);
   }
 
   onSelectRow(row: any) {
