@@ -19,3 +19,8 @@ export interface DetailTrainingResponse {
   equipoCrea:       string;
   estado:           string;
 }
+
+export interface DetailTrainingOnSelected{
+  action: string;
+  row: DetailTraining;
+}

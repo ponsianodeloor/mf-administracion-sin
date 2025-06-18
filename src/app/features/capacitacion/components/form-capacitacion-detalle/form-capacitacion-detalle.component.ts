@@ -67,8 +67,14 @@ export class FormCapacitacionDetalleComponent implements OnInit {
 
     this.formParticipant.get('capacitacion')?.disable();
 
-    if (this.data.detalleCapacitacion) {
-      this.formParticipant.patchValue(this.data.detalleCapacitacion);
+    if (this.data.detalleCapacitacion.id !=0 ) {
+      this.formParticipant.get('participante')?.setValue(this.data.detalleCapacitacion.apellidosNombres);
+
+      if(this.data.detalleCapacitacion.isAsiste === 'S') {
+        this.formParticipant.get('asiste')?.setValue(true);
+      }
+
+      this.formParticipant.get('observaciones')?.setValue(this.data.detalleCapacitacion.observaciones);
     }
   }
 
@@ -123,6 +129,11 @@ export class FormCapacitacionDetalleComponent implements OnInit {
       this.detailTraining.isAsiste = this.formParticipant.value.asiste ? 'S' : 'N';
       this.detailTraining.observaciones = this.formParticipant.value.observaciones;
       this.detailTraining.idPersona = this.participantSelected ? Number(this.participantSelected.idPersona) : 0;
+
+      if(this.data.detalleCapacitacion.id !=0){
+        this.detailTraining.id = this.data.detalleCapacitacion.id;
+        this.detailTraining.idPersona = this.data.detalleCapacitacion.idPersona;
+      }
 
       // Aquí puedes llamar al servicio para guardar el detalle de capacitación
       this.saveDetailTraining();

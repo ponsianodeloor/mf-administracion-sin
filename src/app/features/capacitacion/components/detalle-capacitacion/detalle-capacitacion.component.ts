@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormCapacitacionComponent } from '../form-capacitacion/form-capacitacion.component';
 import {CapacitacionDetalleService} from "../../../../shared/services/capacitacion-detalle.service";
 import {ToastrService} from "ngx-toastr";
+import {DetailTraining, DetailTrainingOnSelected} from "../../interfaces/detail-training";
 
 @Component({
   selector: 'app-detalle-capacitacion',
@@ -42,6 +43,15 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
   capacitacionDetalle!: CapacitacionDetalle[];
   isLoading: boolean = true;
   editCapacitacion!: Capacitacion;
+
+  rowSelectedDetailTraining: DetailTraining = {
+    id: 0,
+    idCapacitacion: 0,
+    idPersona: 0,
+    isAsiste: '',
+    observaciones: '',
+    apellidosNombres: '',
+  };
 
   @Output() capacitacionUpdated = new EventEmitter<Capacitacion>();
   displayedColumnsCapacitacion: ColumnDefinition[] = [
@@ -120,6 +130,22 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
       });
   }
 
+  clearParticipant() {
+    this.rowSelectedDetailTraining = {
+      id: 0,
+      idCapacitacion: this.capacitacion.id,
+      idPersona: 0,
+      isAsiste: '',
+      observaciones: '',
+      apellidosNombres: '',
+    };
+  }
+
+  onRowParticipantSelected(detailTrainingOnSelected:DetailTrainingOnSelected) {
+    this.rowSelectedDetailTraining = detailTrainingOnSelected.row;
+    this.openDialogCapacitacionDetalle();
+  }
+
   openDialogCapacitacion() {
     this.capacitacionService.getById(this.capacitacion.id).subscribe((capacitacion) => {
       this.editCapacitacion = capacitacion;
@@ -153,7 +179,7 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
 
       data: {
         capacitacion: this.capacitacion,
-        detalleCapacitacion: !this.capacitacionDetalle ? null : this.capacitacionDetalle
+        detalleCapacitacion: this.rowSelectedDetailTraining
       }
     });
 
@@ -161,6 +187,7 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
       if (result) {
         this.loadParticipants();
       }
+      this.clearParticipant();
     });
   }
 }

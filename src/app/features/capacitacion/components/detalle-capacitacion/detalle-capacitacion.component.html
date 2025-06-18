@@ -27,6 +27,7 @@
     *ngIf="!isLoading"
     [data]="capacitacionDetalle"
     [displayedColumns]="displayedColumnsDetalle"
-    [noPaginated]="true">
+    [noPaginated]="true"
+    (selectRow)="onRowParticipantSelected($event)">
   </app-tabla>
 </div>
