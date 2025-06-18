@@ -112,7 +112,7 @@ export class FormCapacitacionDetalleComponent implements OnInit {
         this.dialogRef.close(response);
       },
       error: (err) => {
-        this.toastrService.error('Ocurrió un error al guardar Participante.', 'Error');
+        this.toastrService.error(err.message, 'Error');
       }
     });
   }

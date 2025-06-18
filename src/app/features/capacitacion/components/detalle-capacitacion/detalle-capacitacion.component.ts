@@ -16,8 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormCapacitacionComponent } from '../form-capacitacion/form-capacitacion.component';
 import {CapacitacionDetalleService} from "../../../../shared/services/capacitacion-detalle.service";
-import Swal from "sweetalert2";
-import isLoading = module
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-detalle-capacitacion',
@@ -66,7 +65,8 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
     private catalogoAuxiliarService: CatalogoAuxiliarService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    private capacitacionDetalleService: CapacitacionDetalleService
+    private capacitacionDetalleService: CapacitacionDetalleService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -92,20 +92,32 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
         console.error('Error al cargar los datos:', error);
       }
     });
-    this.capacitacionDetalleService.getDetalleAsistentes({ page: 1, pageSize: 10, sortBy: '', sortDirection: '' }, this.capacitacion.id)
-      .subscribe({
-        next: (response) => {
-          this.capacitacionDetalle = response.data;
-        },
-        error: (error) => {
-          console.error('Error al cargar los detalles de la capacitación:', error);
-        }
-      });
-    this.isLoading
+
+    this.loadParticipants();
+
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {
     this.capacitacionDetalle = [];
+  }
+
+  loadParticipants() {
+    this.isLoading = true;
+
+    this.capacitacionDetalleService.getDetalleAsistentes(
+      this.capacitacion.id
+    )
+      .subscribe({
+        next: (response) => {
+          this.capacitacionDetalle = response.data;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.toastrService.error('Error al cargar los participantes', 'Error');
+          this.isLoading = false;
+        }
+      });
   }
 
   openDialogCapacitacion() {
@@ -131,16 +143,23 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
   }
 
   openDialogCapacitacionDetalle() {
-    this.dialog.open(FormCapacitacionDetalleComponent, {
+    const dialogRef = this.dialog.open(FormCapacitacionDetalleComponent, {
       height: '85%',
       width: '40%',
       position: {
         right: '0',
       },
       disableClose: true,
+
       data: {
         capacitacion: this.capacitacion,
         detalleCapacitacion: !this.capacitacionDetalle ? null : this.capacitacionDetalle
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadParticipants();
       }
     });
   }
