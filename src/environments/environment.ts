@@ -13,6 +13,7 @@ export const environment = {
   CAPACITACION_NEMONICOPADRE_TIPO_ASISTENCIA: 'TIPO-ASISTENCIA',
   MS_PESNOT_RESUMEN_SERVICE: '/pesnot-resumen-service/api',
   MS_PERSONAL_PESNOT_SERVICE: '/personal-pesnot-service/api',
+  MS_GESTION_NOTARIAS_SERVICE: '/gestion-notarias-service/api',
 
   //Recursos de MS_PESNOT_RESUMEN_SERVICE
   RS_PARAMETRO_NOTARIAS_PESNOT: '/parametro-notarias-pesnot',
@@ -30,6 +31,7 @@ export const environment = {
   ENDPOINT_POST_UPDATE_VALUE_BY_ID: "/update-descripcion",
   ENDPOINT_POST_UPDATE_DESCRIPTION_BY_ID: "/update-descripcion",
   ENDPOINT_GET_PERSONA_ROL_SEARCH: '/persona-rol/index-paginated?search=',
+  ENDPOINT_POST_DETAIL_TRAINING: '/detalle-capacitacion/store',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",

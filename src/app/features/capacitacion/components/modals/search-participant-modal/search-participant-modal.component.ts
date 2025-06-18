@@ -55,9 +55,7 @@ export class SearchParticipantModalComponent implements OnInit {
   }
 
   onSelectParticipant(participant: PersonRol): void {
-    console.log('Participante seleccionado:', participant);
     // Lógica adicional para manejar la selección
-
     this.dialogRef.close(participant); // Cierra el modal y devuelve el participante seleccionado
   }
 
