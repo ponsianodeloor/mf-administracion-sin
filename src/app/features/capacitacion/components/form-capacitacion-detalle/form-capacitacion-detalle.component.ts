@@ -83,7 +83,16 @@ export class FormCapacitacionDetalleComponent implements OnInit {
   }
 
   onDelete() {
-    console.log(this.data);
+    this.gestionNotariasService.deleteDetailTrainingById(this.data.detalleCapacitacion.id).subscribe({
+      next: (response) => {
+        this.toastrService.success('Participante eliminado exitosamente.', 'Éxito');
+        this.dialogRef.close(response);
+      },
+      error: (err) => {
+        this.toastrService.error('Ocurrió un error al eliminar el detalle de capacitación.', 'Error');
+        console.error('Error al eliminar:', err);
+      }
+    });
   }
 
   openSearchParticipantModal(): void {
