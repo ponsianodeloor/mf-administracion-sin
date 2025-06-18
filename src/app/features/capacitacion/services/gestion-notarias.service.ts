@@ -13,6 +13,7 @@ export class GestionNotariasService {
   msGestionNotariasService = environment.MS_GESTION_NOTARIAS_SERVICE;
 
   endpointPostDetailTraining = environment.ENDPOINT_POST_DETAIL_TRAINING;
+  endpointDeleteDetailTraining = environment.ENDPOINT_DELETE_DETAIL_TRAINING;
 
   constructor(
       private http: HttpClient,
@@ -22,4 +23,9 @@ export class GestionNotariasService {
     return this.http.post<DetailTrainingResponse>(
         `${this.apiTelematico}${this.msGestionNotariasService}${this.endpointPostDetailTraining}`, detailTraining);
   }
+
+  deleteDetailTrainingById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiTelematico}${this.msGestionNotariasService}${this.endpointDeleteDetailTraining}/${id}`);
+  }
+
 }
