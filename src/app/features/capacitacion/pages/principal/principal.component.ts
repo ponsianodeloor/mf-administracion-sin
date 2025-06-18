@@ -16,8 +16,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class PrincipalComponent implements OnInit, OnDestroy {
 
   breadcrumbs: BreadcrumbItem[] = [
-    { name: 'Home', url: '/home', active: false },
-    { name: 'Capacitaciones', url: '/capacitaciones', active: true },
+    { name: 'Home', active: false },
+    { name: 'Capacitaciones', active: true },
   ];
 
   capacitaciones!: Capacitacion[];
