@@ -20,12 +20,10 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   breadcrumbItems: BreadcrumbItem[] = [
     {
       name: 'home',
-      url: '/home',
       active: false
     },
     {
       name: 'Parámetros Facturación',
-      url: '/facturacion-notarias',
       active: true
     }
   ];
