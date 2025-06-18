@@ -14,6 +14,8 @@ import {SearchParticipantModalComponent} from "../modals/search-participant-moda
 import {JsonPipe, NgIf} from "@angular/common";
 import {PersonRol} from "../../interfaces/person-rol";
 import {DetailTraining} from "../../interfaces/detail-training";
+import {GestionNotariasService} from "../../services/gestion-notarias.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-form-capacitacion-detalle',
@@ -40,7 +42,7 @@ export class FormCapacitacionDetalleComponent implements OnInit {
   participantSelected: PersonRol | undefined;
   detailTraining: DetailTraining = {
     idCapacitacion: 0,
-    idPersonaNotario: 0,
+    idPersona: 0,
     isAsiste: '',
     observaciones: ''
   }
@@ -49,7 +51,9 @@ export class FormCapacitacionDetalleComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<FormCapacitacionDetalleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly gestionNotariasService: GestionNotariasService,
+    private readonly toastrService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -93,11 +97,22 @@ export class FormCapacitacionDetalleComponent implements OnInit {
           participante: this.participantSelected.apellidosNombres
         });
 
-        this.detailTraining.idPersonaNotario = Number(this.participantSelected.idPersonaNotario);
+        this.detailTraining.idPersona = this.participantSelected.idPersona;
 
       } else {
         // Lógica cuando result es undefined
         console.log('No se seleccionó ningún participante.');
+      }
+    });
+  }
+
+  saveDetailTraining() {
+    this.gestionNotariasService.saveDetailTraining(this.detailTraining).subscribe({
+      next: (response) => {
+        this.toastrService.success('Detalle de capacitación guardado exitosamente.', 'Éxito');
+      },
+      error: (err) => {
+        this.toastrService.error('Ocurrió un error al guardar el detalle de capacitación.', 'Error');
       }
     });
   }
@@ -107,9 +122,11 @@ export class FormCapacitacionDetalleComponent implements OnInit {
       this.detailTraining.idCapacitacion = this.data.capacitacion.id;
       this.detailTraining.isAsiste = this.formParticipant.value.asiste ? 'S' : 'N';
       this.detailTraining.observaciones = this.formParticipant.value.observaciones;
-      this.detailTraining.idPersonaNotario = this.participantSelected ? Number(this.participantSelected.idPersonaNotario) : 0;
+      this.detailTraining.idPersona = this.participantSelected ? Number(this.participantSelected.idPersona) : 0;
 
-      console.log('Detalle de capacitación:', this.detailTraining);
+      // Aquí puedes llamar al servicio para guardar el detalle de capacitación
+      this.saveDetailTraining();
+
       //this.dialogRef.close(this.detailTraining);
     }
   }
