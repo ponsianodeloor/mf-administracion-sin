@@ -1,22 +1,32 @@
 <div class="cab-container">
-    <div *ngIf="isLoading" class="loading-container">
-        <mat-spinner diameter="40"></mat-spinner>
-    </div>
-    <div *ngIf="!isLoading" class="header-container">
-        <span>Detalle de Capacitación</span>
-        <button mat-button color="primary" (click)="openDialogCapacitacion()">
-            <mat-icon>edit_square</mat-icon>
-            Editar
-        </button>
-    </div>
-    <app-tabla *ngIf="!isLoading" [data]="[capacitacion]" [displayedColumns]="displayedColumnsCapacitacion" [noPaginated]="true"></app-tabla>
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+  <div *ngIf="!isLoading" class="header-container">
+    <span>Detalle de Capacitación</span>
+    <button mat-button color="primary" (click)="openDialogCapacitacion()">
+      <mat-icon>edit_square</mat-icon>
+      Editar
+    </button>
+  </div>
+  <app-tabla
+    *ngIf="!isLoading"
+    [data]="[capacitacion]"
+    [displayedColumns]="displayedColumnsCapacitacion"
+    [noPaginated]="true">
+  </app-tabla>
 </div>
 <div class="det-container">
-    <div *ngIf="!isLoading" class="header-container">
-        <span>Participantes</span>
-        <button mat-button color="primary" (click)="openDialogCapacitacionDetalle()">
-            <mat-icon>add</mat-icon>
-        </button>
-    </div>
-    <app-tabla *ngIf="!isLoading" [data]="capacitacionDetalle" [displayedColumns]="displayedColumnsDetalle" [noPaginated]="!capacitacionDetalle"></app-tabla>
+  <div *ngIf="!isLoading" class="header-container">
+    <span>Participantes</span>
+    <button mat-button color="primary" (click)="openDialogCapacitacionDetalle()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <app-tabla
+    *ngIf="!isLoading"
+    [data]="capacitacionDetalle"
+    [displayedColumns]="displayedColumnsDetalle"
+    [noPaginated]="true">
+  </app-tabla>
 </div>

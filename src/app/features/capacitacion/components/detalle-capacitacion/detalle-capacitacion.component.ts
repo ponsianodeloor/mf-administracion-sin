@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormCapacitacionComponent } from '../form-capacitacion/form-capacitacion.component';
+import {CapacitacionDetalleService} from "../../../../shared/services/capacitacion-detalle.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-detalle-capacitacion',
@@ -34,12 +36,13 @@ import { FormCapacitacionComponent } from '../form-capacitacion/form-capacitacio
   styleUrl: './detalle-capacitacion.component.scss'
 })
 export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
-  
+
   @Input() capacitacion!: Capacitacion;
   dataSource!: Capacitacion[];
   capacitacionDetalle!: CapacitacionDetalle[];
   isLoading: boolean = true;
   editCapacitacion!: Capacitacion;
+
   @Output() capacitacionUpdated = new EventEmitter<Capacitacion>();
   displayedColumnsCapacitacion: ColumnDefinition[] = [
     { name: 'nombreCapacitacion', type: 'text', header: 'Nombre' },
@@ -52,18 +55,18 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
 
   displayedColumnsDetalle: ColumnDefinition[] = [
     { name: 'edit', type: 'action', header: '' },
-    { name: 'nombre', type: 'text', header: 'Nombre' },
-    { name: 'apellido', type: 'text', header: 'Apellido' },
-    { name: 'email', type: 'text', header: 'Email' },
-    { name: 'telefono', type: 'text', header: 'Teléfono' },
-    { name: 'asistencia', type: 'text', header: 'Asistencia' },
+    { name: 'apellidosNombres', type: 'text', header: 'Asistente Notaría' },
+    { name: 'isAsiste', type: 'text', header: 'Asiste' },
+    { name: 'observaciones', type: 'text', header: 'Observaciones' },
   ];
 
   constructor(
-    private capacitacionService: CapacitacionService, 
-    private catalogoAuxiliarService: CatalogoAuxiliarService, 
+    private capacitacionService: CapacitacionService,
+    private catalogoAuxiliarService: CatalogoAuxiliarService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private capacitacionDetalleService: CapacitacionDetalleService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,13 +90,34 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
       },
       error: (error) => {
         console.error('Error al cargar los datos:', error);
-        this.isLoading = false;
       }
     });
+
+    this.loadParticipants();
+
+    this.isLoading = false;
   }
-  
+
   ngOnDestroy(): void {
     this.capacitacionDetalle = [];
+  }
+
+  loadParticipants() {
+    this.isLoading = true;
+
+    this.capacitacionDetalleService.getDetalleAsistentes(
+      this.capacitacion.id
+    )
+      .subscribe({
+        next: (response) => {
+          this.capacitacionDetalle = response.data;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.toastrService.error('Error al cargar los participantes', 'Error');
+          this.isLoading = false;
+        }
+      });
   }
 
   openDialogCapacitacion() {
@@ -108,7 +132,7 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
         disableClose: true,
         data: this.editCapacitacion
       });
-  
+
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.getData();
@@ -119,16 +143,23 @@ export class DetalleCapacitacionComponent implements OnChanges, OnDestroy {
   }
 
   openDialogCapacitacionDetalle() {
-    this.dialog.open(FormCapacitacionDetalleComponent, {
+    const dialogRef = this.dialog.open(FormCapacitacionDetalleComponent, {
       height: '85%',
       width: '40%',
       position: {
         right: '0',
       },
       disableClose: true,
+
       data: {
         capacitacion: this.capacitacion,
         detalleCapacitacion: !this.capacitacionDetalle ? null : this.capacitacionDetalle
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadParticipants();
       }
     });
   }
