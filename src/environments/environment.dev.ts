@@ -21,6 +21,7 @@ export const environment = {
   ADMINISTRACION_CATALOGO_API_SERVICES: '/pesnot-resumen-service/api/catalogo',
   ADMINISTRACION_CATALOGO_AUXILIAR_API_SERVICES: '/gestion-notarias-service/api/catalogo-auxiliar',
   ADMINISTRACION_CAPACITACION_API_SERVICES: '/gestion-notarias-service/api/capacitacion',
+  ADMINISTRACION_CAPACITACION_DETALLE_API_SERVICES: '/gestion-notarias-service/api/detalle-capacitacion/',
   ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
   MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',
   MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
