@@ -1,12 +1,18 @@
-<div>
+<div role="navigation" aria-label="Breadcrumb">
     @for(breadcrumbItem of breadcrumbItems; track $index; let last = $last){
-    @if(!last){
-    <span *ngIf="breadcrumbItem.active" class="active">{{breadcrumbItem.name}}</span>
-    <span *ngIf="!breadcrumbItem.active" [routerLink]="breadcrumbItem.url" style="cursor: pointer">{{breadcrumbItem.name}}</span>
-    <span>/</span>
-    }@else{
-    <span *ngIf="breadcrumbItem.active" class="active">{{breadcrumbItem.name}}</span>
-    <span *ngIf="!breadcrumbItem.active" [routerLink]="breadcrumbItem.url" style="cursor: pointer">{{breadcrumbItem.name}}</span>
-    }
+        @if(!last){
+            @if(breadcrumbItem.active){
+                <span class="active">{{breadcrumbItem.name}}</span>
+            } @else {
+                <span [routerLink]="breadcrumbItem.url" style="cursor: pointer">{{breadcrumbItem.name}}</span>
+            }
+            <span aria-hidden="true">/</span>
+        } @else {
+            @if(breadcrumbItem.active){
+                <span class="active">{{breadcrumbItem.name}}</span>
+            } @else {
+                <span [routerLink]="breadcrumbItem.url" style="cursor: pointer">{{breadcrumbItem.name}}</span>
+            }
+        }
     }
 </div>
