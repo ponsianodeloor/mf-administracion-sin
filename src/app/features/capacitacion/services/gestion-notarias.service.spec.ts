@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionNotariasServiceService } from './gestion-notarias-service.service';
+import { GestionNotariasService } from './gestion-notarias.service';
 
-describe('GestionNotariasServiceService', () => {
-  let service: GestionNotariasServiceService;
+describe('GestionNotariasService', () => {
+  let service: GestionNotariasService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GestionNotariasServiceService);
+    service = TestBed.inject(GestionNotariasService);
   });
 
   it('should be created', () => {

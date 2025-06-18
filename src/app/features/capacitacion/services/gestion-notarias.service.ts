@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {DetailTraining, DetailTrainingResponse} from "../interfaces/detail-training";
 import {Observable} from "rxjs";
+import {DetailTraining, DetailTrainingResponse} from "../interfaces/detail-training";
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +15,11 @@ export class GestionNotariasService {
   endpointPostDetailTraining = environment.ENDPOINT_POST_DETAIL_TRAINING;
 
   constructor(
-    private http: HttpClient,
+      private http: HttpClient,
   ) { }
 
   saveDetailTraining(detailTraining: DetailTraining):Observable<DetailTrainingResponse> {
     return this.http.post<DetailTrainingResponse>(
-      `${this.apiTelematico}${this.msGestionNotariasService}${this.endpointPostDetailTraining}`, detailTraining);
+        `${this.apiTelematico}${this.msGestionNotariasService}${this.endpointPostDetailTraining}`, detailTraining);
   }
 }
