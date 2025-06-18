@@ -1,7 +1,8 @@
 export interface DetailTraining {
   id?:               number;
   idCapacitacion:   number;
-  idPersona: number;
+  idPersona?: number;
+  apellidosNombres?: string;
   isAsiste:         string;
   observaciones:    string;
 }

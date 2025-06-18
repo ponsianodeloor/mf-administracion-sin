@@ -11,11 +11,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Capacitacion, CapacitacionDetalle } from '../../api/capacitaciones';
 import {SearchParticipantModalComponent} from "../modals/search-participant-modal/search-participant-modal.component";
-import {JsonPipe, NgIf} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {PersonRol} from "../../interfaces/person-rol";
 import {DetailTraining} from "../../interfaces/detail-training";
-import {GestionNotariasService} from "../../services/gestion-notarias.service";
 import {ToastrService} from "ngx-toastr";
+import {GestionNotariasService} from "../../services/gestion-notarias.service";
 
 @Component({
   selector: 'app-form-capacitacion-detalle',
@@ -30,7 +30,6 @@ import {ToastrService} from "ngx-toastr";
     MatDialogModule,
     MatIconModule,
     NgIf,
-    JsonPipe
   ],
   templateUrl: './form-capacitacion-detalle.component.html',
   styleUrl: './form-capacitacion-detalle.component.scss'
@@ -110,9 +109,10 @@ export class FormCapacitacionDetalleComponent implements OnInit {
     this.gestionNotariasService.saveDetailTraining(this.detailTraining).subscribe({
       next: (response) => {
         this.toastrService.success('Detalle de capacitación guardado exitosamente.', 'Éxito');
+        this.dialogRef.close(response);
       },
       error: (err) => {
-        this.toastrService.error('Ocurrió un error al guardar el detalle de capacitación.', 'Error');
+        this.toastrService.error(err.message, 'Error');
       }
     });
   }
@@ -126,8 +126,6 @@ export class FormCapacitacionDetalleComponent implements OnInit {
 
       // Aquí puedes llamar al servicio para guardar el detalle de capacitación
       this.saveDetailTraining();
-
-      //this.dialogRef.close(this.detailTraining);
     }
   }
 
