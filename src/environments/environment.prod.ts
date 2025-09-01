@@ -3,8 +3,8 @@ export const environment = {
   text: "This is development environment",
   name: "development environment",
 
-  SERVER_PESNOT: "https://desa-api-pesnot.funcionjudicial.gob.ec",
-  HOST_API_TELEMATICO: 'https://desa-api-telematico.funcionjudicial.gob.ec',
+  SERVER_PESNOT: "https://api-pesnot.funcionjudicial.gob.ec",
+  HOST_API_TELEMATICO: 'https://api-telematico.funcionjudicial.gob.ec',
 
   //TODO: Todas las variables de entorno son en mayúsculas y con guiones bajos
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
