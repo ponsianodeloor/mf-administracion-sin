@@ -4,6 +4,7 @@ export const environment = {
   name: "development environment",
 
   SERVER_PESNOT: "https://desa-api-pesnot.funcionjudicial.gob.ec",
+  API_PESNOT: "https://desa-api-pesnot.funcionjudicial.gob.ec",
   HOST_API_TELEMATICO: 'https://desa-api-telematico.funcionjudicial.gob.ec',
 
   //TODO: Todas las variables de entorno son en mayúsculas y con guiones bajos
@@ -34,6 +35,8 @@ export const environment = {
   ENDPOINT_GET_PERSONA_ROL_SEARCH: '/persona-rol/index-paginated?search=',
   ENDPOINT_POST_DETAIL_TRAINING: '/detalle-capacitacion/store',
   ENDPOINT_DELETE_DETAIL_TRAINING: '/detalle-capacitacion',
+  EP_GET_BILLING_PARAMETERS_NOTARIES: '/query/parametros-facturacion-notarias/notaria/',
+  EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate/',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",
