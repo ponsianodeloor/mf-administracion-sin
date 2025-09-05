@@ -36,7 +36,7 @@ export const environment = {
   ENDPOINT_POST_DETAIL_TRAINING: '/detalle-capacitacion/store',
   ENDPOINT_DELETE_DETAIL_TRAINING: '/detalle-capacitacion',
   EP_GET_BILLING_PARAMETERS_NOTARIES: '/query/parametros-facturacion-notarias/notaria/',
-  EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate/',
+  EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",

@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
 import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-create-or-update-parametros-facturacion-notarias-modal',
@@ -47,7 +49,9 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   constructor(
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreateOrUpdateParametrosFacturacionNotariasModalComponent>
+    private dialogRef: MatDialogRef<CreateOrUpdateParametrosFacturacionNotariasModalComponent>,
+    private readonly notariasPesnotService: NotariasPesnotService,
+    private toastrService: ToastrService
   ) {
     // Puedes usar this.data.idNotary aquí para inicializar valores
   }
@@ -133,6 +137,25 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     this.dialogRef.close();
   }
 
+  createOrUpdateBillingParametersNotaries(data: ParametrosFacturacionNotarias) {
+    this.notariasPesnotService.postBillingParametersNotariesCreateOrUpdate(data).subscribe({
+      next: (resp) => {
+        console.log('Respuesta del servidor:', resp);
+        this.toastrService.success('Parámetros de facturación guardados con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+      },
+      error: (err) => {
+        this.toastrService.error('Error al guardar los parámetros de facturación', 'Error', {
+          timeOut: 3000,
+        });
+        console.error('Error al enviar los datos:', err);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -150,7 +173,17 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     this.parametrosFacturacionNotarias.codigoContribuyenteEspecial = this.form.value.codigoContribuyenteEspecial;
     this.parametrosFacturacionNotarias.obligadoContabilidad = this.form.value.obligadoContabilidad;
 
-    console.log('Datos para enviar:', this.parametrosFacturacionNotarias);
-    // Aquí iría la lógica para enviar los datos al servicio correspondiente
+    this.parametrosFacturacionNotarias = this.removeIdParametrosFacturacionNotariasTemp();
+
+    this.createOrUpdateBillingParametersNotaries(this.parametrosFacturacionNotarias);
+  }
+
+  /**
+   * Elimina temporalmente la propiedad idParametrosFacturacionNotarias del objeto parametrosFacturacionNotarias.
+   * Devuelve una copia del objeto sin esa propiedad.
+   */
+  removeIdParametrosFacturacionNotariasTemp(): Omit<ParametrosFacturacionNotarias, 'idParametrosFacturacionNotarias'> {
+    const { idParametrosFacturacionNotarias, ...rest } = this.parametrosFacturacionNotarias;
+    return rest;
   }
 }

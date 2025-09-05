@@ -1,5 +1,5 @@
 export interface ParametrosFacturacionNotarias {
-  idParametrosFacturacionNotarias: number;
+  idParametrosFacturacionNotarias?: number;
   idNotaria:                       number;
   claveAcceso:                     string;
   numeroRuc:                       string;
