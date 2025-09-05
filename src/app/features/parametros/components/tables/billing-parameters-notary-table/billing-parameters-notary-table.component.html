@@ -1,8 +1,17 @@
+<div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+  <button mat-stroked-button color="primary">
+    Crear
+  </button>
+</div>
 
 <table mat-table [dataSource]="parametersBillingNotary" class="mat-elevation-z8">
   <ng-container matColumnDef="idParametrosFacturacionNotarias">
-    <th mat-header-cell *matHeaderCellDef> ID Parámetro </th>
-    <td mat-cell *matCellDef="let element"> {{element.idParametrosFacturacionNotarias}} </td>
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button color="primary" (click)="onEdit(element.idParametrosFacturacionNotarias)" style="margin-left:8px;">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="idNotaria">

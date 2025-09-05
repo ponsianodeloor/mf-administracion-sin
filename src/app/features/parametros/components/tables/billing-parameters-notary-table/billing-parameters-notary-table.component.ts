@@ -4,12 +4,16 @@ import {NotariasPesnotService} from "../../../../../shared/services/notarias-pes
 import {MatTableModule} from "@angular/material/table";
 import {UserSelected} from "../../../interfaces/user-selected";
 import {ToastrService} from "ngx-toastr";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-billing-parameters-notary-table',
   standalone: true,
   imports: [
-    MatTableModule
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './billing-parameters-notary-table.component.html',
   styleUrl: './billing-parameters-notary-table.component.scss'
@@ -85,6 +89,15 @@ export class BillingParametersNotaryTableComponent implements OnInit{
         console.log(err);
       }
     });
+  }
+
+  onCreate() {
+
+  }
+
+  onEdit(element: ParametrosFacturacionNotarias) {
+    console.log('Editar elemento:', element);
+    // Aquí puedes agregar la lógica para editar el elemento
   }
 
 }
