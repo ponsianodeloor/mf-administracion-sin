@@ -6,6 +6,8 @@ import {UserSelected} from "../../../interfaces/user-selected";
 import {ToastrService} from "ngx-toastr";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import { MatDialog } from '@angular/material/dialog';
+import { CreateOrUpdateParametrosFacturacionNotariasModalComponent } from '../../modals/create-or-update-parametros-facturacion-notarias-modal/create-or-update-parametros-facturacion-notarias-modal.component';
 
 @Component({
   selector: 'app-billing-parameters-notary-table',
@@ -58,6 +60,7 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   constructor(
     private readonly notariasPesnotService:NotariasPesnotService,
     private readonly toastrService: ToastrService,
+    private readonly dialog: MatDialog,
   ) {
   }
 
@@ -91,8 +94,12 @@ export class BillingParametersNotaryTableComponent implements OnInit{
     });
   }
 
-  onCreate() {
-
+  openCreateDialog(): void {
+    this.dialog.open(CreateOrUpdateParametrosFacturacionNotariasModalComponent, {
+      height: '70vh',
+      width: '80vw',
+      disableClose: true
+    });
   }
 
   onEdit(element: ParametrosFacturacionNotarias) {
