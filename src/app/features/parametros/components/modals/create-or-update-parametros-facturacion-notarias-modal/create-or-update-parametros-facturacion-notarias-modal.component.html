@@ -1,98 +1,118 @@
-<!-- Header -->
-<mat-card style="box-shadow:none; border-bottom: 1px solid #e0e0e0; border-radius:0; padding: 12px 16px;">
-  <div style="display:flex; align-items:center; justify-content:space-between;">
-    <h2 style="margin:0; font-weight:600;">Parámetros Facturación</h2>
-    <button mat-icon-button aria-label="Cerrar">
-      ✕
-    </button>
-  </div>
-  <div style="margin-top:8px; display:flex; align-items:center; gap:12px;">
-    <span style="font-size:12px; color:#616161;">Estado</span>
-    <mat-slide-toggle></mat-slide-toggle>
-  </div>
-  
-</mat-card>
-
-<!-- Body -->
-<div style="padding:16px; display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;">
-  <!-- Row 1 -->
-  <mat-form-field appearance="fill">
-    <mat-label>RUC</mat-label>
-    <input matInput placeholder="RUC" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Tipo Ambiente</mat-label>
-    <mat-select>
-      <mat-option value="1">Pruebas</mat-option>
-      <mat-option value="2">Producción</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Establecimiento</mat-label>
-    <input matInput placeholder="Establecimiento" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Punto Emisión</mat-label>
-    <input matInput placeholder="Punto Emisión" />
-  </mat-form-field>
-
-  <!-- Row 2 -->
-  <mat-form-field appearance="fill" style="grid-column: 1 / -1;">
-    <mat-label>Razón Social</mat-label>
-    <input matInput placeholder="Razón Social" />
-  </mat-form-field>
-
-  <!-- Row 3 -->
-  <mat-form-field appearance="fill" style="grid-column: span 2;">
-    <mat-label>Contribuyente Especial</mat-label>
-    <input matInput placeholder="Contribuyente Especial" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" style="grid-column: span 2;">
-    <mat-label>Obligado Contabilidad</mat-label>
-    <mat-select>
-      <mat-option value="SI">Sí</mat-option>
-      <mat-option value="NO">No</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <!-- Row 4 -->
-  <mat-card style="grid-column: span 2; min-height: 104px; display:flex; align-items:center; gap:12px; padding:16px;">
-    <div style="font-size:28px;">🔍</div>
-    <div>
-      <div style="font-weight:700; font-size:18px;">Logo Emisor</div>
-      <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Header -->
+  <mat-card style="box-shadow:none; border-bottom: 1px solid #e0e0e0; border-radius:0; padding: 12px 16px;">
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <h2 style="margin:0; font-weight:600;">Parámetros Facturación</h2>
+      <button mat-icon-button aria-label="Cerrar" type="button" (click)="onCancel()">
+        ✕
+      </button>
+    </div>
+    <div style="margin-top:8px; display:flex; align-items:center; gap:12px;">
+      <span style="font-size:12px; color:#616161;">Estado</span>
+      <mat-slide-toggle formControlName="estado"></mat-slide-toggle>
     </div>
   </mat-card>
 
-  <mat-form-field appearance="fill" style="grid-column: span 2;">
-    <mat-label>Nombre Logo</mat-label>
-    <input matInput placeholder="Nombre Logo" />
-  </mat-form-field>
+  <!-- Body -->
+  <div style="padding:16px; display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;">
+    <!-- Row 1 -->
+    <mat-form-field appearance="fill">
+      <mat-label>RUC</mat-label>
+      <input matInput placeholder="RUC" formControlName="numeroRuc"
+             (keydown)="onKeydownDigits($event, 'numeroRuc', 13)"
+             (input)="onSanitizeNumeroRuc($event)" />
+      <mat-error *ngIf="hasError('numeroRuc','required')">Campo requerido</mat-error>
+      <mat-error *ngIf="hasError('numeroRuc','pattern')">Debe ser 13 dígitos y terminar en 001, 002 o 003</mat-error>
+    </mat-form-field>
 
-  <!-- Row 5 -->
-  <mat-card style="grid-column: span 2; min-height: 104px; display:flex; align-items:center; gap:12px; padding:16px;">
-    <div style="font-size:28px;">🔍</div>
-    <div>
-      <div style="font-weight:700; font-size:18px;">Certificado P12</div>
-      <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
+    <mat-form-field appearance="fill">
+      <mat-label>Tipo Ambiente</mat-label>
+      <mat-select formControlName="tipoAmbiente">
+        <mat-option *ngFor="let a of ambientes" [value]="a.value">{{a.label}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="hasError('tipoAmbiente','required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Establecimiento</mat-label>
+      <input matInput placeholder="Establecimiento" formControlName="establecimiento"
+             (keydown)="onKeydownDigits($event, 'establecimiento', 3)"
+             (input)="onSanitizeThreeDigits($event, 'establecimiento')" />
+      <mat-error *ngIf="hasError('establecimiento','required')">Campo requerido</mat-error>
+      <mat-error *ngIf="hasError('establecimiento','pattern')">Rango permitido 001 a 100</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Punto Emisión</mat-label>
+      <input matInput placeholder="Punto Emisión" formControlName="puntoEmision"
+             (keydown)="onKeydownDigits($event, 'puntoEmision', 3)"
+             (input)="onSanitizeThreeDigits($event, 'puntoEmision')" />
+      <mat-error *ngIf="hasError('puntoEmision','required')">Campo requerido</mat-error>
+      <mat-error *ngIf="hasError('puntoEmision','pattern')">Rango permitido 001 a 100</mat-error>
+    </mat-form-field>
+
+    <!-- Row 2 -->
+    <mat-form-field appearance="fill" style="grid-column: 1 / -1;">
+      <mat-label>Razón Social</mat-label>
+      <input matInput placeholder="Razón Social" formControlName="razonSocial" />
+      <mat-error *ngIf="hasError('razonSocial','required')">Campo requerido</mat-error>
+      <mat-error *ngIf="hasError('razonSocial','minlength')">Mínimo 3 caracteres</mat-error>
+    </mat-form-field>
+
+    <!-- Row 3 -->
+    <mat-form-field appearance="fill" style="grid-column: span 2;">
+      <mat-label>Contribuyente Especial</mat-label>
+      <input matInput placeholder="Contribuyente Especial" formControlName="codigoContribuyenteEspecial" />
+      <mat-error *ngIf="hasError('codigoContribuyenteEspecial','required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="grid-column: span 2;">
+      <mat-label>Obligado Contabilidad</mat-label>
+      <mat-select formControlName="obligadoContabilidad">
+        <mat-option *ngFor="let o of obligadoOptions" [value]="o.value">{{o.label}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="hasError('obligadoContabilidad','required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <!-- Row 4 -->
+    <mat-card style="grid-column: span 2; min-height: 104px; display:flex; align-items:center; gap:12px; padding:16px;">
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:18px;">Logo Emisor</div>
+        <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
+        <input type="file" accept="image/*" (change)="onFileSelected($event, 'logoEmisor')" style="margin-top:8px;" />
+        <div style="color:#d32f2f; font-size:12px; margin-top:6px;" *ngIf="hasError('logoEmisor','required')">Archivo requerido</div>
+      </div>
+    </mat-card>
+
+    <mat-form-field appearance="fill" style="grid-column: span 2;">
+      <mat-label>Nombre Logo</mat-label>
+      <input matInput placeholder="Nombre Logo" formControlName="nombreLogo" />
+      <mat-error *ngIf="hasError('nombreLogo','required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <!-- Row 5 -->
+    <mat-card style="grid-column: span 2; min-height: 104px; display:flex; align-items:center; gap:12px; padding:16px;">
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:18px;">Certificado P12</div>
+        <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
+        <input type="file" accept=".p12,.pfx" (change)="onFileSelected($event, 'certificadoP12')" style="margin-top:8px;" />
+        <div style="color:#d32f2f; font-size:12px; margin-top:6px;" *ngIf="hasError('certificadoP12','required')">Archivo requerido</div>
+      </div>
+    </mat-card>
+
+    <mat-form-field appearance="fill" style="grid-column: span 2;">
+      <mat-label>Password Certificado</mat-label>
+      <input matInput type="password" placeholder="Password Certificado" formControlName="passwordCertificado" />
+      <mat-error *ngIf="hasError('passwordCertificado','required')">Campo requerido</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Footer -->
+  <mat-card style="box-shadow:none; border-top: 1px solid #e0e0e0; border-radius:0; padding: 12px 16px; display:flex; justify-content:space-between; align-items:center;">
+    <div></div>
+    <div style="display:flex; gap:12px;">
+      <button mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Crear</button>
     </div>
   </mat-card>
-
-  <mat-form-field appearance="fill" style="grid-column: span 2;">
-    <mat-label>Password Certificado</mat-label>
-    <input matInput type="password" placeholder="Password Certificado" />
-  </mat-form-field>
-</div>
-
-<!-- Footer -->
-<mat-card style="box-shadow:none; border-top: 1px solid #e0e0e0; border-radius:0; padding: 12px 16px; display:flex; justify-content:space-between; align-items:center;">
-  <div></div>
-  <div style="display:flex; gap:12px;">
-    <button mat-stroked-button color="primary">Cancelar</button>
-    <button mat-raised-button color="primary">Crear</button>
-  </div>
-</mat-card>
+</form>
