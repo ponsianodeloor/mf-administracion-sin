@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
+import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-or-update-parametros-facturacion-notarias-modal',
@@ -16,6 +18,20 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
 })
 
 export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implements OnInit{
+
+  parametrosFacturacionNotarias: ParametrosFacturacionNotarias = {
+    idParametrosFacturacionNotarias: 0,
+    idNotaria: 0,
+    claveAcceso: '',
+    numeroRuc: '',
+    tipoAmbiente: 1,
+    establecimiento: '',
+    puntoEmision: '',
+    razonSocial: '',
+    codigoContribuyenteEspecial: '',
+    obligadoContabilidad: 'NO'
+  }
+
   form: FormGroup;
 
   ambientes = [
@@ -29,8 +45,11 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   ];
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<CreateOrUpdateParametrosFacturacionNotariasModalComponent>
   ) {
+    // Puedes usar this.data.idNotary aquí para inicializar valores
   }
 
   ngOnInit(): void {
@@ -111,7 +130,7 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   }
 
   onCancel() {
-    this.form.reset({ estado: false });
+    this.dialogRef.close();
   }
 
   onSubmit() {
@@ -120,5 +139,18 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
       return;
     }
     console.log('Formulario válido:', this.form.value);
+
+    this.parametrosFacturacionNotarias.idNotaria = this.data.idNotary;
+    this.parametrosFacturacionNotarias.claveAcceso = "no-data";
+    this.parametrosFacturacionNotarias.numeroRuc = this.form.value.numeroRuc;
+    this.parametrosFacturacionNotarias.tipoAmbiente = this.form.value.tipoAmbiente;
+    this.parametrosFacturacionNotarias.establecimiento = this.form.value.establecimiento;
+    this.parametrosFacturacionNotarias.puntoEmision = this.form.value.puntoEmision;
+    this.parametrosFacturacionNotarias.razonSocial = this.form.value.razonSocial;
+    this.parametrosFacturacionNotarias.codigoContribuyenteEspecial = this.form.value.codigoContribuyenteEspecial;
+    this.parametrosFacturacionNotarias.obligadoContabilidad = this.form.value.obligadoContabilidad;
+
+    console.log('Datos para enviar:', this.parametrosFacturacionNotarias);
+    // Aquí iría la lógica para enviar los datos al servicio correspondiente
   }
 }

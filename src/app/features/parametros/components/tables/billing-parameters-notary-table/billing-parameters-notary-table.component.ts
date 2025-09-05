@@ -98,6 +98,7 @@ export class BillingParametersNotaryTableComponent implements OnInit{
     this.dialog.open(CreateOrUpdateParametrosFacturacionNotariasModalComponent, {
       height: '70vh',
       width: '80vw',
+      data: { idNotary: this.idNotary },
       disableClose: true
     });
   }
