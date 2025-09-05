@@ -1,9 +1,5 @@
 
 <table mat-table [dataSource]="parametersBillingNotary" class="mat-elevation-z8">
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
-
   <ng-container matColumnDef="idParametrosFacturacionNotarias">
     <th mat-header-cell *matHeaderCellDef> ID Parámetro </th>
     <td mat-cell *matCellDef="let element"> {{element.idParametrosFacturacionNotarias}} </td>
@@ -49,9 +45,14 @@
     <td mat-cell *matCellDef="let element"> {{element.codigoContribuyenteEspecial}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="obligadoLlevarContabilidad">
+  <!-- Ajuste: el id de la columna debe coincidir con displayedColumns -->
+  <ng-container matColumnDef="obligadoContabilidad">
     <th mat-header-cell *matHeaderCellDef> Obligado Llevar Contabilidad </th>
-    <td mat-cell *matCellDef="let element"> {{element.obligadoLlevarContabilidad}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.obligadoContabilidad}} </td>
   </ng-container>
+
+  <!-- Definición de filas al final para mayor claridad -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
 
 </table>
