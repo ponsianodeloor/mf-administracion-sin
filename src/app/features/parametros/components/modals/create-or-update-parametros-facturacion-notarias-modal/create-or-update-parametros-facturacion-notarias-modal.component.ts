@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
@@ -14,7 +14,8 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
   templateUrl: './create-or-update-parametros-facturacion-notarias-modal.component.html',
   styleUrl: './create-or-update-parametros-facturacion-notarias-modal.component.scss'
 })
-export class CreateOrUpdateParametrosFacturacionNotariasModalComponent {
+
+export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implements OnInit{
   form: FormGroup;
 
   ambientes = [
@@ -27,7 +28,16 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent {
     { value: 'NO', label: 'No' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  initForm(){
     this.form = this.fb.group({
       estado: [false, [Validators.required]],
       // 13 dígitos y terminar en 001, 002 o 003
