@@ -4,12 +4,16 @@ import {
   BankingParametersNotaryPageComponent
 } from "./pages/banking-parameters-notary-page/banking-parameters-notary-page.component";
 import {ZoomParametersPageComponent} from "./pages/zoom-parameters-page/zoom-parameters-page.component";
+import {
+  BillingParametersNotaryPageComponent
+} from "./pages/billing-parameters-notary-page/billing-parameters-notary-page.component";
 
 const routes: Routes = [
   {
     path: '',
     children: [
       { path: 'bancarios', component: BankingParametersNotaryPageComponent },
+      { path: 'facturacion', component: BillingParametersNotaryPageComponent },
       { path: 'zoom', component: ZoomParametersPageComponent },
     ]
   }
