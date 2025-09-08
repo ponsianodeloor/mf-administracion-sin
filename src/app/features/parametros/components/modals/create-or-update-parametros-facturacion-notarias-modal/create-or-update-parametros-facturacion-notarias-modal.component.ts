@@ -8,6 +8,7 @@ import {NotariasPesnotService} from "../../../../../shared/services/notarias-pes
 import {ToastrService} from "ngx-toastr";
 import {SeguridadParametrosService} from "../../../../../shared/services/seguridad-parametros.service";
 import { encryptWithPublicKey } from "../../../../../shared/utils/crypto.util";
+import {RepositorioService} from "../../../../../shared/services/repositorio.service";
 
 @Component({
   selector: 'app-create-or-update-parametros-facturacion-notarias-modal',
@@ -33,7 +34,9 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     puntoEmision: '',
     razonSocial: '',
     codigoContribuyenteEspecial: '',
-    obligadoContabilidad: 'NO'
+    obligadoContabilidad: 'NO',
+    logoEmisor: '',
+    nombreLogo: ''
   }
 
   form: FormGroup;
@@ -53,12 +56,11 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CreateOrUpdateParametrosFacturacionNotariasModalComponent>,
+    private readonly repositorioService: RepositorioService,
     private readonly notariasPesnotService: NotariasPesnotService,
     private readonly seguridadParametrosService: SeguridadParametrosService,
     private toastrService: ToastrService
-  ) {
-    // Puedes usar this.data.idNotary aquí para inicializar valores
-  }
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -82,6 +84,15 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
       passwordCertificado: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]],
       passwordCertificadoEncrypted: ['']
     });
+  }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
+
+  hasError(controlName: string, error: string) {
+    const ctrl = this.form.get(controlName);
+    return !!ctrl && ctrl.touched && ctrl.hasError(error);
   }
 
   // Permitir solo números y limitar longitud según control
@@ -194,93 +205,45 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     }
   }
 
-  hasError(controlName: string, error: string) {
-    const ctrl = this.form.get(controlName);
-    return !!ctrl && ctrl.touched && ctrl.hasError(error);
-  }
-
-  onCancel() {
-    this.dialogRef.close();
-  }
-
-  postUploadP12(id:number, file: File) {
-    this.seguridadParametrosService.uploadP12(id, file).subscribe({
-      next: (resp) => {
-        console.log('Respuesta del servidor:', resp);
-        this.toastrService.success('Certificado P12 subido con éxito', 'Éxito', {
-          timeOut: 3000,
-        });
-        this.savePasswordP12(id, this.form.value.passwordCertificado);
-        //this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
-      },
-      error: (err) => {
-        this.toastrService.error('Error al subir el certificado P12', 'Error', {
-          timeOut: 3000,
-        });
-        console.error('Error al enviar los datos:', err);
-        // Aquí podrías mostrar un mensaje de error al usuario
-      }
-    });
-  }
-
-  savePasswordP12(id:number, clave: string) {
-    this.seguridadParametrosService.savePasswordP12(id, clave).subscribe({
-      next: (resp) => {
-        console.log('Respuesta del servidor:', resp);
-        this.toastrService.success('Contraseña del certificado P12 guardada con éxito', 'Éxito', {
-          timeOut: 3000,
-        });
-        //this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
-      },
-      error: (err) => {
-        this.toastrService.error('Error al guardar la contraseña del certificado P12', 'Error', {
-          timeOut: 3000,
-        });
-        console.error('Error al enviar los datos:', err);
-        // Aquí podrías mostrar un mensaje de error al usuario
-      }
-    });
-  }
-
-  createOrUpdateBillingParametersNotaries(data: ParametrosFacturacionNotarias) {
-    this.notariasPesnotService.postBillingParametersNotariesCreateOrUpdate(data).subscribe({
-      next: (resp) => {
-        console.log('Respuesta del servidor:', resp);
-        this.toastrService.success('Parámetros de facturación guardados con éxito', 'Éxito', {
-          timeOut: 3000,
-        });
-        this.postUploadP12(resp.idParametrosFacturacionNotarias, this.form.value.certificadoP12);
-      },
-      error: (err) => {
-        this.toastrService.error('Error al guardar los parámetros de facturación', 'Error', {
-          timeOut: 3000,
-        });
-        console.error('Error al enviar los datos:', err);
-        // Aquí podrías mostrar un mensaje de error al usuario
-      }
-    });
-  }
-
-  onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
+  // Encriptar la contraseña antes de enviarla al backend
+  async onPasswordInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const plain = input?.value || '';
+    try {
+      const encrypted = await encryptWithPublicKey(plain);
+      this.form.get('passwordCertificadoEncrypted')?.setValue(encrypted, { emitEvent: false });
+    } catch (e) {
+      this.form.get('passwordCertificadoEncrypted')?.setValue('', { emitEvent: false });
     }
-    console.log('Formulario válido:', this.form.value);
+  }
 
-    this.parametrosFacturacionNotarias.idNotaria = this.data.idNotary;
-    this.parametrosFacturacionNotarias.claveAcceso = "no-data";
-    this.parametrosFacturacionNotarias.numeroRuc = this.form.value.numeroRuc;
-    this.parametrosFacturacionNotarias.tipoAmbiente = this.form.value.tipoAmbiente;
-    this.parametrosFacturacionNotarias.establecimiento = this.form.value.establecimiento;
-    this.parametrosFacturacionNotarias.puntoEmision = this.form.value.puntoEmision;
-    this.parametrosFacturacionNotarias.razonSocial = this.form.value.razonSocial;
-    this.parametrosFacturacionNotarias.codigoContribuyenteEspecial = this.form.value.codigoContribuyenteEspecial;
-    this.parametrosFacturacionNotarias.obligadoContabilidad = this.form.value.obligadoContabilidad;
-
-    this.parametrosFacturacionNotarias = this.removeIdParametrosFacturacionNotariasTemp();
-
-    this.createOrUpdateBillingParametersNotaries(this.parametrosFacturacionNotarias);
+  private processFileUpload(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const file = this.form.get('logoEmisor')?.value;
+      if (!file) {
+        this.toastrService.error('No se seleccionó el logo', 'Error', { timeOut: 3000 });
+        return resolve();
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('tipoArchivo', 'png');
+      formData.append('nombreSistema', 'notarial');
+      this.repositorioService.uploadFile(formData).subscribe({
+        next: (response) => {
+          if (typeof response === 'string') {
+            this.parametrosFacturacionNotarias.logoEmisor = response;
+            resolve();
+          } else {
+            this.toastrService.error('Error al subir el logo', 'Error', { timeOut: 3000 });
+            resolve();
+          }
+        },
+        error: (error) => {
+          this.toastrService.error('Error al subir el logo', 'Error', { timeOut: 3000 });
+          resolve();
+        },
+      });
+    });
   }
 
   /**
@@ -292,16 +255,80 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     return rest;
   }
 
-  // Encriptar la contraseña antes de enviarla al backend
-  async onPasswordInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const plain = input?.value || '';
-    try {
-      const encrypted = await encryptWithPublicKey(plain);
-      this.form.get('passwordCertificadoEncrypted')?.setValue(encrypted, { emitEvent: false });
-    } catch (e) {
-      this.form.get('passwordCertificadoEncrypted')?.setValue('', { emitEvent: false });
-      console.error('Encryption error:', e);
-    }
+  postUploadP12(id:number, file: File) {
+    this.seguridadParametrosService.uploadP12(id, file).subscribe({
+      next: (resp) => {
+        this.toastrService.success('Certificado P12 subido con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        this.savePasswordP12(id, this.form.value.passwordCertificado);
+      },
+      error: (err) => {
+        this.toastrService.error('Error al subir el certificado P12', 'Error', {
+          timeOut: 3000,
+        });
+      }
+    });
   }
+
+  savePasswordP12(id:number, clave: string) {
+    this.seguridadParametrosService.savePasswordP12(id, clave).subscribe({
+      next: (resp) => {
+        console.log('Respuesta del servidor:', resp);
+        this.toastrService.success('Contraseña del certificado P12 guardada con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+      },
+      error: (err) => {
+        this.toastrService.error('Error al guardar la contraseña del certificado P12', 'Error', {
+          timeOut: 3000,
+        });
+      }
+    });
+  }
+
+  createOrUpdateBillingParametersNotaries(data: ParametrosFacturacionNotarias) {
+    this.notariasPesnotService.postBillingParametersNotariesCreateOrUpdate(data).subscribe({
+      next: (resp) => {
+        this.toastrService.success('Parámetros de facturación guardados con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        this.postUploadP12(resp.idParametrosFacturacionNotarias, this.form.value.certificadoP12);
+      },
+      error: (err) => {
+        this.toastrService.error('Error al guardar los parámetros de facturación', 'Error', {
+          timeOut: 3000,
+        });
+      }
+    });
+  }
+
+  async onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.parametrosFacturacionNotarias.idNotaria = this.data.idNotary;
+    this.parametrosFacturacionNotarias.claveAcceso = "no-data";
+    this.parametrosFacturacionNotarias.numeroRuc = this.form.value.numeroRuc;
+    this.parametrosFacturacionNotarias.tipoAmbiente = this.form.value.tipoAmbiente;
+    this.parametrosFacturacionNotarias.establecimiento = this.form.value.establecimiento;
+    this.parametrosFacturacionNotarias.puntoEmision = this.form.value.puntoEmision;
+    this.parametrosFacturacionNotarias.razonSocial = this.form.value.razonSocial;
+    this.parametrosFacturacionNotarias.codigoContribuyenteEspecial = this.form.value.codigoContribuyenteEspecial;
+    this.parametrosFacturacionNotarias.obligadoContabilidad = this.form.value.obligadoContabilidad;
+    this.parametrosFacturacionNotarias.nombreLogo = this.form.value.nombreLogo;
+
+    // Subir el logo y obtener la URL
+    await this.processFileUpload();
+
+    // Eliminar idParametrosFacturacionNotarias temporalmente antes de enviar
+    this.parametrosFacturacionNotarias = this.removeIdParametrosFacturacionNotariasTemp();
+
+    this.createOrUpdateBillingParametersNotaries(this.parametrosFacturacionNotarias);
+  }
+
+
 }

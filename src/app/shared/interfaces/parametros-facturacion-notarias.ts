@@ -9,4 +9,6 @@ export interface ParametrosFacturacionNotarias {
   razonSocial:                     string;
   codigoContribuyenteEspecial:     string;
   obligadoContabilidad:            string;
+  logoEmisor:                      string;
+  nombreLogo:                      string;
 }

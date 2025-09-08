@@ -9,10 +9,33 @@ import { FileStore } from '../../shared/components/file-upload/files';
 })
 export class RepositorioService {
 
+  private apiPesnot = environment.API_PESNOT;
   private apiUrl = environment.SERVER_PESNOT + environment.REPOSITORIO_SERVICE;
   private apiUrlParams = environment.SERVER_PESNOT + environment.NOTARIAS_SERVICE_PESNOT;
 
-  constructor(private http: HttpClient) { }
+  private msRepositorioService = environment.MS_REPOSITORIO_SERVICE;
+
+  private epPostUploadFile = environment.EP_POST_UPLOAD_FILE;
+  private epGetFileByUuid = environment.EP_GET_FILE_BY_UUID;
+
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  uploadFile(formData: FormData) {
+    const url = `${this.apiPesnot}${this.msRepositorioService}${this.epPostUploadFile}`;
+    return this.http.post(url, formData, { responseType: 'text' });
+  }
+
+  downloadFile(idArchivo: string, tipoArchivo: string, nombreSistema: string) {
+    const url = `${this.apiPesnot}${this.msRepositorioService}${this.epGetFileByUuid}`;
+    const params = new HttpParams()
+      .set('idArchivo', idArchivo)
+      .set('tipoArchivo', tipoArchivo)
+      .set('nombreSistema', nombreSistema);
+
+    return this.http.get(url, { params, responseType: 'blob' });
+  }
 
   getFileSolicitud(
     idArchivo: string,

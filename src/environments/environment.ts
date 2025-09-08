@@ -29,6 +29,7 @@ export const environment = {
   ADMIN_PARAMETROS_FACTURACION_NOTARIA: '/pesnot-resumen-service/api/parametros-facturacion',
   MS_PARAMETROS_SISTEMAS_PESNOT: '/pesnot-resumen-service/api/parametros-sistema-pesnot',
   MS_NOTARIAS_PESNOT_SERVICE: "/NOTARIAS-PESNOT-SERVICE/api/pesnot",
+  MS_REPOSITORIO_SERVICE: '/REPOSITORIO-SERVICE/api/repositorio-service',
   NOTARIAS_SERVICE_PESNOT: '/NOTARIAS-PESNOT-SERVICE/api',
   REPOSITORIO_SERVICE: '/REPOSITORIO-SERVICE/api',
 
@@ -42,6 +43,8 @@ export const environment = {
   EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate',
   EP_UPLOAD_P12: '/uploadP12',
   EP_GUARDAR_CLAVE_P12: '/guardarClaveP12',
+  EP_POST_UPLOAD_FILE: '/repositorio-service-command/guardarArchivoServidor',
+  EP_GET_FILE_BY_UUID: '/repositorio-service-query/buscarArchivoServidor',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",
