@@ -6,6 +6,7 @@ export const environment = {
   SERVER_PESNOT: "https://sqm-api-pesnot.funcionjudicial.gob.ec",
   API_PESNOT: "https://sqm-api-pesnot.funcionjudicial.gob.ec",
   HOST_API_TELEMATICO: 'https://sqm-api-telematico.funcionjudicial.gob.ec',
+  DASHBOARD_PESNOT: 'https://sqm-dashboard-pesnot.funcionjudicial.gob.ec',
 
   //TODO: Todas las variables de entorno son en mayúsculas y con guiones bajos
   AdministracionCatalogonemonicoPadre: "SERVICIOS_NOTARIALES",
@@ -15,6 +16,8 @@ export const environment = {
   MS_PESNOT_RESUMEN_SERVICE: '/pesnot-resumen-service/api',
   MS_PERSONAL_PESNOT_SERVICE: '/personal-pesnot-service/api',
   MS_GESTION_NOTARIAS_SERVICE: '/gestion-notarias-service/api',
+
+  SEGURIDAD_PARAMETROS: '/api/SeguridadParametros',
 
   //Recursos de MS_PESNOT_RESUMEN_SERVICE
   RS_PARAMETRO_NOTARIAS_PESNOT: '/parametro-notarias-pesnot',
@@ -36,7 +39,8 @@ export const environment = {
   ENDPOINT_POST_DETAIL_TRAINING: '/detalle-capacitacion/store',
   ENDPOINT_DELETE_DETAIL_TRAINING: '/detalle-capacitacion',
   EP_GET_BILLING_PARAMETERS_NOTARIES: '/query/parametros-facturacion-notarias/notaria/',
-  EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate/',
+  EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate',
+  EP_UPLOAD_P12: '/uploadP12',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",

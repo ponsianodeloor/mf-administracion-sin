@@ -6,6 +6,7 @@ import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/pa
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
 import {ToastrService} from "ngx-toastr";
+import {SeguridadParametrosService} from "../../../../../shared/services/seguridad-parametros.service";
 
 @Component({
   selector: 'app-create-or-update-parametros-facturacion-notarias-modal',
@@ -51,6 +52,7 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CreateOrUpdateParametrosFacturacionNotariasModalComponent>,
     private readonly notariasPesnotService: NotariasPesnotService,
+    private readonly seguridadParametrosService: SeguridadParametrosService,
     private toastrService: ToastrService
   ) {
     // Puedes usar this.data.idNotary aquí para inicializar valores
@@ -137,6 +139,25 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     this.dialogRef.close();
   }
 
+  postUploadP12(id:number, file: File) {
+    this.seguridadParametrosService.uploadP12(id, file).subscribe({
+      next: (resp) => {
+        console.log('Respuesta del servidor:', resp);
+        this.toastrService.success('Certificado P12 subido con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+      },
+      error: (err) => {
+        this.toastrService.error('Error al subir el certificado P12', 'Error', {
+          timeOut: 3000,
+        });
+        console.error('Error al enviar los datos:', err);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
   createOrUpdateBillingParametersNotaries(data: ParametrosFacturacionNotarias) {
     this.notariasPesnotService.postBillingParametersNotariesCreateOrUpdate(data).subscribe({
       next: (resp) => {
@@ -144,7 +165,7 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
         this.toastrService.success('Parámetros de facturación guardados con éxito', 'Éxito', {
           timeOut: 3000,
         });
-        this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+        this.postUploadP12(resp.idParametrosFacturacionNotarias, this.form.value.certificadoP12);
       },
       error: (err) => {
         this.toastrService.error('Error al guardar los parámetros de facturación', 'Error', {

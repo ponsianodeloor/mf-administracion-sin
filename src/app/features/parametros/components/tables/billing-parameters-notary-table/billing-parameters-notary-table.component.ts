@@ -95,11 +95,15 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   }
 
   openCreateDialog(): void {
-    this.dialog.open(CreateOrUpdateParametrosFacturacionNotariasModalComponent, {
+    const dialogRef = this.dialog.open(CreateOrUpdateParametrosFacturacionNotariasModalComponent, {
       height: '70vh',
       width: '80vw',
       data: { idNotary: this.idNotary },
       disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // Refresca la tabla al cerrar el modal
+      this.getBillingParametersNotaries(this.idNotary);
     });
   }
 
