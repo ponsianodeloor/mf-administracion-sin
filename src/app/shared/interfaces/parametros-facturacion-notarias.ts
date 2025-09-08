@@ -12,3 +12,14 @@ export interface ParametrosFacturacionNotarias {
   logoEmisor:                      string;
   nombreLogo:                      string;
 }
+
+export interface ParametrosFacturacionNotariasValidate {
+  idNotaria: number;
+  numeroRuc: string;
+  establecimiento: string;
+  puntoEmision: string;
+}
+
+export interface ParametrosFacturacionNotariasValidated {
+  validated: boolean;
+}

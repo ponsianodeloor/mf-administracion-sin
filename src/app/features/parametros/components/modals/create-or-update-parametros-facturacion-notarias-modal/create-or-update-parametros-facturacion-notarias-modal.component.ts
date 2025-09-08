@@ -2,7 +2,10 @@ import {Component, Inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
-import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
+import {
+  ParametrosFacturacionNotarias,
+  ParametrosFacturacionNotariasValidate
+} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
 import {ToastrService} from "ngx-toastr";
@@ -37,6 +40,13 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     obligadoContabilidad: 'NO',
     logoEmisor: '',
     nombreLogo: ''
+  }
+
+  parametrosFacturacionNotariasValidate: ParametrosFacturacionNotariasValidate = {
+    idNotaria: 0,
+    numeroRuc: '',
+    establecimiento: '',
+    puntoEmision: ''
   }
 
   form: FormGroup;
@@ -217,6 +227,34 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     }
   }
 
+  /**
+   * Valida los parámetros de facturación antes de guardar y retorna una promesa.
+   */
+  validateBillingParametersNotaries(): Promise<boolean> {
+    this.parametrosFacturacionNotariasValidate.idNotaria = this.data.idNotary;
+    this.parametrosFacturacionNotariasValidate.numeroRuc = this.form.value.numeroRuc;
+    this.parametrosFacturacionNotariasValidate.establecimiento = this.form.value.establecimiento;
+    this.parametrosFacturacionNotariasValidate.puntoEmision = this.form.value.puntoEmision;
+
+    return new Promise((resolve) => {
+      this.notariasPesnotService.postBillingParametersNotariesValidateIdNotaryRucEstablishmentPointOfIssue(this.parametrosFacturacionNotariasValidate)
+        .subscribe({
+          next: (resp) => {
+            if (resp && resp.validated) {
+              this.toastrService.warning('El RUC, Establecimiento y Punto Emisión ya han sido ingresados', 'Atención', { timeOut: 3000 });
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          error: (err) => {
+            this.toastrService.error('Error al validar los parámetros', 'Error', { timeOut: 3000 });
+            resolve(false);
+          }
+        });
+    });
+  }
+
   private processFileUpload(): Promise<void> {
     return new Promise((resolve, reject) => {
       const file = this.form.get('logoEmisor')?.value;
@@ -274,7 +312,6 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   savePasswordP12(id:number, clave: string) {
     this.seguridadParametrosService.savePasswordP12(id, clave).subscribe({
       next: (resp) => {
-        console.log('Respuesta del servidor:', resp);
         this.toastrService.success('Contraseña del certificado P12 guardada con éxito', 'Éxito', {
           timeOut: 3000,
         });
@@ -320,6 +357,11 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
     this.parametrosFacturacionNotarias.codigoContribuyenteEspecial = this.form.value.codigoContribuyenteEspecial;
     this.parametrosFacturacionNotarias.obligadoContabilidad = this.form.value.obligadoContabilidad;
     this.parametrosFacturacionNotarias.nombreLogo = this.form.value.nombreLogo;
+
+    const exist = await this.validateBillingParametersNotaries();
+    if (exist) {
+      return;
+    }
 
     // Subir el logo y obtener la URL
     await this.processFileUpload();

@@ -41,6 +41,8 @@ export const environment = {
   ENDPOINT_DELETE_DETAIL_TRAINING: '/detalle-capacitacion',
   EP_GET_BILLING_PARAMETERS_NOTARIES: '/query/parametros-facturacion-notarias/notaria/',
   EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate',
+  EP_POST_BILLING_PARAMETERS_NOTARIES_VALIDATE_ID_NOTARY_RUC_ESTABLISHMENT_POINT_OF_ISSUE:
+    '/query/parametros-facturacion-notarias/exists/idNotaria-numeroRuc-establecimiento-puntoEmision',
   EP_UPLOAD_P12: '/uploadP12',
   EP_GUARDAR_CLAVE_P12: '/guardarClaveP12',
   EP_POST_UPLOAD_FILE: '/repositorio-service-command/guardarArchivoServidor',
