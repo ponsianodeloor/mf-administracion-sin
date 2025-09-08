@@ -1,0 +1,17 @@
+/* Truncated filename next to Material button */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.file-row .filename {
+  flex: 1;
+  min-width: 0; /* allow flex child to shrink for ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #424242;
+  font-size: 12px;
+}

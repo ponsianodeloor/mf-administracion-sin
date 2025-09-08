@@ -79,7 +79,11 @@
       <div style="flex:1;">
         <div style="font-weight:700; font-size:18px;">Logo Emisor</div>
         <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
-        <input type="file" accept="image/*" (change)="onFileSelected($event, 'logoEmisor')" style="margin-top:8px;" />
+        <div class="file-row">
+          <input type="file" accept="image/png" (change)="onFileSelected($event, 'logoEmisor')" #logoFileInput hidden />
+          <button mat-stroked-button color="basic" type="button" (click)="logoFileInput.click()">Seleccionar archivo</button>
+          <span class="filename" *ngIf="form.get('nombreLogo')?.value">{{ form.get('nombreLogo')?.value }}</span>
+        </div>
         <div style="color:#d32f2f; font-size:12px; margin-top:6px;" *ngIf="hasError('logoEmisor','required')">Archivo requerido</div>
       </div>
     </mat-card>
@@ -95,7 +99,11 @@
       <div style="flex:1;">
         <div style="font-weight:700; font-size:18px;">Certificado P12</div>
         <div style="color:#616161;">Seleccione un archivo o suelte uno aquí.</div>
-        <input type="file" accept=".p12,.pfx" (change)="onFileSelected($event, 'certificadoP12')" style="margin-top:8px;" />
+        <div class="file-row">
+          <input type="file" accept=".p12" (change)="onFileSelected($event, 'certificadoP12')" #p12FileInput hidden />
+          <button mat-stroked-button color="basic" type="button" (click)="p12FileInput.click()">Seleccionar archivo</button>
+          <span class="filename" *ngIf="certificadoP12Nombre">Seleccionado: {{ certificadoP12Nombre }}</span>
+        </div>
         <div style="color:#d32f2f; font-size:12px; margin-top:6px;" *ngIf="hasError('certificadoP12','required')">Archivo requerido</div>
       </div>
     </mat-card>

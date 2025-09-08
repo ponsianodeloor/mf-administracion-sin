@@ -37,6 +37,7 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   }
 
   form: FormGroup;
+  certificadoP12Nombre: string = '';
 
   ambientes = [
     { value: 1, label: 'Pruebas' },
@@ -128,8 +129,69 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   onFileSelected(event: Event, controlName: 'logoEmisor' | 'certificadoP12') {
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files[0] ? input.files[0] : null;
+
+    // No file selected: clear control and related fields
+    if (!file) {
+      this.form.get(controlName)?.setValue(null);
+      this.form.get(controlName)?.markAsTouched();
+      if (controlName === 'logoEmisor') {
+        this.form.get('nombreLogo')?.setValue('');
+      }
+      if (controlName === 'certificadoP12') {
+        this.certificadoP12Nombre = '';
+      }
+      return;
+    }
+
+    const fileNameLower = file.name.toLowerCase();
+
+    // Validate extension per control
+    if (controlName === 'logoEmisor' && !fileNameLower.endsWith('.png')) {
+      this.toastrService.error('Formato inválido. Seleccione un archivo .png', 'Error', { timeOut: 3000 });
+      // Reset input and form control
+      input.value = '';
+      this.form.get(controlName)?.setValue(null);
+      this.form.get('nombreLogo')?.setValue('');
+      return;
+    }
+
+    if (controlName === 'certificadoP12' && !fileNameLower.endsWith('.p12')) {
+      this.toastrService.error('Formato inválido. Seleccione un archivo .p12', 'Error', { timeOut: 3000 });
+      input.value = '';
+      this.form.get(controlName)?.setValue(null);
+      this.certificadoP12Nombre = '';
+      return;
+    }
+
+    // Valid file: set control and any derived fields
     this.form.get(controlName)?.setValue(file);
     this.form.get(controlName)?.markAsTouched();
+
+    if (controlName === 'logoEmisor') {
+      const name = file.name || '';
+      const lastDot = name.lastIndexOf('.');
+      const ext = lastDot >= 0 ? name.substring(lastDot) : '';
+      const base = lastDot >= 0 ? name.substring(0, lastDot) : name;
+      const maxLen = 32;
+      const allowedBaseLen = Math.max(0, maxLen - ext.length);
+      const truncated = (base.length > allowedBaseLen)
+        ? base.substring(0, allowedBaseLen) + ext
+        : name;
+      this.form.get('nombreLogo')?.setValue(truncated);
+      this.form.get('nombreLogo')?.markAsTouched();
+    }
+
+    if (controlName === 'certificadoP12') {
+      const name = file.name || '';
+      const lastDot = name.lastIndexOf('.');
+      const ext = lastDot >= 0 ? name.substring(lastDot) : '';
+      const base = lastDot >= 0 ? name.substring(0, lastDot) : name;
+      const maxLen = 32;
+      const allowedBaseLen = Math.max(0, maxLen - ext.length);
+      this.certificadoP12Nombre = (base.length > allowedBaseLen)
+        ? base.substring(0, allowedBaseLen) + ext
+        : name;
+    }
   }
 
   hasError(controlName: string, error: string) {
