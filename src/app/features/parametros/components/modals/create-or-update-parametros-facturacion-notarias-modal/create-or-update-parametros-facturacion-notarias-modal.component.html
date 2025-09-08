@@ -86,7 +86,7 @@
 
     <mat-form-field appearance="fill" style="grid-column: span 2;">
       <mat-label>Nombre Logo</mat-label>
-      <input matInput placeholder="Nombre Logo" formControlName="nombreLogo" />
+      <input matInput placeholder="Nombre Logo" formControlName="nombreLogo" readonly />
       <mat-error *ngIf="hasError('nombreLogo','required')">Campo requerido</mat-error>
     </mat-form-field>
 
