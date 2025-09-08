@@ -102,7 +102,7 @@
 
     <mat-form-field appearance="fill" style="grid-column: span 2;">
       <mat-label>Password Certificado</mat-label>
-      <input matInput type="password" placeholder="Password Certificado" formControlName="passwordCertificado" />
+      <input matInput type="password" placeholder="Password Certificado" formControlName="passwordCertificado" (input)="onPasswordInput($event)" />
       <mat-error *ngIf="hasError('passwordCertificado','required')">Campo requerido</mat-error>
     </mat-form-field>
   </div>

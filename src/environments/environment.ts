@@ -41,6 +41,7 @@ export const environment = {
   EP_GET_BILLING_PARAMETERS_NOTARIES: '/query/parametros-facturacion-notarias/notaria/',
   EP_POST_BILLING_PARAMETERS_NOTARIES_CREATE_OR_UPDATE: '/command/parametros-facturacion-notarias/createOrUpdate',
   EP_UPLOAD_P12: '/uploadP12',
+  EP_GUARDAR_CLAVE_P12: '/guardarClaveP12',
 
   BANK_DETAILS: "DATOS-BANCARIOS",
   ZOOM_PARAMETERS: "PARAMETROS-ZOOM",

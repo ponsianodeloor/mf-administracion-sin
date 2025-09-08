@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
 import {ToastrService} from "ngx-toastr";
 import {SeguridadParametrosService} from "../../../../../shared/services/seguridad-parametros.service";
+import { encryptWithPublicKey } from "../../../../../shared/utils/crypto.util";
 
 @Component({
   selector: 'app-create-or-update-parametros-facturacion-notarias-modal',
@@ -77,7 +78,8 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
       logoEmisor: [null, [Validators.required]],
       nombreLogo: ['', [Validators.required, Validators.maxLength(100)]],
       certificadoP12: [null, [Validators.required]],
-      passwordCertificado: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]]
+      passwordCertificado: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]],
+      passwordCertificadoEncrypted: ['']
     });
   }
 
@@ -146,10 +148,30 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
         this.toastrService.success('Certificado P12 subido con éxito', 'Éxito', {
           timeOut: 3000,
         });
-        this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+        this.savePasswordP12(id, this.form.value.passwordCertificado);
+        //this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
       },
       error: (err) => {
         this.toastrService.error('Error al subir el certificado P12', 'Error', {
+          timeOut: 3000,
+        });
+        console.error('Error al enviar los datos:', err);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
+  savePasswordP12(id:number, clave: string) {
+    this.seguridadParametrosService.savePasswordP12(id, clave).subscribe({
+      next: (resp) => {
+        console.log('Respuesta del servidor:', resp);
+        this.toastrService.success('Contraseña del certificado P12 guardada con éxito', 'Éxito', {
+          timeOut: 3000,
+        });
+        //this.dialogRef.close(true); // Cerrar el modal y pasar true para indicar éxito
+      },
+      error: (err) => {
+        this.toastrService.error('Error al guardar la contraseña del certificado P12', 'Error', {
           timeOut: 3000,
         });
         console.error('Error al enviar los datos:', err);
@@ -206,5 +228,18 @@ export class CreateOrUpdateParametrosFacturacionNotariasModalComponent implement
   removeIdParametrosFacturacionNotariasTemp(): Omit<ParametrosFacturacionNotarias, 'idParametrosFacturacionNotarias'> {
     const { idParametrosFacturacionNotarias, ...rest } = this.parametrosFacturacionNotarias;
     return rest;
+  }
+
+  // Encriptar la contraseña antes de enviarla al backend
+  async onPasswordInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const plain = input?.value || '';
+    try {
+      const encrypted = await encryptWithPublicKey(plain);
+      this.form.get('passwordCertificadoEncrypted')?.setValue(encrypted, { emitEvent: false });
+    } catch (e) {
+      this.form.get('passwordCertificadoEncrypted')?.setValue('', { emitEvent: false });
+      console.error('Encryption error:', e);
+    }
   }
 }
