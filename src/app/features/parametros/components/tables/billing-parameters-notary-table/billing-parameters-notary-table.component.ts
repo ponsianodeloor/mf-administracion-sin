@@ -1,12 +1,12 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
 import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
+import {CommonModule} from "@angular/common";
 import {MatTableModule} from "@angular/material/table";
 import {UserSelected} from "../../../interfaces/user-selected";
 import {ToastrService} from "ngx-toastr";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import {MatMenuModule} from "@angular/material/menu";
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrUpdateParametrosFacturacionNotariasModalComponent } from '../../modals/create-or-update-parametros-facturacion-notarias-modal/create-or-update-parametros-facturacion-notarias-modal.component';
 import { EditGeneralParamsBillingByIdModalComponent } from '../../modals/edit-general-params-billing-by-id-modal/edit-general-params-billing-by-id-modal.component';
@@ -18,10 +18,10 @@ import {RepositorioService} from "../../../../../shared/services/repositorio.ser
   selector: 'app-billing-parameters-notary-table',
   standalone: true,
   imports: [
+    CommonModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule,
   ],
   templateUrl: './billing-parameters-notary-table.component.html',
   styleUrl: './billing-parameters-notary-table.component.scss'
@@ -136,8 +136,14 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   }
 
   @HostListener('document:click', ['$event'])
-  closeMenuOnOutsideClick(_: MouseEvent) {
-    this.openMenuId = null;
+  closeMenuOnOutsideClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInsideMenu = target.closest('.inline-row-menu');
+    const clickedToggleButton = target.closest('.row-menu-button');
+
+    if (!clickedInsideMenu && !clickedToggleButton) {
+      this.openMenuId = null;
+    }
   }
 
   openEditGeneralParams(idParametrosFacturacionNotarias?: number) {
