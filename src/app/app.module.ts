@@ -3,6 +3,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {BrowserModule} from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
@@ -11,6 +12,7 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     RouterModule,
     HttpClientModule

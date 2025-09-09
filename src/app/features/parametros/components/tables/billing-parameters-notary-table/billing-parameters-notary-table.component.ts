@@ -6,8 +6,12 @@ import {UserSelected} from "../../../interfaces/user-selected";
 import {ToastrService} from "ngx-toastr";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrUpdateParametrosFacturacionNotariasModalComponent } from '../../modals/create-or-update-parametros-facturacion-notarias-modal/create-or-update-parametros-facturacion-notarias-modal.component';
+import { EditGeneralParamsBillingByIdModalComponent } from '../../modals/edit-general-params-billing-by-id-modal/edit-general-params-billing-by-id-modal.component';
+import { EditLogoBillingByIdModalComponent } from '../../modals/edit-logo-billing-by-id-modal/edit-logo-billing-by-id-modal.component';
+import { EditElectronicSignBillingByIdModalComponent } from '../../modals/edit-electronic-sign-billing-by-id-modal/edit-electronic-sign-billing-by-id-modal.component';
 import {RepositorioService} from "../../../../../shared/services/repositorio.service";
 import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
 
@@ -18,6 +22,7 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     ShellMaterialModule
   ],
   templateUrl: './billing-parameters-notary-table.component.html',
@@ -46,6 +51,7 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   idNotary: number = 0;
 
   parametersBillingNotary:ParametrosFacturacionNotarias[] = [];
+  selectedId?: number;
 
   displayedColumns: string[] = [
     'idParametrosFacturacionNotarias',
@@ -107,6 +113,45 @@ export class BillingParametersNotaryTableComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       // Refresca la tabla al cerrar el modal
+      this.getBillingParametersNotaries(this.idNotary);
+    });
+  }
+
+  openEditGeneralParams(idParametrosFacturacionNotarias?: number) {
+    if (!idParametrosFacturacionNotarias) return;
+    const dialogRef = this.dialog.open(EditGeneralParamsBillingByIdModalComponent, {
+      width: '70vw',
+      maxWidth: '95vw',
+      data: { idParametrosFacturacionNotarias },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getBillingParametersNotaries(this.idNotary);
+    });
+  }
+
+  openEditLogo(idParametrosFacturacionNotarias?: number) {
+    if (!idParametrosFacturacionNotarias) return;
+    const dialogRef = this.dialog.open(EditLogoBillingByIdModalComponent, {
+      width: '60vw',
+      maxWidth: '95vw',
+      data: { idParametrosFacturacionNotarias },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getBillingParametersNotaries(this.idNotary);
+    });
+  }
+
+  openEditElectronicSign(idParametrosFacturacionNotarias?: number) {
+    if (!idParametrosFacturacionNotarias) return;
+    const dialogRef = this.dialog.open(EditElectronicSignBillingByIdModalComponent, {
+      width: '60vw',
+      maxWidth: '95vw',
+      data: { idParametrosFacturacionNotarias },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(() => {
       this.getBillingParametersNotaries(this.idNotary);
     });
   }

@@ -8,10 +8,10 @@
   <ng-container matColumnDef="idParametrosFacturacionNotarias">
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button color="primary" (click)="onEdit(element.idParametrosFacturacionNotarias)" style="margin-left:8px;">
-        <mat-icon>edit</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" aria-label="Acciones" (click)="selectedId = element.idParametrosFacturacionNotarias">
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </td>
+      </td>
   </ng-container>
 
   <ng-container matColumnDef="numeroRuc">
@@ -69,3 +69,19 @@
   <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
 
 </table>
+
+<mat-menu #actionsMenu="matMenu">
+  <button mat-menu-item (click)="openEditGeneralParams(selectedId)">
+    <mat-icon>edit</mat-icon>
+    <span>Editar parámetros</span>
+  </button>
+  <button mat-menu-item (click)="openEditLogo(selectedId)">
+    <mat-icon>image</mat-icon>
+    <span>Editar logo</span>
+  </button>
+  <button mat-menu-item (click)="openEditElectronicSign(selectedId)">
+    <mat-icon>edit_note</mat-icon>
+    <span>Editar firma electrónica</span>
+  </button>
+</mat-menu>
+
