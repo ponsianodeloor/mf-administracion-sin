@@ -2,3 +2,20 @@
   margin-bottom: 8px;
 }
 
+.inline-row-menu {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  border-radius: 4px;
+  padding: 4px 0;
+  min-width: 220px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+}
+
+.inline-row-menu button[mat-menu-item] {
+  justify-content: flex-start;
+}

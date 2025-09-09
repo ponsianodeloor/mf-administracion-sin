@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ParametrosFacturacionNotarias} from "../../../../../shared/interfaces/parametros-facturacion-notarias";
 import {NotariasPesnotService} from "../../../../../shared/services/notarias-pesnot.service";
 import {MatTableModule} from "@angular/material/table";
@@ -13,7 +13,6 @@ import { EditGeneralParamsBillingByIdModalComponent } from '../../modals/edit-ge
 import { EditLogoBillingByIdModalComponent } from '../../modals/edit-logo-billing-by-id-modal/edit-logo-billing-by-id-modal.component';
 import { EditElectronicSignBillingByIdModalComponent } from '../../modals/edit-electronic-sign-billing-by-id-modal/edit-electronic-sign-billing-by-id-modal.component';
 import {RepositorioService} from "../../../../../shared/services/repositorio.service";
-import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
 
 @Component({
   selector: 'app-billing-parameters-notary-table',
@@ -23,7 +22,6 @@ import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    ShellMaterialModule
   ],
   templateUrl: './billing-parameters-notary-table.component.html',
   styleUrl: './billing-parameters-notary-table.component.scss'
@@ -52,6 +50,7 @@ export class BillingParametersNotaryTableComponent implements OnInit{
 
   parametersBillingNotary:ParametrosFacturacionNotarias[] = [];
   selectedId?: number;
+  openMenuId: number | null = null;
 
   displayedColumns: string[] = [
     'idParametrosFacturacionNotarias',
@@ -115,6 +114,30 @@ export class BillingParametersNotaryTableComponent implements OnInit{
       // Refresca la tabla al cerrar el modal
       this.getBillingParametersNotaries(this.idNotary);
     });
+  }
+
+  onMenuOpened() {
+    console.log('Actions menu opened. selectedId=', this.selectedId);
+  }
+
+  toggleRowMenu(id?: number) {
+    if (!id) return;
+    this.openMenuId = this.openMenuId === id ? null : id;
+  }
+
+  openEditFromInline(id?: number, type: 'general'|'logo'|'sign' = 'general') {
+    if (!id) return;
+    switch (type) {
+      case 'general': this.openEditGeneralParams(id); break;
+      case 'logo': this.openEditLogo(id); break;
+      case 'sign': this.openEditElectronicSign(id); break;
+    }
+    this.openMenuId = null;
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeMenuOnOutsideClick(_: MouseEvent) {
+    this.openMenuId = null;
   }
 
   openEditGeneralParams(idParametrosFacturacionNotarias?: number) {
