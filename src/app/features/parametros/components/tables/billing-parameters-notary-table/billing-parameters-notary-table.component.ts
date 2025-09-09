@@ -8,6 +8,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOrUpdateParametrosFacturacionNotariasModalComponent } from '../../modals/create-or-update-parametros-facturacion-notarias-modal/create-or-update-parametros-facturacion-notarias-modal.component';
+import {RepositorioService} from "../../../../../shared/services/repositorio.service";
+import {ShellMaterialModule} from "../../../../../shared/modules/shell-material.module";
 
 @Component({
   selector: 'app-billing-parameters-notary-table',
@@ -15,7 +17,8 @@ import { CreateOrUpdateParametrosFacturacionNotariasModalComponent } from '../..
   imports: [
     MatTableModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ShellMaterialModule
   ],
   templateUrl: './billing-parameters-notary-table.component.html',
   styleUrl: './billing-parameters-notary-table.component.scss'
@@ -46,21 +49,22 @@ export class BillingParametersNotaryTableComponent implements OnInit{
 
   displayedColumns: string[] = [
     'idParametrosFacturacionNotarias',
-    'idNotaria',
-    'claveAcceso',
     'numeroRuc',
     'tipoAmbiente',
     'establecimiento',
     'puntoEmision',
     'razonSocial',
     'codigoContribuyenteEspecial',
-    'obligadoContabilidad'
+    'obligadoContabilidad',
+    'logoEmisor',
+    'nombreLogo'
   ];
 
   constructor(
     private readonly notariasPesnotService:NotariasPesnotService,
     private readonly toastrService: ToastrService,
     private readonly dialog: MatDialog,
+    private readonly repositorioService: RepositorioService,
   ) {
   }
 
@@ -110,6 +114,30 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   onEdit(element: ParametrosFacturacionNotarias) {
     console.log('Editar elemento:', element);
     // Aquí puedes agregar la lógica para editar el elemento
+  }
+
+  onDownloadLogo(element: ParametrosFacturacionNotarias) {
+    let tipoArchivo = 'pdf';
+    let nombreSistema = 'notarial';
+    let fileName = element.nombreLogo ? element.nombreLogo : 'logo_notarial.png';
+
+    this.repositorioService.downloadFile(element.logoEmisor, tipoArchivo, nombreSistema).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, error: (err) => {
+        console.log(err);
+        this.toastrService.error('Error al descargar el archivo', 'Error', {
+          timeOut: 3000,
+        });
+      }
+    });
   }
 
 }
