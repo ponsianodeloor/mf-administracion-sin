@@ -16,15 +16,18 @@
       <div *ngIf="openMenuId === element.idParametrosFacturacionNotarias"
            class="inline-row-menu"
            (click)="$event.stopPropagation()">
-        <button mat-menu-item (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'general')">
+        <button mat-button class="menu-item"
+                (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'general')">
           <mat-icon>edit</mat-icon>
           <span>Editar parámetros</span>
         </button>
-        <button mat-menu-item (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'logo')">
+        <button mat-button class="menu-item"
+                (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'logo')">
           <mat-icon>image</mat-icon>
           <span>Editar logo</span>
         </button>
-        <button mat-menu-item (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'sign')">
+        <button mat-button class="menu-item"
+                (click)="openEditFromInline(element.idParametrosFacturacionNotarias, 'sign')">
           <mat-icon>edit_note</mat-icon>
           <span>Editar firma electrónica</span>
         </button>

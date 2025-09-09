@@ -16,6 +16,11 @@
   flex-direction: column;
 }
 
-.inline-row-menu button[mat-menu-item] {
+.inline-row-menu .menu-item {
   justify-content: flex-start;
+  width: 100%;
+}
+
+.inline-row-menu .menu-item mat-icon {
+  margin-right: 8px;
 }
