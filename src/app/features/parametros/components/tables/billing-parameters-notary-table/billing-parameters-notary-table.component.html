@@ -9,6 +9,7 @@
     <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let element" style="position: relative;">
       <button mat-icon-button aria-label="Acciones"
+              class="row-menu-button"
               (click)="$event.stopPropagation(); toggleRowMenu(element.idParametrosFacturacionNotarias)">
         <mat-icon>more_vert</mat-icon>
       </button>

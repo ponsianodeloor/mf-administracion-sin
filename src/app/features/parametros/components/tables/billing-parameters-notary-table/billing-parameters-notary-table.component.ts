@@ -136,8 +136,14 @@ export class BillingParametersNotaryTableComponent implements OnInit{
   }
 
   @HostListener('document:click', ['$event'])
-  closeMenuOnOutsideClick(_: MouseEvent) {
-    this.openMenuId = null;
+  closeMenuOnOutsideClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInsideMenu = target.closest('.inline-row-menu');
+    const clickedToggleButton = target.closest('.row-menu-button');
+
+    if (!clickedInsideMenu && !clickedToggleButton) {
+      this.openMenuId = null;
+    }
   }
 
   openEditGeneralParams(idParametrosFacturacionNotarias?: number) {
